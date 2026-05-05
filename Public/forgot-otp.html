@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Forgot Password OTP - Moneta</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<div class="container">
+    <div class="left">
+        <h1>MONETA</h1>
+        <!-- Design requires headers and specific sub-text -->
+        <h3>Forget Password</h3>
+        <p><strong>OTP Verification</strong></p>
+        <p class="sub-text">We have sent the verification code to your email address</p>
+
+        <form action="/verify-forgot-otp" method="POST">
+            <!-- Ensure name="otp" is present for the backend to read it -->
+            <input name="otp" class="otp-box" placeholder="000000" maxlength="6" required>
+            
+            <div class="resend-link">
+                <a href="#">Resend OTP</a>
+            </div>
+            
+            <button type="submit" class="btn-teal">Confirm</button>
+        </form>
+    </div>
+    <div class="right"></div>
+</div>
+</body>
+</html>

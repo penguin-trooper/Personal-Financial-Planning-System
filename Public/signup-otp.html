@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Verify OTP - Moneta</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<div class="container">
+    <div class="left">
+        <h1>MONETA</h1>
+        <div class="tabs">
+            <span onclick="window.location.href='/login.html'">LOG IN</span>
+            <span class="active">SIGN UP</span>
+        </div>
+        <p><strong>OTP Verification</strong></p>
+        <p class="sub-text">We have sent the verification code to your email address</p>
+
+        <form action="/verify-signup-otp" method="POST">
+            <input name="otp" class="otp-box" placeholder="000000" maxlength="6" required>
+            <div class="resend-link">
+                <a href="#">Resend OTP</a>
+            </div>
+            <button type="submit" class="btn-teal">Confirm</button>
+        </form>
+    </div>
+    <div class="right"></div>
+</div>
+</body>
+</html>

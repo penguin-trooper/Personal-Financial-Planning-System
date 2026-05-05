@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create Username - Moneta</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<div class="container">
+    <div class="left">
+        <h1>MONETA</h1>
+        <div class="tabs">
+            <span onclick="window.location.href='/login.html'">LOG IN</span>
+            <span class="active">SIGN UP</span>
+        </div>
+        <form action="/signup-final" method="POST">
+            <label>Create Username</label>
+            <input type="text" name="username" placeholder="Enter your username" required>
+            <button type="submit" class="btn-teal">Create Account</button>
+        </form>
+        <p id="error-msg" style="color: red; font-size: 12px; font-weight: bold; margin-top: 15px;"></p>
+
+        <script>
+            // Read the error from the URL
+            const params = new URLSearchParams(window.location.search);
+            const error = params.get('error');
+            const msgBox = document.getElementById('error-msg');
+
+            if (error === 'username_exists') {
+                msgBox.innerText = "This username is already taken. Please try another one.";
+            } else if (error === 'server') {
+                msgBox.innerText = "Internal server error. Please try again.";
+            }
+        </script>
+    </div>
+    <div class="right"></div>
+</div>
+</body>
+</html>
