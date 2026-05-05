@@ -239,3 +239,48 @@
 @keyframes fadeUp {
     to { opacity: 1; transform: translateY(0); }
 }
+
+.moneta-background {
+
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center;
+
+    background-size: cover;
+
+    background-image:url("images/investment-home.jpg");
+
+}
+
+.moneta-card {
+    background-color: rgba(217, 217, 217, 0.85);
+    color: #273C2C;
+    border: none;
+    border-radius: 18px;
+    text-decoration: none; /* for no underline*/
+    overflow: hidden; /* removes weird overflow at the rectangle*/
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.moneta-card:hover {
+    transform: translateY(-6px); /*moves it up by 6px to indicate selection*/
+}
+
+.moneta-card .card-body {
+    padding: 1.5rem;
+} /*padding for text*/
+
+.moneta-card .card-title {
+    color: #281D59;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.moneta-card .card-text {
+    color: #281D59;
+    text-decoration: none;
+}
+
+.moneta-card:hover .card-title {
+    color: #4E8D9C;
+}
