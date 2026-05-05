@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Investment Strategy</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #1a1f1c;
+            --card-bg: #c8cf9a;
+            --card-text: #1a1f1c;
+            --accent-teal: #4a9e8e;
+            --badge-bg: #4a9e8e;
+            --badge-text: #fff;
+            --risk-badge-bg: #6a9fd8;
+            --risk-badge-text: #fff;
+            --link-color: #2a6496;
+            --divider: rgba(26,31,28,0.18);
+            --font-display: 'Playfair Display', serif;
+            --font-body: 'DM Sans', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            font-family: var(--font-body);
+            color: var(--card-text);
+            min-height: 100vh;
+        }
+
+        /* ── Navbar (your existing code styles) ── */
+        .moneta-section { background-color: #1a1f1c; }
+        .moneta-section-text { color: #c8cf9a !important; }
+        .nav-link.active, .nav-link:focus { 
+            background-color: #c8cf9a !important; 
+            color: #1a1f1c !important; 
+            border-radius: 20px;
+            padding-left: 14px !important;
+            padding-right: 14px !important;
+        }
+
+        /* ── Page Wrapper ── */
+        .strategy-wrapper {
+            max-width: 580px;
+            margin: 40px auto;
+            padding: 0 16px 60px;
+        }
+
+        /* ── Card ── */
+        .strategy-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 32px 36px 28px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.35);
+        }
+
+        /* ── Title ── */
+        .strategy-title {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: 0.01em;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+            color: var(--card-text);
+        }
+
+        .strategy-duration {
+            font-size: 0.95rem;
+            font-weight: 500;
+            margin-bottom: 10px;
+        }
+
+        .risk-badge {
+            display: inline-block;
+            background: var(--risk-badge-bg);
+            color: var(--risk-badge-text);
+            font-size: 0.78rem;
+            font-weight: 500;
+            border-radius: 20px;
+            padding: 3px 14px;
+            margin-bottom: 22px;
+        }
+
+        /* ── Section Heading ── */
+        .section-heading {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--card-text);
+        }
+
+        /* ── Strategy Item ── */
+        .strategy-item {
+            margin-bottom: 24px;
+        }
+
+        .strategy-item-title {
+            font-family: var(--font-display);
+            font-size: 1.18rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+
+        .strategy-item-title a {
+            color: var(--card-text);
+            text-decoration: underline;
+            text-underline-offset: 3px;
+        }
+
+        .pct-badge {
+            background: var(--badge-bg);
+            color: var(--badge-text);
+            font-family: var(--font-body);
+            font-size: 0.75rem;
+            font-weight: 600;
+            border-radius: 20px;
+            padding: 2px 10px;
+            letter-spacing: 0.02em;
+        }
+
+        .strategy-item-desc {
+            font-size: 0.875rem;
+            line-height: 1.6;
+            color: var(--card-text);
+        }
+
+        /* ── Divider ── */
+        .strategy-divider {
+            border: none;
+            border-top: 1.5px solid var(--divider);
+            margin: 20px 0;
+        }
+
+        /* ── Other Strategies ── */
+        .other-strategies {
+            font-size: 0.87rem;
+            margin-top: 18px;
+        }
+
+        .other-strategies a {
+            color: var(--link-color);
+            text-decoration: underline;
+            margin-right: 4px;
+        }
+
+        /* ── Back Button ── */
+        .back-btn-wrap {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 18px;
+        }
+
+        .back-btn {
+            background: var(--bg-dark);
+            color: #c8cf9a;
+            border: none;
+            border-radius: 6px;
+            padding: 7px 22px;
+            font-family: var(--font-body);
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: opacity 0.18s;
+        }
+
+        .back-btn:hover { opacity: 0.8; }
+
+        /* ── Scroll Reveal ── */
+        .strategy-item {
+            opacity: 0;
+            transform: translateY(18px);
+            animation: fadeUp 0.45s forwards;
+        }
+        .strategy-item:nth-child(1) { animation-delay: 0.05s; }
+        .strategy-item:nth-child(2) { animation-delay: 0.18s; }
+        .strategy-item:nth-child(3) { animation-delay: 0.31s; }
+
+        @keyframes fadeUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Footer note */
+        .made-by {
+            text-align: center;
+            color: #888;
+            font-size: 0.75rem;
+            margin-top: 14px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NavBar-->
+    <nav class="navbar navbar-expand-lg navbar-dark moneta-section">
+        <div class="container">
+            <a href="#" class="navbar-brand">Moneta</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#monetaNavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="monetaNavbar">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a href="#" class="nav-link moneta-section-text">Home</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link moneta-section-text active">Financial Planner</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link moneta-section-text">ROI Calculator</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link moneta-section-text">Market Insights</a></li>
+                    <li class="nav-item ms-2 d-flex align-items-center">
+                        <span class="moneta-section-text" style="font-size:0.9rem;">User Name</span>
+                        <img src="images/log_out.svg" alt="User" width="28" height="28" class="ms-2" style="border-radius:50%;background:#444;padding:3px;">
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Investment Strategy Content -->
+    <div class="strategy-wrapper">
+        <div class="strategy-card">
+            <div class="strategy-title">Investment Strategy</div>
+            <div class="strategy-duration"><strong>Duration: 4 years</strong></div>
+            <span class="risk-badge">Moderate Risk</span>
+
+            <div class="section-heading">Recommended Strategy for You:</div>
+
+            <!-- Bonds -->
+            <div class="strategy-item" id="item-bonds">
+                <div class="strategy-item-title">
+                    <a href="#">Bonds</a>
+                    <span class="pct-badge">50%</span>
+                </div>
+                <div class="strategy-item-desc">
+                    Bonds are offered by most brokerage platforms. A bond is a fixed-income investment product where individuals lend money to a government or company at a specified interest rate for a predetermined period. The entity repays individuals with interest in addition to the original face value of the bond.
+                </div>
+                <div class="strategy-item-desc mt-2">
+                    Bonds are used by companies, municipalities, states, and sovereign governments to finance projects and operations.
+                </div>
+                <div class="strategy-item-desc mt-2">
+                    Owners of bonds are debtholders, or creditors, of the issuer. Bond details include the end date when the principal of the loan is due to be paid to the bond owner, and they usually include the terms for variable or fixed interest payments made by the borrower.
+                </div>
+            </div>
+
+            <hr class="strategy-divider">
+
+            <!-- Balanced Fund -->
+            <div class="strategy-item" id="item-balanced">
+                <div class="strategy-item-title">
+                    <a href="#">Balanced Fund</a>
+                    <span class="pct-badge">50%</span>
+                </div>
+                <div class="strategy-item-desc">
+                    A balanced fund is a mutual fund made up of both stocks and bonds expressed as a fixed percentage. The investment objective is to achieve a mixture of growth and income. For instance, balanced funds typically have a fixed asset allocation of 70% stocks and 30% bonds. Bonds are debt instruments that usually pay a stable, fixed rate of return. Balanced mutual funds are geared toward investors with low risk tolerance who are looking for a mixture of safety, income, and modest capital appreciation.
+                </div>
+            </div>
+
+            <hr class="strategy-divider">
+
+            <!-- Other Strategies -->
+            <div class="other-strategies">
+                Other investment strategies:
+                <a href="#">Stock</a>,
+                <a href="#">Commodities</a>,
+                <a href="#">ETFs</a>
+            </div>
+
+            <!-- Back Button -->
+            <div class="back-btn-wrap">
+                <button class="back-btn" onclick="history.back()">Back</button>
+            </div>
+        </div>
+
+        <div class="made-by">Made by Group 3 OCC2</div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
