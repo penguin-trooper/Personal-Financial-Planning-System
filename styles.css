@@ -453,6 +453,108 @@
             color: #281D59;
         }
 
-.moneta-card:hover .card-title {
-    color: #4E8D9C;
-}
+        .insight-card:hover .card-title {
+            color: #4E8D9C;
+        }
+
+        .badge-trend-up {
+            background-color: #28a745;
+            color: white;
+            font-size: 0.8rem;
+            padding: 0.3rem 0.6rem;
+            border-radius: 8px;
+        }
+
+        .badge-trend-down {
+            background-color: #dc3545;
+            color: white;
+            font-size: 0.8rem;
+            padding: 0.3rem 0.6rem;
+            border-radius: 8px;
+        }
+
+        .badge-trend-neutral {
+            background-color: #ffc107;
+            color: #281D59;
+            font-size: 0.8rem;
+            padding: 0.3rem 0.6rem;
+            border-radius: 8px;
+        }
+
+        .section-title {
+            color: #EDF6BD;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid #4E8D9C;
+            padding-left: 0.75rem;
+        }
+
+        .news-card {
+            background-color: rgba(217, 217, 217, 0.10);
+            border: 1px solid rgba(237, 246, 189, 0.2);
+            border-radius: 14px;
+            color: #EDF6BD;
+            padding: 1.2rem;
+            margin-bottom: 1rem;
+            transition: background-color 0.2s ease;
+        }
+
+        .news-card:hover {
+            background-color: rgba(217, 217, 217, 0.18);
+        }
+
+        .news-card .news-title {
+            font-weight: 600;
+            color: #EDF6BD;
+            margin-bottom: 0.3rem;
+        }
+
+        .news-card .news-meta {
+            font-size: 0.82rem;
+            opacity: 0.65;
+        }
+
+        .ticker-bar {
+            background-color: #0f1a2e;
+            padding: 0.6rem 0;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        .ticker-content {
+            display: inline-block;
+            animation: ticker 30s linear infinite;
+        }
+
+        .ticker-item {
+            display: inline-block;
+            margin-right: 3rem;
+            color: #EDF6BD;
+            font-size: 0.9rem;
+        }
+
+        .ticker-item .ticker-up { color: #28a745; }
+        .ticker-item .ticker-down { color: #dc3545; }
+
+        @keyframes ticker {
+            0%   { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        .filter-btn {
+            background-color: transparent;
+            border: 1px solid rgba(237,246,189,0.4);
+            color: #EDF6BD;
+            border-radius: 20px;
+            padding: 0.3rem 1rem;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+            font-size: 0.88rem;
+            transition: all 0.2s ease;
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background-color: #4E8D9C;
+            border-color: #4E8D9C;
+            color: white;
+        }
