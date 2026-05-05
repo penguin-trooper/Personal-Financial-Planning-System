@@ -239,3 +239,61 @@
 @keyframes fadeUp {
     to { opacity: 1; transform: translateY(0); }
 }
+
+/* 
+Styling for home-page.html
+text-decoration -> To remove underlines
+overflow -> Removes weird overflow of rectangles
+hover -> To actively show the user that the card is currently being selected
+
+*/
+.home-background {
+
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center;
+    background-size: cover;
+    background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url("images/investment-home.jpg");
+
+}
+
+.moneta-card {
+    background-color: rgba(217, 217, 217, 0.85);
+    color: #273C2C;
+    border: none;
+    border-radius: 18px;
+    text-decoration: none; 
+    overflow: hidden; 
+    height: 100%;
+    min-height: 100px;
+
+    opacity: 0;
+    transform: translateY(18px);
+    animation: fadeUp 1s forwards;
+
+    transition: translate 0.35s ease, box-shadow 0.35s ease;
+}
+
+.moneta-card:hover {
+    translate: 0 -6px; 
+}
+
+.moneta-card .card-body {
+    padding: 1.5rem;
+    justify-content: center;
+} 
+
+.moneta-card .card-title {
+    color: #281D59;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.moneta-card .card-text {
+    color: #281D59;
+    text-decoration: none;
+}
+
+.moneta-card:hover .card-title {
+    color: #4E8D9C;
+}
