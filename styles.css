@@ -252,10 +252,8 @@ hover -> To actively show the user that the card is currently being selected
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-position: center;
-
     background-size: cover;
-
-    background-image:url("images/investment-home.jpg");
+    background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url("images/investment-home.jpg");
 
 }
 
@@ -266,15 +264,23 @@ hover -> To actively show the user that the card is currently being selected
     border-radius: 18px;
     text-decoration: none; 
     overflow: hidden; 
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    height: 100%;
+    min-height: 100px;
+
+    opacity: 0;
+    transform: translateY(18px);
+    animation: fadeUp 1s forwards;
+
+    transition: translate 0.35s ease, box-shadow 0.35s ease;
 }
 
 .moneta-card:hover {
-    transform: translateY(-6px); 
+    translate: 0 -6px; 
 }
 
 .moneta-card .card-body {
     padding: 1.5rem;
+    justify-content: center;
 } 
 
 .moneta-card .card-title {
