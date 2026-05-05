@@ -1,61 +1,241 @@
-.moneta-section {
- background-color: #37392E;
- color: #edf6bd;
+:root {
+    ---army-green: #37392E;
+    --yellow: #EDF6BD;
+    --dark-green: #273C2C;
+    --dark-blue: #281D59;
+    --light-blue: #4E8D9C;
+    --light-green: #85C69B;
+    --gray-white: #D9D9D9;
+    --font-title: 'Alegreya Sans SC', sans-serif;
+    --font-body: 'Roboto Flex', sans-serif;
 }
 
-.moneta-section-text{
-    color: #edf6bd;
+/* Navbar */
+.navbar-brand{
+    font-family: var(--font-title);
+    font-weight: bold;
+    font-size: 1.5rem;
+    letter-spacing: 0.05em;
 }
 
-.moneta-main-text{
-    color: #273C2C;
+.moneta-section { background-color: #37392E; }
+.moneta-section-text { 
+    color: #EDF6BD !important;
+    font-family: var(--font-body);
+    font-weight: bold;
 }
 
-.moneta-welcome {
-    color: #EDF6BD;
+.navbar-nav .nav-link {
+    transition: background-color 0.3s ease, color 0.3s ease, padding 0.3s ease;
+    border-radius: 20px;
+    font-family: var(--font-body);
 }
 
-.moneta-background {
+.nav-link.active, .nav-link:focus { 
+    background-color: #EDF6BD !important; 
+    color: #37392E !important; 
+    border-radius: 20px;
+    padding-left: 14px !important;
+    padding-right: 14px !important;
+}
 
+.nav-link:hover {
+    background-color: var(--yellow);
+    color: var(---army-green) !important;
+    border-radius: 20px;
+}
+
+/* Profile icon circle */
+.profile-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: var(--gray-white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Hide default dropdown arrow on profile toggle */
+.dropdown-toggle::after {
+    display: none;
+}
+
+/* Dropdown menu styling */
+.moneta-dropdown {
+    background-color: var(--dark-green);
+    border: 1px solid var(---army-green);
+    border-radius: 10px;
+    min-width: 180px;
+    padding: 6px;
+}
+
+.moneta-dropdown .dropdown-item {
+    color: var(--gray-white);
+    border-radius: 6px;
+    padding: 8px 12px;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+}
+
+.moneta-dropdown .dropdown-item:hover {
+    background-color: var(---army-green);
+    color: #fff;
+}
+
+.moneta-dropdown .dropdown-divider {
+    border-color: var(---army-green);
+    margin: 4px 0;
+}
+
+/* Page Background */
+.strategy-background {
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-position: center;
-
     background-size: cover;
-
-    background-image:url("images/investment-home.jpg");
-
+    background-image:url("images/investment_goals.png");
 }
 
-.moneta-card {
-    background-color: rgba(217, 217, 217, 0.85);
-    color: #273C2C;
-    border: none;
-    border-radius: 18px;
-    text-decoration: none; /* for no underline*/
-    overflow: hidden; /* removes weird overflow at the rectangle*/
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+/* Card */
+.strategy-card {
+    border-radius: 12px;
+    padding: 32px 36px 28px;
+    /*box-shadow: 0 8px 32px rgba(0,0,0,0.35);*/
 }
 
-.moneta-card:hover {
-    transform: translateY(-6px); /*moves it up by 6px to indicate selection*/
+/* Title */
+.strategy-title {
+    font-family: var(--font-title);
+    font-size: 3rem;
+    font-weight: 900;
+    letter-spacing: 0.01em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    color: var(--dark-green);
 }
 
-.moneta-card .card-body {
-    padding: 1.5rem;
-} /*padding for text*/
+.strategy-duration {
+    font-size: 0.95rem;
+    font-weight: 500;
+    margin-bottom: 10px;
+}
 
-.moneta-card .card-title {
-    color: #281D59;
+.risk-badge {
+    display: inline-block;
+    background: var(--light-blue);
+    color: var(--gray-white);
+    font-family: var(--font-body);
+    font-size: 0.90rem;
+    font-weight: 500;
+    border-radius: 20px;
+    padding: 3px 14px;
+    margin-bottom: 22px;
+}
+
+/* ── Section Heading ── */
+.section-heading {
+    font-size: 1.3rem;
     font-weight: 700;
-    text-decoration: none;
+    margin-bottom: 10px;
+    color: var(--card-text);
 }
 
-.moneta-card .card-text {
-    color: #281D59;
-    text-decoration: none;
+/* ── Strategy Item ── */
+.strategy-item {
+    margin-bottom: 24px;
 }
 
-.moneta-card:hover .card-title {
-    color: #4E8D9C;
+.strategy-item-title {
+    font-family: var(--font-title);
+    font-size: 1.18rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+}
+
+.strategy-item-title a {
+    color: var(--dark-blue);
+    font-size: 1.8rem;
+    font-family: var(--font-title);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+.pct-badge {
+    background: var(--light-blue);
+    color: var(--gray-white);
+    font-family: var(--font-title);
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 20px;
+    padding: 2px 10px;
+    letter-spacing: 0.02em;
+}
+
+.strategy-item-desc {
+    font-size: 0.875rem;
+    font-family: var(--font-body);
+    line-height: 1.6;
+    color: var(--dark-green);
+}
+
+/* ── Divider ── */
+.strategy-divider {
+    border: none;
+    border-top: 1.5px solid var(--divider);
+    margin: 20px 0;
+}
+
+/* ── Other Strategies ── */
+.other-strategies {
+    font-size: 0.87rem;
+    margin-top: 18px;
+}
+
+.other-strategies a {
+    color: var(--dark-green);
+    text-decoration: underline;
+    margin-right: 4px;
+}
+
+/* ── Back Button ── */
+.back-btn-wrap {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 18px;
+}
+
+.back-btn {
+    background: var(--dark-green);
+    color: var(--gray-white);
+    border: none;
+    border-radius: 6px;
+    padding: 7px 22px;
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: opacity 0.18s;
+}
+
+.back-btn:hover { opacity: 0.8; }
+
+/* Scroll Reveal */
+.strategy-item {
+    opacity: 0;
+    transform: translateY(18px);
+    animation: fadeUp 0.45s forwards;
+}
+.strategy-item:nth-child(1) { animation-delay: 0.05s; }
+.strategy-item:nth-child(2) { animation-delay: 0.18s; }
+.strategy-item:nth-child(3) { animation-delay: 0.31s; }
+
+@keyframes fadeUp {
+    to { opacity: 1; transform: translateY(0); }
 }
