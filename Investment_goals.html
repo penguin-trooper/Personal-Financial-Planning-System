@@ -1,0 +1,1210 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Investment Goals</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Nunito:wght@400;600;700;800&display=swap"
+        rel="stylesheet" />
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --nav-bg: #2e3129;
+            --accent-teal: #3da89a;
+            --accent-green: #5dc890;
+            --yellow-bg: #f4f5c8;
+            --dark-blue: #1a2a5e;
+            --dark-green: #2e3a1e;
+            --card-dark: #2e4a2e;
+            --bar-track: #c8dbb5;
+            --text-muted: #c8dba0;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: linear-gradient(135deg, #3a4a3a 0%, #8fa89a 40%, #b0c4b8 70%, #a0b8c0 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ── NAV ── */
+        nav {
+            background: var(--nav-bg);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 28px;
+            height: 64px;
+            position: relative;
+            z-index: 100;
+        }
+
+        .nav-logout {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #fff;
+            font-weight: 700;
+            font-size: 15px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 600;
+            padding: 7px 18px;
+            border-radius: 20px;
+            transition: background 0.2s;
+        }
+
+        .nav-links a.active {
+            background: var(--yellow-bg);
+            color: var(--dark-blue);
+        }
+
+        .nav-links a:hover:not(.active) {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-user {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #fff;
+            font-weight: 700;
+            font-size: 16px;
+        }
+
+        .nav-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #e8e8e8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* ── MAIN ── */
+        main {
+            flex: 1;
+            padding: 40px 48px 32px;
+            display: flex;
+            flex-direction: column;
+            gap: 28px;
+            position: relative;
+        }
+
+        main::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='400' opacity='0.08'%3E%3Cpolyline points='0,350 80,280 160,310 240,200 320,230 400,120 480,150 560,60 600,80' stroke='%23ffffff' stroke-width='2.5' fill='none'/%3E%3C/svg%3E");
+            background-position: center bottom;
+            background-repeat: no-repeat;
+            background-size: cover;
+            pointer-events: none;
+        }
+
+        h1 {
+            font-family: 'Cinzel', serif;
+            font-size: 34px;
+            font-weight: 700;
+            color: #fff;
+            text-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ── CONTENT LAYOUT ── */
+        .content {
+            display: flex;
+            gap: 28px;
+            flex-wrap: wrap;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ── LEFT CARDS ── */
+        .left {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            flex: 0 0 380px;
+        }
+
+        .info-card {
+            background: rgba(46, 74, 46, 0.88);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(200, 219, 160, 0.2);
+            border-radius: 16px;
+            padding: 20px 22px 22px;
+            position: relative;
+            color: #fff;
+            transition: box-shadow 0.2s;
+        }
+
+        .info-card:hover {
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.18);
+        }
+
+        .info-card label {
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .info-card .value {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--text-muted);
+            line-height: 1.2;
+        }
+
+        /* Edit button (pen) */
+        .edit-btn {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: rgba(200, 219, 160, 0.15);
+            border: 1px solid rgba(200, 219, 160, 0.3);
+            border-radius: 8px;
+            cursor: pointer;
+            color: var(--text-muted);
+            font-size: 16px;
+            padding: 5px 8px;
+            transition: background 0.2s, color 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .edit-btn:hover {
+            background: rgba(200, 219, 160, 0.3);
+            color: #fff;
+        }
+
+        /* ── RIGHT CARD ── */
+        .right {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .progress-card {
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(12px);
+            border: 1.5px solid rgba(255, 255, 255, 0.5);
+            border-radius: 20px;
+            padding: 28px 32px;
+        }
+
+        .progress-card h2 {
+            font-family: 'Cinzel', serif;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--dark-blue);
+            margin-bottom: 6px;
+        }
+
+        .goal-name-tag {
+            display: inline-block;
+            background: var(--accent-green);
+            color: var(--dark-blue);
+            font-weight: 700;
+            font-size: 12px;
+            padding: 4px 16px;
+            border-radius: 20px;
+            margin-bottom: 16px;
+            font-family: 'Cinzel', serif;
+            letter-spacing: 0.5px;
+        }
+
+        .goal-amount-display {
+            font-size: 38px;
+            font-weight: 800;
+            color: var(--dark-blue);
+            margin-bottom: 12px;
+            line-height: 1;
+        }
+
+        .goal-amount-display span {
+            font-size: 22px;
+            font-weight: 600;
+            color: #5a6a8a;
+        }
+
+        .progress-bar-bg {
+            height: 14px;
+            border-radius: 7px;
+            background: var(--bar-track);
+            overflow: hidden;
+            margin-bottom: 6px;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            border-radius: 7px;
+            background: linear-gradient(90deg, var(--accent-teal), var(--accent-green));
+            width: 0%;
+            transition: width 0.6s cubic-bezier(.4, 0, .2, 1);
+        }
+
+        .progress-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px;
+        }
+
+        .progress-pct {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--dark-blue);
+        }
+
+        .progress-remaining {
+            font-size: 13px;
+            color: #6a7a9a;
+            font-weight: 600;
+        }
+
+        .monthly {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--dark-green);
+            margin-bottom: 20px;
+            padding: 10px 14px;
+            background: var(--yellow-bg);
+            border-radius: 10px;
+        }
+
+        .fund-btn {
+            background: var(--accent-teal);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            padding: 12px 36px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.1s;
+            font-family: 'Nunito', sans-serif;
+        }
+
+        .fund-btn:hover {
+            background: #2e9086;
+            transform: scale(1.03);
+        }
+
+        .btn-row {
+            display: flex;
+            gap: 10px;
+        }
+
+        .reset-btn {
+            background: #f0f0f0;
+            color: #555;
+            border: none;
+            border-radius: 10px;
+            padding: 12px 20px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s;
+            font-family: 'Nunito', sans-serif;
+        }
+
+        .reset-btn:hover {
+            background: #e05050;
+            color: #fff;
+        }
+
+        /* ── BACK ── */
+        .back-wrap {
+            display: flex;
+            justify-content: flex-end;
+            position: relative;
+            z-index: 1;
+        }
+
+        .back-btn {
+            background: var(--dark-green);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            padding: 12px 40px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s;
+            font-family: 'Nunito', sans-serif;
+        }
+
+        .back-btn:hover {
+            background: #1a2a10;
+        }
+
+        /* ── FOOTER ── */
+        footer {
+            text-align: center;
+            font-size: 13px;
+            font-weight: 600;
+            padding: 14px 0 18px;
+            background: var(--nav-bg);
+            color: #aaa;
+        }
+
+        /* ══════════════════════════════════════
+           MODAL SHARED BASE
+        ══════════════════════════════════════ */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.45);
+            backdrop-filter: blur(3px);
+            z-index: 1000;
+            align-items: flex-start;
+            justify-content: center;
+            overflow-y: auto;
+            padding: 24px 16px;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-box {
+            background: #fff;
+            border-radius: 20px;
+            padding: 32px 36px;
+            width: 100%;
+            position: relative;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+            animation: modalIn 0.22s cubic-bezier(.4, 0, .2, 1);
+            margin: auto;
+        }
+
+        @keyframes modalIn {
+            from {
+                opacity: 0;
+                transform: translateY(18px) scale(0.97);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 14px;
+            right: 16px;
+            background: #f0f0f0;
+            border: none;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            font-size: 18px;
+            line-height: 1;
+            cursor: pointer;
+            color: #555;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.15s;
+        }
+
+        .modal-close:hover {
+            background: #e0e0e0;
+        }
+
+        .modal-title {
+            font-family: 'Cinzel', serif;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--dark-blue);
+            margin-bottom: 6px;
+        }
+
+        .modal-subtitle {
+            font-size: 13px;
+            color: #6a7a9a;
+            margin-bottom: 22px;
+            font-weight: 600;
+        }
+
+        /* ── FUND MODAL ── */
+        #fundModal .modal-box {
+            max-width: 400px;
+        }
+
+        .fund-input-wrap {
+            margin-bottom: 20px;
+        }
+
+        .fund-input-wrap label {
+            display: block;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #5a6a8a;
+            margin-bottom: 8px;
+        }
+
+        .fund-input-wrap input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 20px;
+            font-weight: 800;
+            font-family: 'Nunito', sans-serif;
+            color: var(--dark-blue);
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .fund-input-wrap input:focus {
+            border-color: var(--accent-teal);
+        }
+
+        .fund-modal-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn-save {
+            flex: 1;
+            background: var(--accent-teal);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            padding: 12px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: 'Nunito', sans-serif;
+            transition: background 0.2s;
+        }
+
+        .btn-save:hover {
+            background: #2e9086;
+        }
+
+        .btn-cancel {
+            flex: 1;
+            background: #f0f0f0;
+            color: #444;
+            border: none;
+            border-radius: 10px;
+            padding: 12px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: 'Nunito', sans-serif;
+            transition: background 0.2s;
+        }
+
+        .btn-cancel:hover {
+            background: #e0e0e0;
+        }
+
+        /* ── GOAL SELECTOR MODAL ── */
+        #goalModal .modal-box {
+            max-width: 480px;
+        }
+
+        .goal-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .goal-option {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 18px;
+            border-radius: 12px;
+            border: 2px solid #e8e8e8;
+            cursor: pointer;
+            transition: border-color 0.15s, background 0.15s;
+            background: #fafafa;
+        }
+
+        .goal-option:hover {
+            border-color: var(--accent-teal);
+            background: #f0faf9;
+        }
+
+        .goal-option.selected {
+            border-color: var(--accent-teal);
+            background: #e6f7f5;
+        }
+
+        .goal-option-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .goal-option-info {
+            flex: 1;
+        }
+
+        .goal-option-name {
+            font-weight: 800;
+            font-size: 15px;
+            color: var(--dark-blue);
+        }
+
+        .goal-option-meta {
+            font-size: 12px;
+            color: #6a7a9a;
+            font-weight: 600;
+            margin-top: 2px;
+        }
+
+        .goal-option-check {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            border: 2px solid #ccc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: border-color 0.15s, background 0.15s;
+        }
+
+        .goal-option.selected .goal-option-check {
+            border-color: var(--accent-teal);
+            background: var(--accent-teal);
+        }
+
+        .goal-option.selected .goal-option-check::after {
+            content: '✓';
+            color: #fff;
+            font-size: 12px;
+            font-weight: 900;
+        }
+
+        .goal-modal-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .divider-label {
+            text-align: center;
+            font-size: 12px;
+            color: #aaa;
+            font-weight: 700;
+            letter-spacing: 1px;
+            margin: 4px 0 10px;
+            text-transform: uppercase;
+        }
+
+        /* delete button for user-added goals */
+        .goal-option-delete {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #ccc;
+            font-size: 18px;
+            line-height: 1;
+            padding: 4px 6px;
+            border-radius: 6px;
+            flex-shrink: 0;
+            transition: color 0.15s, background 0.15s;
+            margin-left: 4px;
+        }
+
+        .goal-option-delete:hover {
+            color: #e05050;
+            background: #fff0f0;
+        }
+
+        /* ── ADD CUSTOM GOAL BUTTON ── */
+        .add-goal-btn {
+            width: 100%;
+            padding: 12px;
+            margin-top: 4px;
+            background: none;
+            border: 2px dashed #c8dbb5;
+            border-radius: 12px;
+            cursor: pointer;
+            color: #3da89a;
+            font-weight: 700;
+            font-size: 14px;
+            font-family: 'Nunito', sans-serif;
+            transition: border-color 0.2s, background 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .add-goal-btn:hover {
+            border-color: #3da89a;
+            background: #f0faf9;
+        }
+
+        /* ── GOAL FORM MODAL ── */
+        #goalFormModal .modal-box {
+            max-width: 420px;
+        }
+
+        .form-field {
+            margin-bottom: 18px;
+        }
+
+        .form-field label {
+            display: block;
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #5a6a8a;
+            margin-bottom: 7px;
+        }
+
+        .form-field input[type="text"],
+        .form-field input[type="number"] {
+            width: 100%;
+            padding: 11px 14px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 700;
+            font-family: 'Nunito', sans-serif;
+            color: #1a2a5e;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .form-field input:focus {
+            border-color: #3da89a;
+        }
+
+        .duration-row {
+            display: flex;
+            gap: 10px;
+        }
+
+        .duration-row input[type="number"] {
+            flex: 1;
+        }
+
+        .unit-toggle {
+            display: flex;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .unit-toggle button {
+            flex: 1;
+            padding: 0 14px;
+            border: none;
+            background: #fff;
+            font-size: 13px;
+            font-weight: 700;
+            font-family: 'Nunito', sans-serif;
+            color: #888;
+            cursor: pointer;
+            transition: background 0.15s, color 0.15s;
+        }
+
+        .unit-toggle button.active {
+            background: #3da89a;
+            color: #fff;
+        }
+
+        @media (max-width: 640px) {
+            main {
+                padding: 24px 16px 20px;
+            }
+
+            .left {
+                flex: none;
+                width: 100%;
+            }
+
+            h1 {
+                font-size: 26px;
+            }
+
+            .goal-amount-display {
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAV -->
+    <nav>
+        <a href="home-page.html" class="nav-logout">
+            Log Out
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                <polyline points="16 17 21 12 16 7" />
+                <line x1="21" y1="12" x2="9" y2="12" />
+            </svg>
+        </a>
+        <ul class="nav-links">
+            <li><a href="home-page.html">Home</a></li>
+            <li><a href="Financial_planner.html" class="active">Financial Planner</a></li>
+            <li><a href="#">ROI Calculator</a></li>
+            <li><a href="#">Market Insights</a></li>
+        </ul>
+        <div class="nav-user">
+            <span>User Name</span>
+            <div class="nav-avatar">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#555" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                    <circle cx="12" cy="7" r="4" />
+                </svg>
+            </div>
+        </div>
+    </nav>
+
+    <!-- MAIN -->
+    <main>
+        <h1>Investment Goals</h1>
+
+        <div class="content">
+
+            <!-- LEFT: Goal detail cards -->
+            <div class="left">
+
+                <div class="info-card">
+                    <label>Your Goal</label>
+                    <div class="value" id="display-goal">Education Funds</div>
+                    <!-- Pen button opens goal selector -->
+                    <button class="edit-btn" onclick="openGoalModal()" title="Change goal">✎</button>
+                </div>
+
+                <div class="info-card">
+                    <label>Target Amount</label>
+                    <div class="value" id="display-target">RM 20,000</div>
+                </div>
+
+                <div class="info-card">
+                    <label>Duration</label>
+                    <div class="value" id="display-duration">4 years</div>
+                </div>
+
+            </div>
+
+            <!-- RIGHT: Progress card -->
+            <div class="right">
+                <div class="progress-card">
+                    <h2>Progress</h2>
+                    <div class="goal-name-tag" id="progress-goal-tag">Education Funds</div>
+
+                    <div class="goal-amount-display">
+                        <span id="current-amt-display">RM 10,000</span>
+                        <span id="target-amt-display">&nbsp;/ RM 20,000</span>
+                    </div>
+
+                    <div class="progress-bar-bg">
+                        <div class="progress-bar-fill" id="progressBar"></div>
+                    </div>
+                    <div class="progress-meta">
+                        <span class="progress-pct" id="pct-label">50%</span>
+                        <span class="progress-remaining" id="remaining-label">RM 10,000 remaining</span>
+                    </div>
+
+                    <div class="monthly" id="monthly-label">RM 416.67 / month</div>
+
+                    <div class="btn-row">
+                        <button class="fund-btn" onclick="openFundModal()">Fund</button>
+                        <button class="reset-btn" onclick="resetGoal()" title="Reset progress to zero">Reset</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Back -->
+        <div class="back-wrap">
+            <button class="back-btn" onclick="history.back()">Back</button>
+        </div>
+    </main>
+
+    <footer>Made by Group 3 OCC2</footer>
+
+    <!-- ══ FUND MODAL ══ -->
+    <div class="modal-overlay" id="fundModal">
+        <div class="modal-box">
+            <button class="modal-close" onclick="closeFundModal()">✕</button>
+            <div class="modal-title">Add Funds</div>
+            <div class="modal-subtitle">Enter the amount you want to add to your goal.</div>
+            <div class="fund-input-wrap">
+                <label>Amount (RM)</label>
+                <input type="number" id="fundInput" placeholder="e.g. 500" min="1" />
+            </div>
+            <div class="fund-modal-actions">
+                <button class="btn-save" onclick="saveFund()">Save</button>
+                <button class="btn-cancel" onclick="closeFundModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══ GOAL SELECTOR MODAL ══ -->
+    <div class="modal-overlay" id="goalModal">
+        <div class="modal-box">
+            <button class="modal-close" onclick="closeGoalModal()">✕</button>
+            <div class="modal-title">Change Goal</div>
+            <div class="modal-subtitle">Select a saved goal or add a new one.</div>
+
+            <div class="goal-list" id="goalList">
+                <!-- Populated by JS -->
+            </div>
+
+            <!-- Add custom goal button -->
+            <button class="add-goal-btn" onclick="openGoalFormModal()">
+                <span style="font-size:18px;">＋</span> Add Custom Goal
+            </button>
+
+            <div class="goal-modal-actions" style="margin-top:16px;">
+                <button class="btn-save" onclick="applyGoal()">Apply</button>
+                <button class="btn-cancel" onclick="closeGoalModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══ GOAL FORM MODAL (Add Custom Goal) ══ -->
+    <div class="modal-overlay" id="goalFormModal">
+        <div class="modal-box">
+            <button class="modal-close" onclick="closeGoalFormModal()">✕</button>
+            <div class="modal-title">New Goal</div>
+            <div class="modal-subtitle">Fill in your custom goal details.</div>
+
+            <div class="form-field">
+                <label>Goal Name</label>
+                <input type="text" id="formGoalName" placeholder="e.g. Car Purchase" maxlength="40" />
+            </div>
+            <div class="form-field">
+                <label>Target Amount (RM)</label>
+                <input type="number" id="formGoalTarget" placeholder="e.g. 25000" min="1" />
+            </div>
+            <div class="form-field">
+                <label>Savings Duration</label>
+                <div class="duration-row">
+                    <input type="number" id="formGoalDuration" placeholder="e.g. 3" min="1" />
+                    <div class="unit-toggle">
+                        <button id="unitYears" class="active" onclick="setUnit('years')">Years</button>
+                        <button id="unitMonths" onclick="setUnit('months')">Months</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="fund-modal-actions">
+                <button class="btn-save" onclick="saveCustomGoal()">Save</button>
+                <button class="btn-cancel" onclick="closeGoalFormModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        /* ─────────────── DATA ─────────────── */
+        const PRESET_COUNT = 5;
+        const GOALS = [
+            { name: 'Education Funds', target: 20000, duration: '4 years', icon: '🎓', color: '#e6f0ff' },
+            { name: 'Emergency Fund', target: 15000, duration: '2 years', icon: '🛡️', color: '#fff5e6' },
+            { name: 'Home Purchase', target: 80000, duration: '10 years', icon: '🏠', color: '#e6ffe6' },
+            { name: 'Retirement Fund', target: 500000, duration: '30 years', icon: '🌅', color: '#fce6ff' },
+            { name: 'Travel Fund', target: 8000, duration: '1 year', icon: '✈️', color: '#e6f9ff' },
+        ];
+
+        // Restore custom goals from localStorage
+        try {
+            const saved = JSON.parse(localStorage.getItem('moneta_custom_goals') || '[]');
+            saved.forEach(g => GOALS.push(g));
+        } catch (e) { }
+
+        // State — restore from localStorage if available
+        let state = (() => {
+            try {
+                const s = JSON.parse(localStorage.getItem('moneta_state') || 'null');
+                if (s && typeof s.goalIndex === 'number') {
+                    s.goalIndex = Math.min(s.goalIndex, GOALS.length - 1);
+                    // migrate old single-amount format
+                    if (!s.amounts) s.amounts = {};
+                    return s;
+                }
+            } catch (e) { }
+            return { goalIndex: 0, amounts: { 0: 10000 } };
+        })();
+
+        /* ─────────────── STORAGE HELPER ─────────────── */
+        function saveToStorage() {
+            try {
+                localStorage.setItem('moneta_state', JSON.stringify(state));
+                localStorage.setItem('moneta_custom_goals', JSON.stringify(GOALS.slice(PRESET_COUNT)));
+            } catch (e) { }
+        }
+
+        /* ─────────────── HELPERS ─────────────── */
+        function fmt(n) {
+            return 'RM ' + n.toLocaleString('en-MY', { minimumFractionDigits: 0, maximumFractionDigits: 2 });
+        }
+
+        function updateUI() {
+            const g = GOALS[state.goalIndex];
+            const target = g.target;
+            const current = Math.min(state.amounts[state.goalIndex] || 0, target);
+            const pct = Math.round((current / target) * 100);
+            const remaining = target - current;
+
+            // Left cards
+            document.getElementById('display-goal').textContent = g.name;
+            document.getElementById('display-target').textContent = fmt(target);
+            document.getElementById('display-duration').textContent = g.duration;
+
+            // Right progress card
+            document.getElementById('progress-goal-tag').textContent = g.name;
+            document.getElementById('current-amt-display').textContent = fmt(current);
+            document.getElementById('target-amt-display').textContent = ' / ' + fmt(target);
+            document.getElementById('pct-label').textContent = pct + '%';
+            document.getElementById('remaining-label').textContent = fmt(remaining) + ' remaining';
+
+            // Monthly calc: parse duration correctly for both years and months
+            const durParts = g.duration.split(' ');
+            const durNum = parseFloat(durParts[0]);
+            const isMonths = durParts[1] && durParts[1].startsWith('month');
+            const months = isMonths ? durNum : durNum * 12;
+            const monthlyNeeded = (remaining > 0 && months > 0) ? (remaining / months) : 0;
+            document.getElementById('monthly-label').textContent =
+                fmt(+monthlyNeeded.toFixed(2)) + ' / month';
+
+            // Animate progress bar
+            setTimeout(() => {
+                document.getElementById('progressBar').style.width = pct + '%';
+            }, 80);
+        }
+
+        /* ─────────────── FUND MODAL ─────────────── */
+        function openFundModal() {
+            document.getElementById('fundInput').value = '';
+            document.getElementById('fundModal').classList.add('active');
+            setTimeout(() => document.getElementById('fundInput').focus(), 100);
+        }
+        function closeFundModal() {
+            document.getElementById('fundModal').classList.remove('active');
+        }
+        function saveFund() {
+            const val = parseFloat(document.getElementById('fundInput').value);
+            if (!val || val <= 0) {
+                document.getElementById('fundInput').style.borderColor = '#e05050';
+                return;
+            }
+            const idx = state.goalIndex;
+            state.amounts[idx] = (state.amounts[idx] || 0) + val;
+            saveToStorage();
+            closeFundModal();
+            updateUI();
+        }
+
+        function resetGoal() {
+            state.amounts[state.goalIndex] = 0;
+            document.getElementById('progressBar').style.width = '0%';
+            saveToStorage();
+            updateUI();
+        }
+
+        /* ─────────────── GOAL MODAL ─────────────── */
+        let selectedGoalIndex = 0;
+
+        function buildGoalList() {
+            const container = document.getElementById('goalList');
+            container.innerHTML = '';
+            GOALS.forEach((g, i) => {
+                const el = document.createElement('div');
+                el.className = 'goal-option' + (i === selectedGoalIndex ? ' selected' : '');
+
+                const isCustom = i >= 5; // first 5 are presets; user-added start at index 5
+                el.innerHTML = `
+                    <div class="goal-option-icon" style="background:${g.color}">${g.icon}</div>
+                    <div class="goal-option-info">
+                        <div class="goal-option-name">${g.name}</div>
+                        <div class="goal-option-meta">Target: ${fmt(g.target)} &nbsp;·&nbsp; ${g.duration}</div>
+                    </div>
+                    <div class="goal-option-check"></div>
+                    ${isCustom ? `<button class="goal-option-delete" title="Remove goal" data-idx="${i}">✕</button>` : ''}`;
+
+                el.onclick = () => {
+                    selectedGoalIndex = i;
+                    buildGoalList();
+                };
+
+                // Delete button: stop click propagating to the option row
+                if (isCustom) {
+                    const delBtn = el.querySelector('.goal-option-delete');
+                    delBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        deleteGoal(i);
+                    });
+                }
+
+                container.appendChild(el);
+            });
+        }
+
+        function deleteGoal(idx) {
+            GOALS.splice(idx, 1);
+
+            // Re-key amounts: shift all keys > idx down by 1
+            const newAmounts = {};
+            Object.keys(state.amounts).forEach(k => {
+                const ki = parseInt(k);
+                if (ki < idx) newAmounts[ki] = state.amounts[ki];
+                else if (ki > idx) newAmounts[ki - 1] = state.amounts[ki];
+                // ki === idx is deleted
+            });
+            state.amounts = newAmounts;
+
+            if (selectedGoalIndex >= GOALS.length) selectedGoalIndex = GOALS.length - 1;
+            else if (selectedGoalIndex > idx) selectedGoalIndex--;
+
+            if (state.goalIndex >= GOALS.length) state.goalIndex = GOALS.length - 1;
+            else if (state.goalIndex > idx) state.goalIndex--;
+
+            saveToStorage();
+            buildGoalList();
+        }
+
+
+        function openGoalModal() {
+            selectedGoalIndex = state.goalIndex;
+            buildGoalList();
+            document.getElementById('goalModal').classList.add('active');
+        }
+        function closeGoalModal() {
+            document.getElementById('goalModal').classList.remove('active');
+        }
+        function applyGoal() {
+            if (selectedGoalIndex !== state.goalIndex) {
+                state.goalIndex = selectedGoalIndex;
+                // do NOT reset amount — each goal keeps its own funded amount
+                document.getElementById('progressBar').style.width = '0%';
+            }
+            saveToStorage();
+            closeGoalModal();
+            updateUI();
+        }
+
+        /* ───────────────── GOAL FORM MODAL ───────────────── */
+        let durationUnit = 'years'; // 'years' or 'months'
+
+        function setUnit(unit) {
+            durationUnit = unit;
+            document.getElementById('unitYears').classList.toggle('active', unit === 'years');
+            document.getElementById('unitMonths').classList.toggle('active', unit === 'months');
+        }
+
+        function openGoalFormModal() {
+            // Clear form
+            document.getElementById('formGoalName').value = '';
+            document.getElementById('formGoalTarget').value = '';
+            document.getElementById('formGoalDuration').value = '';
+            setUnit('years');
+            // Hide goal selector, show form
+            document.getElementById('goalModal').classList.remove('active');
+            document.getElementById('goalFormModal').classList.add('active');
+            setTimeout(() => document.getElementById('formGoalName').focus(), 100);
+        }
+        function closeGoalFormModal() {
+            document.getElementById('goalFormModal').classList.remove('active');
+            // Return to goal selector
+            document.getElementById('goalModal').classList.add('active');
+        }
+        function saveCustomGoal() {
+            const name = document.getElementById('formGoalName').value.trim();
+            const target = parseFloat(document.getElementById('formGoalTarget').value);
+            const durNum = parseFloat(document.getElementById('formGoalDuration').value);
+
+            // Validate
+            const nameEl = document.getElementById('formGoalName');
+            const tgtEl = document.getElementById('formGoalTarget');
+            const durEl = document.getElementById('formGoalDuration');
+            nameEl.style.borderColor = ''; tgtEl.style.borderColor = ''; durEl.style.borderColor = '';
+
+            let ok = true;
+            if (!name) { nameEl.style.borderColor = '#e05050'; ok = false; }
+            if (!target || target <= 0) { tgtEl.style.borderColor = '#e05050'; ok = false; }
+            if (!durNum || durNum <= 0) { durEl.style.borderColor = '#e05050'; ok = false; }
+            if (!ok) return;
+
+            // Build duration string and push to GOALS array
+            const durStr = durationUnit === 'months'
+                ? (durNum === 1 ? '1 month' : durNum + ' months')
+                : (durNum === 1 ? '1 year' : durNum + ' years');
+
+            const ICONS = ['⭐', '💡', '🎯', '💼', '🚀', '🌟', '💎', '🏆'];
+            const COLORS = ['#fef9e7', '#eafaf1', '#eaf4fb', '#fdf2f8', '#f9ebea', '#e8f8f5', '#fdfefe', '#f0f0f0'];
+            const idx = GOALS.length % ICONS.length;
+            GOALS.push({ name, target, duration: durStr, icon: ICONS[idx], color: COLORS[idx] });
+
+            saveToStorage();
+
+            // Select the new goal and close
+            selectedGoalIndex = GOALS.length - 1;
+            document.getElementById('goalFormModal').classList.remove('active');
+            // Refresh and reopen goal selector
+            buildGoalList();
+            document.getElementById('goalModal').classList.add('active');
+        }
+
+        /* ───────────────── CLOSE ON BACKDROP ───────────────── */
+        document.getElementById('fundModal').addEventListener('click', function (e) {
+            if (e.target === this) closeFundModal();
+        });
+        document.getElementById('goalModal').addEventListener('click', function (e) {
+            if (e.target === this) closeGoalModal();
+        });
+
+        /* ─────────────── INIT ─────────────── */
+        window.addEventListener('load', updateUI);
+    </script>
+</body>
+
+</html>
