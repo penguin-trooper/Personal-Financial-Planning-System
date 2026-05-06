@@ -1,14 +1,13 @@
-@ -0,0 +1,500 @@
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Investment Strategy</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Investment Goals</title>
     <link
         href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Nunito:wght@400;600;700;800&display=swap"
-        rel="stylesheet">
+        rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <style>
@@ -27,7 +26,9 @@
             --yellow-bg: #f4f5c8;
             --dark-blue: #1a2a5e;
             --dark-green: #2e3a1e;
-            --tag-teal: #3da89a;
+            --card-dark: #2e4a2e;
+            --bar-track: #c8dbb5;
+            --text-muted: #c8dba0;
         }
 
         body {
@@ -135,11 +136,10 @@
         /* ── MAIN ── */
         main {
             flex: 1;
+            padding: 40px 48px 32px;
             display: flex;
             flex-direction: column;
-            align-items: center;
-            padding: 40px 24px 32px;
-            gap: 24px;
+            gap: 28px;
             position: relative;
         }
 
@@ -147,187 +147,234 @@
             content: '';
             position: absolute;
             inset: 0;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='400' opacity='0.10'%3E%3Cpolyline points='0,350 80,280 160,310 240,200 320,230 400,120 480,150 560,60 600,80' stroke='%23ffffff' stroke-width='2.5' fill='none'/%3E%3C/svg%3E");
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='400' opacity='0.08'%3E%3Cpolyline points='0,350 80,280 160,310 240,200 320,230 400,120 480,150 560,60 600,80' stroke='%23ffffff' stroke-width='2.5' fill='none'/%3E%3C/svg%3E");
             background-position: center bottom;
             background-repeat: no-repeat;
             background-size: cover;
             pointer-events: none;
         }
 
-        /* ── GLASS CARD ── */
-        .glass-card {
-            background: rgba(255, 255, 255, 0.22);
-            border: 1.5px solid rgba(255, 255, 255, 0.38);
-            border-radius: 20px;
-            backdrop-filter: blur(14px);
-            -webkit-backdrop-filter: blur(14px);
-            width: 100%;
-            max-width: 860px;
-            padding: 32px 36px;
+        h1 {
+            font-family: 'Cinzel', serif;
+            font-size: 34px;
+            font-weight: 700;
+            color: #fff;
+            text-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
             position: relative;
             z-index: 1;
         }
 
-        /* ── PAGE HEADER inside card ── */
-        .page-header {
+        /* ── CONTENT LAYOUT ── */
+        .content {
             display: flex;
-            align-items: flex-start;
-            justify-content: space-between;
+            gap: 28px;
             flex-wrap: wrap;
-            gap: 16px;
-            margin-bottom: 28px;
+            position: relative;
+            z-index: 1;
         }
 
-        .page-title-wrap h1 {
-            font-family: 'Cinzel', serif;
-            font-size: 28px;
-            font-weight: 700;
-            color: var(--dark-blue);
-            letter-spacing: 0.5px;
-            margin-bottom: 10px;
-        }
-
-        .meta-badges {
+        /* ── LEFT CARDS ── */
+        .left {
             display: flex;
-            align-items: center;
-            gap: 10px;
-            flex-wrap: wrap;
+            flex-direction: column;
+            gap: 14px;
+            flex: 0 0 380px;
         }
 
-        .duration-badge {
-            font-size: 14px;
-            font-weight: 700;
-            color: var(--dark-blue);
-            background: var(--yellow-bg);
-            border-radius: 20px;
-            padding: 6px 18px;
-        }
-
-        .risk-badge {
-            display: inline-block;
-            border: 2px solid var(--accent-teal);
-            color: var(--accent-teal);
-            font-weight: 700;
-            font-size: 13px;
-            padding: 6px 18px;
-            border-radius: 20px;
-        }
-
-        /* ── SECTION LABEL ── */
-        .section-label {
-            font-size: 11px;
-            font-weight: 800;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-            color: #5a7a6a;
-            margin-bottom: 16px;
-        }
-
-        /* ── STRATEGY ITEM ── */
-        .strategy-item {
-            background: rgba(255, 255, 255, 0.55);
-            border: 1px solid rgba(255, 255, 255, 0.6);
+        .info-card {
+            background: rgba(46, 74, 46, 0.88);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(200, 219, 160, 0.2);
             border-radius: 16px;
-            padding: 22px 24px;
-            margin-bottom: 14px;
-            transition: box-shadow 0.2s, transform 0.2s;
-        }
-
-        .strategy-item:hover {
-            box-shadow: 0 6px 24px rgba(0, 0, 0, 0.1);
-            transform: translateY(-2px);
-        }
-
-        .strategy-item-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 12px;
-        }
-
-        .strategy-item-name {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .strategy-item-name a {
-            font-family: 'Cinzel', serif;
-            font-size: 18px;
-            font-weight: 700;
-            color: var(--dark-blue);
-            text-decoration: none;
-            transition: color 0.2s;
-        }
-
-        .strategy-item-name a:hover {
-            color: var(--accent-teal);
-            text-decoration: underline;
-        }
-
-        .pct-badge {
-            background: var(--tag-teal);
+            padding: 20px 22px 22px;
+            position: relative;
             color: #fff;
-            font-weight: 800;
-            font-size: 13px;
-            padding: 4px 14px;
-            border-radius: 20px;
-            letter-spacing: 0.5px;
+            transition: box-shadow 0.2s;
         }
 
-        .strategy-item-desc {
-            font-size: 14px;
-            line-height: 1.7;
-            color: #3a4a3a;
+        .info-card:hover {
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.18);
+        }
+
+        .info-card label {
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            display: block;
             margin-bottom: 8px;
         }
 
-        .strategy-item-desc:last-child {
-            margin-bottom: 0;
+        .info-card .value {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--text-muted);
+            line-height: 1.2;
         }
 
-        /* ── OTHER STRATEGIES ── */
-        .other-wrap {
-            background: rgba(255, 255, 255, 0.45);
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            border-radius: 14px;
-            padding: 16px 20px;
+        /* Edit button (pen) */
+        .edit-btn {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: rgba(200, 219, 160, 0.15);
+            border: 1px solid rgba(200, 219, 160, 0.3);
+            border-radius: 8px;
+            cursor: pointer;
+            color: var(--text-muted);
+            font-size: 16px;
+            padding: 5px 8px;
+            transition: background 0.2s, color 0.2s;
             display: flex;
             align-items: center;
-            gap: 10px;
-            flex-wrap: wrap;
+            justify-content: center;
         }
 
-        .other-label {
-            font-size: 13px;
-            font-weight: 700;
-            color: #5a6a7a;
-        }
-
-        .other-tag {
-            display: inline-block;
-            background: #fff;
-            border: 1.5px solid var(--accent-teal);
-            color: var(--dark-blue);
-            font-weight: 700;
-            font-size: 13px;
-            padding: 5px 16px;
-            border-radius: 20px;
-            text-decoration: none;
-            transition: background 0.2s, color 0.2s;
-        }
-
-        .other-tag:hover {
-            background: var(--accent-teal);
+        .edit-btn:hover {
+            background: rgba(200, 219, 160, 0.3);
             color: #fff;
         }
 
-        /* ── BACK BUTTON ── */
-        .back-btn-wrap {
+        /* ── RIGHT CARD ── */
+        .right {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .progress-card {
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(12px);
+            border: 1.5px solid rgba(255, 255, 255, 0.5);
+            border-radius: 20px;
+            padding: 28px 32px;
+        }
+
+        .progress-card h2 {
+            font-family: 'Cinzel', serif;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--dark-blue);
+            margin-bottom: 6px;
+        }
+
+        .goal-name-tag {
+            display: inline-block;
+            background: var(--accent-green);
+            color: var(--dark-blue);
+            font-weight: 700;
+            font-size: 12px;
+            padding: 4px 16px;
+            border-radius: 20px;
+            margin-bottom: 16px;
+            font-family: 'Cinzel', serif;
+            letter-spacing: 0.5px;
+        }
+
+        .goal-amount-display {
+            font-size: 38px;
+            font-weight: 800;
+            color: var(--dark-blue);
+            margin-bottom: 12px;
+            line-height: 1;
+        }
+
+        .goal-amount-display span {
+            font-size: 22px;
+            font-weight: 600;
+            color: #5a6a8a;
+        }
+
+        .progress-bar-bg {
+            height: 14px;
+            border-radius: 7px;
+            background: var(--bar-track);
+            overflow: hidden;
+            margin-bottom: 6px;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            border-radius: 7px;
+            background: linear-gradient(90deg, var(--accent-teal), var(--accent-green));
+            width: 0%;
+            transition: width 0.6s cubic-bezier(.4, 0, .2, 1);
+        }
+
+        .progress-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px;
+        }
+
+        .progress-pct {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--dark-blue);
+        }
+
+        .progress-remaining {
+            font-size: 13px;
+            color: #6a7a9a;
+            font-weight: 600;
+        }
+
+        .monthly {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--dark-green);
+            margin-bottom: 20px;
+            padding: 10px 14px;
+            background: var(--yellow-bg);
+            border-radius: 10px;
+        }
+
+        .fund-btn {
+            background: var(--accent-teal);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            padding: 12px 36px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.1s;
+            font-family: 'Nunito', sans-serif;
+        }
+
+        .fund-btn:hover {
+            background: #2e9086;
+            transform: scale(1.03);
+        }
+
+        .btn-row {
+            display: flex;
+            gap: 10px;
+        }
+
+        .reset-btn {
+            background: #f0f0f0;
+            color: #555;
+            border: none;
+            border-radius: 10px;
+            padding: 12px 20px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s;
+            font-family: 'Nunito', sans-serif;
+        }
+
+        .reset-btn:hover {
+            background: #e05050;
+            color: #fff;
+        }
+
+        /* ── BACK ── */
+        .back-wrap {
             display: flex;
             justify-content: flex-end;
-            width: 100%;
-            max-width: 860px;
             position: relative;
             z-index: 1;
         }
@@ -355,22 +402,73 @@
             font-size: 13px;
             font-weight: 600;
             padding: 14px 0 18px;
-            color: rgba(0, 0, 0, 0.45);
-            position: relative;
-            z-index: 1;
         }
 
-        @media (max-width: 600px) {
-            .glass-card {
-                padding: 22px 18px;
-            }
+        /* ── BOOTSTRAP MODAL OVERRIDES ── */
+        .modal-content {
+            border-radius: 20px;
+            border: none;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+        }
 
+        .modal-header {
+            border-bottom: none;
+            padding: 24px 32px 8px;
+        }
+
+        .modal-body {
+            padding: 8px 32px 24px;
+        }
+
+        .modal-footer {
+            border-top: none;
+            padding: 0 32px 32px;
+        }
+
+        .modal-title {
+            font-family: 'Cinzel', serif;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--dark-blue);
+        }
+
+        .modal-subtitle {
+            font-size: 13px;
+            color: #6a7a9a;
+            margin-bottom: 22px;
+            font-weight: 600;
+        }
+
+        .unit-toggle button {
+            font-size: 13px;
+            font-weight: 700;
+            font-family: 'Nunito', sans-serif;
+            color: #888;
+            cursor: pointer;
+            transition: background 0.15s, color 0.15s;
+        }
+
+        .unit-toggle button.active {
+            background: #3da89a;
+            color: #fff;
+        }
+
+        @media (max-width: 640px) {
             main {
-                padding: 24px 12px 20px;
+                padding: 24px 16px 20px;
             }
 
-            .page-title-wrap h1 {
-                font-size: 22px;
+            .left {
+                flex: none;
+                width: 100%;
+            }
+
+            h1 {
+                font-size: 26px;
+            }
+
+            .goal-amount-display {
+                font-size: 28px;
             }
         }
     </style>
@@ -393,8 +491,8 @@
                     <li class="nav-item"><a class="nav-link" href="home-page.html">Home</a></li>
                     <li class="nav-item"><a class="nav-link active" href="Financial_planner.html">Financial Planner</a>
                     </li>
-                    <li class="nav-item"><a class="nav-link" href="roi-calculator.html">ROI Calculator</a></li>
-                    <li class="nav-item"><a class="nav-link" href="market-insight.html">Market Insights</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">ROI Calculator</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Market Insights</a></li>
                 </ul>
             </div>
             <div class="d-flex align-items-center gap-2">
@@ -418,83 +516,300 @@
 
     <!-- MAIN -->
     <main>
+        <h1>Investment Goals</h1>
 
-        <div class="glass-card">
+        <div class="content">
 
-            <!-- Header -->
-            <div class="page-header">
-                <div class="page-title-wrap">
-                    <h1>Investment Strategy</h1>
-                    <div class="meta-badges">
-                        <span class="duration-badge">Duration: 4 years</span>
-                        <span class="risk-badge">Moderate Risk</span>
-                    </div>
+            <!-- LEFT: Goal detail cards -->
+            <div class="left">
+
+                <div class="info-card">
+                    <label>Your Goal</label>
+                    <div class="value" id="display-goal">Education Funds</div>
+                    <!-- Pen button opens goal selector -->
+                    <button class="edit-btn" onclick="openGoalModal()" title="Change goal">✎</button>
                 </div>
+
+                <div class="info-card">
+                    <label>Target Amount</label>
+                    <div class="value" id="display-target">RM 20,000</div>
+                </div>
+
+                <div class="info-card">
+                    <label>Duration</label>
+                    <div class="value" id="display-duration">4 years</div>
+                </div>
+
             </div>
 
-            <!-- Section label -->
-            <div class="section-label">Recommended Strategy for You</div>
+            <!-- RIGHT: Progress card -->
+            <div class="right">
+                <div class="progress-card">
+                    <h2>Progress</h2>
+                    <div class="goal-name-tag" id="progress-goal-tag">Education Funds</div>
 
-            <!-- Bonds -->
-            <div class="strategy-item">
-                <div class="strategy-item-header">
-                    <div class="strategy-item-name">
-                        <a href="https://www.investopedia.com/terms/b/bond.asp" target="_blank">Bonds</a>
+                    <div class="goal-amount-display">
+                        <span id="current-amt-display">RM 10,000</span>
+                        <span id="target-amt-display">&nbsp;/ RM 20,000</span>
                     </div>
-                    <span class="pct-badge">50%</span>
-                </div>
-                <p class="strategy-item-desc">
-                    Bonds are offered by most brokerage platforms. A bond is a fixed-income investment product where
-                    individuals lend money to a government or company at a specified interest rate for a predetermined
-                    period. The entity repays individuals with interest in addition to the original face value of the
-                    bond.
-                </p>
-                <p class="strategy-item-desc">
-                    Bonds are used by companies, municipalities, states, and sovereign governments to finance projects
-                    and operations. Owners of bonds are debtholders, or creditors, of the issuer.
-                </p>
-            </div>
 
-            <!-- Balanced Fund -->
-            <div class="strategy-item">
-                <div class="strategy-item-header">
-                    <div class="strategy-item-name">
-                        <a href="https://www.investopedia.com/terms/b/balancedfund.asp" target="_blank">Balanced
-                            Fund</a>
+                    <div class="progress-bar-bg">
+                        <div class="progress-bar-fill" id="progressBar"></div>
                     </div>
-                    <span class="pct-badge">50%</span>
-                </div>
-                <p class="strategy-item-desc">
-                    A balanced fund is a mutual fund made up of both stocks and bonds expressed as a fixed percentage.
-                    The investment objective is to achieve a mixture of growth and income. For instance, balanced funds
-                    typically have a fixed asset allocation of 70% stocks and 30% bonds.
-                </p>
-                <p class="strategy-item-desc">
-                    Balanced mutual funds are geared toward investors with low risk tolerance who are looking for a
-                    mixture of safety, income, and modest capital appreciation.
-                </p>
-            </div>
+                    <div class="progress-meta">
+                        <span class="progress-pct" id="pct-label">50%</span>
+                        <span class="progress-remaining" id="remaining-label">RM 10,000 remaining</span>
+                    </div>
 
-            <!-- Other strategies -->
-            <div class="other-wrap">
-                <span class="other-label">Other strategies:</span>
-                <a class="other-tag" href="https://www.investopedia.com/terms/s/stock.asp" target="_blank">Stocks</a>
-                <a class="other-tag" href="https://www.investopedia.com/terms/c/commodity.asp"
-                    target="_blank">Commodities</a>
-                <a class="other-tag" href="https://www.investopedia.com/terms/e/etf.asp" target="_blank">ETFs</a>
+                    <div class="monthly" id="monthly-label">RM 416.67 / month</div>
+
+                    <div class="btn-row">
+                        <button class="fund-btn" onclick="openFundModal()">Fund</button>
+                        <button class="reset-btn" onclick="resetGoal()" title="Reset progress to zero">Reset</button>
+                    </div>
+                </div>
             </div>
 
         </div>
 
         <!-- Back -->
-        <div class="back-btn-wrap">
-            <button class="back-btn" onclick="history.back()">Back</button>
+        <div class="back-wrap mt-4">
+            <button class="back-btn btn btn-dark" onclick="history.back()">Back</button>
         </div>
-
     </main>
 
     <footer>Made by Group 3 OCC2</footer>
 
+    <!-- ══ FUND MODAL (Bootstrap Modal) ══ -->
+    <div class="modal fade" id="fundModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-title">Add Funds</div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="modal-subtitle">Enter the amount you want to add to your goal.</div>
+                    <div class="fund-input-wrap">
+                        <label>Amount (RM)</label>
+                        <input type="number" id="fundInput" placeholder="e.g. 500" min="1"
+                            class="form-control form-control-lg" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary flex-fill" data-bs-dismiss="modal">Cancel</button>
+                    <button class="btn btn-primary flex-fill" onclick="saveFund()">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══ GOAL SELECTOR MODAL (Bootstrap Modal) ══ -->
+    <div class="modal fade" id="goalModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-title">Change Goal</div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="modal-subtitle">Select a saved goal or add a new one.</div>
+                    <div class="goal-list list-group" id="goalList">
+                        <!-- Populated by JS -->
+                    </div>
+                    <button class="btn btn-outline-primary w-100 mt-3" onclick="openGoalFormModal()">
+                        ＋ Add Custom Goal
+                    </button>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary flex-fill" data-bs-dismiss="modal">Cancel</button>
+                    <button class="btn btn-primary flex-fill" onclick="applyGoal()">Apply</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══ GOAL FORM MODAL (Bootstrap Modal) ══ -->
+    <div class="modal fade" id="goalFormModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-title">New Goal</div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="modal-subtitle">Fill in your custom goal details.</div>
+                    <div class="form-field mb-3">
+                        <label>Goal Name</label>
+                        <input type="text" id="formGoalName" placeholder="e.g. Car Purchase" maxlength="40"
+                            class="form-control" />
+                    </div>
+                    <div class="form-field mb-3">
+                        <label>Target Amount (RM)</label>
+                        <input type="number" id="formGoalTarget" placeholder="e.g. 25000" min="1"
+                            class="form-control" />
+                    </div>
+                    <div class="form-field">
+                        <label>Savings Duration</label>
+                        <div class="duration-row d-flex gap-2">
+                            <input type="number" id="formGoalDuration" placeholder="e.g. 3" min="1"
+                                class="form-control" />
+                            <div class="btn-group unit-toggle">
+                                <button id="unitYears" class="btn btn-primary" onclick="setUnit('years')">Years</button>
+                                <button id="unitMonths" class="btn btn-outline-primary"
+                                    onclick="setUnit('months')">Months</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary flex-fill" data-bs-dismiss="modal">Cancel</button>
+                    <button class="btn btn-primary flex-fill" onclick="saveCustomGoal()">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        /* ─────────────── DATA ─────────────── */
+        const PRESET_COUNT = 5;
+        const GOALS = [
+            { name: 'Education Funds', target: 20000, duration: '4 years', icon: '🎓', color: '#e6f0ff' },
+            { name: 'Emergency Fund', target: 15000, duration: '2 years', icon: '🛡️', color: '#fff5e6' },
+            { name: 'Home Purchase', target: 80000, duration: '10 years', icon: '🏠', color: '#e6ffe6' },
+            { name: 'Retirement Fund', target: 500000, duration: '30 years', icon: '🌅', color: '#fce6ff' },
+            { name: 'Travel Fund', target: 8000, duration: '1 year', icon: '✈️', color: '#e6f9ff' },
+        ];
+
+        try {
+            const saved = JSON.parse(localStorage.getItem('moneta_custom_goals') || '[]');
+            saved.forEach(g => GOALS.push(g));
+        } catch (e) { }
+
+        let state = (() => {
+            try {
+                const s = JSON.parse(localStorage.getItem('moneta_state') || 'null');
+                if (s && typeof s.goalIndex === 'number') {
+                    s.goalIndex = Math.min(s.goalIndex, GOALS.length - 1);
+                    if (!s.amounts) s.amounts = {};
+                    return s;
+                }
+            } catch (e) { }
+            return { goalIndex: 0, amounts: { 0: 10000 } };
+        })();
+
+        function saveToStorage() {
+            try {
+                localStorage.setItem('moneta_state', JSON.stringify(state));
+                localStorage.setItem('moneta_custom_goals', JSON.stringify(GOALS.slice(PRESET_COUNT)));
+            } catch (e) { }
+        }
+
+        function fmt(n) {
+            return 'RM ' + n.toLocaleString('en-MY', { minimumFractionDigits: 0, maximumFractionDigits: 2 });
+        }
+
+        function updateUI() {
+            const g = GOALS[state.goalIndex];
+            const target = g.target;
+            const current = Math.min(state.amounts[state.goalIndex] || 0, target);
+            const pct = Math.round((current / target) * 100);
+            const remaining = target - current;
+
+            document.getElementById('display-goal').textContent = g.name;
+            document.getElementById('display-target').textContent = fmt(target);
+            document.getElementById('display-duration').textContent = g.duration;
+
+            document.getElementById('progress-goal-tag').textContent = g.name;
+            document.getElementById('current-amt-display').textContent = fmt(current);
+            document.getElementById('target-amt-display').textContent = ' / ' + fmt(target);
+            document.getElementById('pct-label').textContent = pct + '%';
+            document.getElementById('remaining-label').textContent = fmt(remaining) + ' remaining';
+            document.getElementById('progressBar').style.width = pct + '%';
+        }
+
+        let fundModal, goalModal, goalFormModal;
+        window.addEventListener('DOMContentLoaded', () => {
+            fundModal = new bootstrap.Modal(document.getElementById('fundModal'));
+            goalModal = new bootstrap.Modal(document.getElementById('goalModal'));
+            goalFormModal = new bootstrap.Modal(document.getElementById('goalFormModal'));
+        });
+
+        function openFundModal() {
+            document.getElementById('fundInput').value = '';
+            fundModal.show();
+        }
+        function closeFundModal() {
+            fundModal.hide();
+        }
+        function saveFund() {
+            const val = parseFloat(document.getElementById('fundInput').value);
+            if (!val || val <= 0) return;
+            const idx = state.goalIndex;
+            state.amounts[idx] = (state.amounts[idx] || 0) + val;
+            saveToStorage();
+            closeFundModal();
+            updateUI();
+        }
+
+        function resetGoal() {
+            if (!confirm('Reset progress?')) return;
+            state.amounts[state.goalIndex] = 0;
+            saveToStorage();
+            updateUI();
+        }
+
+        let selectedGoalIndex = 0;
+        function buildGoalList() {
+            const container = document.getElementById('goalList');
+            container.innerHTML = '';
+            GOALS.forEach((g, i) => {
+                const el = document.createElement('div');
+                el.className = 'list-group-item list-group-item-action d-flex align-items-center gap-3' + (i === selectedGoalIndex ? ' active' : '');
+                el.innerHTML = `<span>${g.icon}</span> <div><strong>${g.name}</strong><br><small>${fmt(g.target)}</small></div>`;
+                el.onclick = () => { selectedGoalIndex = i; buildGoalList(); };
+                container.appendChild(el);
+            });
+        }
+
+        function openGoalModal() {
+            selectedGoalIndex = state.goalIndex;
+            buildGoalList();
+            goalModal.show();
+        }
+        function applyGoal() {
+            state.goalIndex = selectedGoalIndex;
+            saveToStorage();
+            goalModal.hide();
+            updateUI();
+        }
+
+        function setUnit(unit) {
+            document.getElementById('unitYears').className = unit === 'years' ? 'btn btn-primary' : 'btn btn-outline-primary';
+            document.getElementById('unitMonths').className = unit === 'months' ? 'btn btn-primary' : 'btn btn-outline-primary';
+        }
+
+        function openGoalFormModal() {
+            goalModal.hide();
+            goalFormModal.show();
+        }
+        function closeGoalFormModal() {
+            goalFormModal.hide();
+            goalModal.show();
+        }
+        function saveCustomGoal() {
+            const name = document.getElementById('formGoalName').value.trim();
+            const target = parseFloat(document.getElementById('formGoalTarget').value);
+            if (!name || !target) return;
+            GOALS.push({ name, target, duration: '1 year', icon: '✨', color: '#fff' });
+            saveToStorage();
+            goalFormModal.hide();
+            goalModal.show();
+            buildGoalList();
+        }
+
+        window.addEventListener('load', updateUI);
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
