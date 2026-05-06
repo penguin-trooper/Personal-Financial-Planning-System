@@ -615,3 +615,37 @@ hover -> To actively show the user that the card is currently being selected
             border-color: #4E8D9C;
             color: white;
         }
+
+/* Section title */
+.section-title {
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+/* News card container */
+.news-card {
+    background-color: #1f2a38;   /* dark card background */
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+}
+
+/* News title */
+.news-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #ffffff;
+}
+
+/* News text (this replaces your inline style) */
+.news-card .card-text {
+    color: #EDF6BD;
+    opacity: 0.8;
+    font-size: 0.9rem;
+}
+
+/* Meta info (date + category) */
+.news-meta {
+    font-size: 0.8rem;
+    color: #cccccc;
+}        
