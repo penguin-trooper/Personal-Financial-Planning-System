@@ -173,6 +173,15 @@
             font-family: 'Nunito', sans-serif;
         }
         .fund-btn:hover { background: #2e9086; transform: scale(1.03); }
+        .btn-row { display: flex; gap: 10px; }
+        .reset-btn {
+            background: #f0f0f0; color: #555;
+            border: none; border-radius: 10px;
+            padding: 12px 20px; font-size: 15px; font-weight: 700;
+            cursor: pointer; transition: background 0.2s;
+            font-family: 'Nunito', sans-serif;
+        }
+        .reset-btn:hover { background: #e05050; color: #fff; }
 
         /* ── BACK ── */
         .back-wrap {
@@ -438,7 +447,10 @@
 
                     <div class="monthly" id="monthly-label">RM 416.67 / month</div>
 
-                    <button class="fund-btn" onclick="openFundModal()">Fund</button>
+                    <div class="btn-row">
+                        <button class="fund-btn" onclick="openFundModal()">Fund</button>
+                        <button class="reset-btn" onclick="resetGoal()" title="Reset progress to zero">Reset</button>
+                    </div>
                 </div>
             </div>
 
@@ -622,6 +634,13 @@
             state.amounts[idx] = (state.amounts[idx] || 0) + val;
             saveToStorage();
             closeFundModal();
+            updateUI();
+        }
+
+        function resetGoal() {
+            state.amounts[state.goalIndex] = 0;
+            document.getElementById('progressBar').style.width = '0%';
+            saveToStorage();
             updateUI();
         }
 
