@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Forgot Password OTP - Moneta</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<div class="container">
+    <div class="left">
+        <h1>MONETA</h1>
+        <!-- Design requires headers and specific sub-text -->
+        <h3>Forget Password</h3>
+        <p><strong>OTP Verification</strong></p>
+        <p class="sub-text">We have sent the verification code to your email address</p>
+
+        <form action="/verify-forgot-otp" method="POST">
+            <!-- Ensure name="otp" is present for the backend to read it -->
+            <input name="otp" class="otp-box" placeholder="000000" maxlength="6" required>
+            
+            <div class="resend-link">
+                <span id="timer-text" style="font-size: 12px; color: #666;">Resend OTP in <span id="seconds">60</span>s</span>
+                <a href="#" id="resend-btn" style="display: none;" onclick="handleResend(event)">Resend OTP</a>
+            </div>            
+
+            <button type="submit" class="btn-teal">Confirm</button>
+        </form>
+    </div>
+    <div class="right"></div>
+</div>
+
+<script>
+    let timeLeft = 60;
+    const timerText = document.getElementById('timer-text');
+    const secondsSpan = document.getElementById('seconds');
+    const resendBtn = document.getElementById('resend-btn');
+
+    function startTimer() {
+        timeLeft = 60;
+        resendBtn.style.display = 'none';
+        timerText.style.display = 'inline';
+        secondsSpan.innerText = timeLeft; // Set initial display
+        
+        const countdown = setInterval(() => {
+            timeLeft--;
+            secondsSpan.innerText = timeLeft;
+
+            if (timeLeft <= 0) {
+                clearInterval(countdown);
+                timerText.style.display = 'none';
+                resendBtn.style.display = 'inline';
+            }
+        }, 1000);
+    }
+
+    function handleResend(event) {
+        event.preventDefault();
+        
+        fetch('/resend-otp', { method: 'POST' }) 
+            .then(response => {
+                if (response.ok) {
+                    console.log("OTP Resent!");
+                    startTimer(); // Only restart the timer if the server succeeded
+                } else {
+                    // This helps you catch if the session expired or server crashed
+                    alert("Server error: Could not resend OTP. Try signing up again.");
+                }
+            })
+            .catch(err => {
+                console.error("Network error:", err);
+                alert("Network error. Please check if your server is running.");
+            });
+    }
+
+    window.onload = startTimer;
+</script>
+
+</body>
+</html>
