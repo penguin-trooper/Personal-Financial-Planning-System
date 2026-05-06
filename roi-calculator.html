@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="styles.css">
+     <link
+        href="https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,100..1000&family=Alegreya+Sans+SC:wght@300;400;500;700&display=swap"
+        rel="stylesheet">
+    <title>ROI Calculator - Moneta</title>
+
+</head>
+
+<body>
+    <!-- NavBar-->
+     <nav class="navbar navbar-expand-lg navbar-dark moneta-section">
+        <div class="container-fluid px-4">
+
+            <!-- Brand name -->
+            <a href="home-page.html" class="navbar-brand">Moneta</a>
+
+            <!-- Toggler for mobile -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#monetaNavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- Nav links -->
+            <div class="collapse navbar-collapse" id="monetaNavbar">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item">
+                        <a href="home-page.html" class="nav-link moneta-section-text">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="investment-strategy.html" class="nav-link moneta-section-text">Financial Planner</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="roi-calculator.html" class="nav-link moneta-section-text active">ROI Calculator</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="market-insight.html" class="nav-link moneta-section-text">Market Insights</a>
+                    </li>
+                </ul>
+
+                <!-- Username + Profile icon -->
+                <div class="dropdown d-flex align-items-center gap-2">
+                    <span class="moneta-section-text">User Name</span>
+
+                    <a href="#" class="dropdown-toggle d-flex align-items-center" data-bs-toggle="dropdown"
+                        aria-expanded="false" style="text-decoration: none;">
+                        <div class="profile-icon">
+                            <img src="images/profile.svg" alt="Profile" width="20" height="20">
+                        </div>
+                    </a>
+
+                    <ul class="dropdown-menu dropdown-menu-end moneta-dropdown">
+                        <li>
+                            <a href="profile/profile.html" class="dropdown-item">
+                                <img src="images/settings.svg" alt="" width="16" height="16" class="me-2">
+                                Account Settings
+                            </a>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li>
+                            <a href="#" class="dropdown-item">
+                                <img src="images/log_out.svg" alt="" width="16" height="16" class="me-2">
+                                Log Out
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+
+    <!-- Hero -->
+    <div class="roi-hero">
+        <div class="container text-center">
+            <h1>ROI Calculator</h1>
+            <p class="lead">Calculate your Return on Investment and estimate interest growth on your capital.</p>
+        </div>
+    </div>
+
+    <!-- ── ROI CALCULATOR SECTION ── -->
+    <div class="roi-body">
+        <div class="container">
+            <div class="row g-4">
+
+                <!-- ROI Form -->
+                <div class="col-lg-6">
+                    <h4 class="section-title">Return on Investment (ROI)</h4>
+                    <div class="roi-form-card">
+                        <h4 class="mb-1">Investment Details</h4>
+                        <p style="color:#4E8D9C; font-size:0.85rem; margin-bottom:1.5rem;">
+                            Formula: (Current Value − Initial Cost) ÷ Initial Cost × 100
+                        </p>
+
+                        <div class="mb-3">
+                            <label for="initialCost">Initial Cost (RM)</label>
+                            <input type="number" class="form-control" id="initialCost" placeholder="e.g. 10000" min="0">
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="currentValue">Current Value (RM)</label>
+                            <input type="number" class="form-control" id="currentValue" placeholder="e.g. 13500"
+                                min="0">
+                        </div>
+
+                        <div class="d-flex gap-2">
+                            <button class="btn-calculate" onclick="calculateROI()">Calculate ROI</button>
+                            <button class="btn-reset" onclick="resetROI()">Reset</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ROI Results -->
+                <div class="col-lg-6">
+                    <h4 class="section-title">Your ROI Results</h4>
+
+                    <!-- Placeholder -->
+                    <div id="roiPlaceholder" class="tip-card text-center py-4">
+                        <div style="font-size:2.5rem;">📊</div>
+                        <p class="tip-title mt-2">Enter your investment details and click Calculate</p>
+                        <p class="tip-text">Your ROI summary will appear here.</p>
+                    </div>
+
+                    <!-- Results card -->
+                    <div class="result-card" id="roiResultCard">
+                        <h4 class="mb-3">📊 ROI Summary</h4>
+                        <div class="result-item d-flex justify-content-between">
+                            <span class="result-label">Initial Cost</span>
+                            <span class="result-value" id="roiResInitial">-</span>
+                        </div>
+                        <div class="result-item d-flex justify-content-between">
+                            <span class="result-label">Current Value</span>
+                            <span class="result-value" id="roiResCurrent">-</span>
+                        </div>
+                        <div class="result-item d-flex justify-content-between align-items-center">
+                            <span class="result-label">Profit / Loss</span>
+                            <span id="roiResProfit">-</span>
+                        </div>
+                        <div class="result-item d-flex justify-content-between align-items-center">
+                            <span class="result-label">ROI</span>
+                            <span class="result-total" id="roiResROI">-</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <section>
+        <div class="moneta-section p-5 text-center">
+            <p class="moneta-section-text">Made by Group 3 OCC2</p>
+        </div>
+    </section>
+     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+        crossorigin="anonymous"></script>
+</body>
+</html>
