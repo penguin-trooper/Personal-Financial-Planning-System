@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Financial Planner</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Nunito:wght@400;600;700&display=swap"
+        rel="stylesheet" />
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --dark-bg: #2b2f27;
+            --nav-bg: #2e3129;
+            --card-bg: rgba(255, 255, 255, 0.18);
+            --card-border: rgba(255, 255, 255, 0.30);
+            --accent-teal: #3da89a;
+            --accent-green: #5dc890;
+            --accent-yellow-bg: #f4f5c8;
+            --text-dark-blue: #1a2a5e;
+            --text-white: #ffffff;
+            --progress-bar-fill: #5dc890;
+            --progress-bar-track: #c8dbb5;
+            --btn-teal: #3da89a;
+            --tag-teal: #3da89a;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: linear-gradient(135deg, #3a4a3a 0%, #8fa89a 40%, #b0c4b8 70%, #a0b8c0 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ── NAV ── */
+        nav {
+            background-color: var(--nav-bg);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 28px;
+            height: 64px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .nav-logout {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-white);
+            font-weight: 700;
+            font-size: 15px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .nav-logout svg {
+            width: 22px;
+            height: 22px;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            list-style: none;
+        }
+
+        .nav-links li a {
+            color: var(--text-white);
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 600;
+            padding: 7px 20px;
+            border-radius: 20px;
+            transition: background 0.2s;
+        }
+
+        .nav-links li a:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-links li a.active {
+            background: var(--accent-yellow-bg);
+            color: var(--text-dark-blue);
+            border-radius: 20px;
+        }
+
+        .nav-user {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-white);
+            font-weight: 700;
+            font-size: 16px;
+        }
+
+        .nav-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #e8e8e8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .nav-avatar svg {
+            width: 24px;
+            height: 24px;
+            color: #555;
+        }
+
+        /* ── MAIN ── */
+        main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 24px 20px;
+            gap: 28px;
+            position: relative;
+        }
+
+        /* background decorative chart lines */
+        main::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image:
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='400' opacity='0.12'%3E%3Cpolyline points='0,350 80,280 160,310 240,200 320,230 400,120 480,150 560,60 600,80' stroke='%23ffffff' stroke-width='2.5' fill='none'/%3E%3C/svg%3E");
+            background-position: center bottom;
+            background-repeat: no-repeat;
+            background-size: cover;
+            pointer-events: none;
+        }
+
+        /* ── GLASS CARD ── */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.22);
+            border: 1.5px solid rgba(255, 255, 255, 0.38);
+            border-radius: 20px;
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            width: 100%;
+            max-width: 900px;
+            padding: 32px 36px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ── SECTION TITLE ── */
+        .section-title {
+            font-family: 'Cinzel', serif;
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--text-dark-blue);
+            text-align: center;
+            letter-spacing: 1px;
+            margin-bottom: 22px;
+        }
+
+        .section-title a {
+            color: var(--text-dark-blue);
+            text-decoration: none;
+            transition: color 0.2s, text-decoration 0.2s;
+        }
+
+        .section-title a:hover {
+            color: var(--accent-teal);
+            text-decoration: underline;
+        }
+
+        /* ── BACK BUTTON ── */
+        .back-btn-wrap {
+            display: flex;
+            justify-content: flex-end;
+            width: 100%;
+            max-width: 900px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .back-btn {
+            background: #2e3a1e;
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            padding: 12px 40px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .back-btn:hover {
+            background: #1a2a10;
+        }
+
+        /* ── INVESTMENT GOALS CARD ── */
+        .goals-body {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .goals-left {
+            flex: 1;
+            min-width: 260px;
+        }
+
+        .goal-tag {
+            display: inline-block;
+            background: var(--accent-green);
+            color: var(--text-dark-blue);
+            font-weight: 700;
+            font-size: 14px;
+            padding: 6px 32px;
+            border-radius: 20px;
+            margin-bottom: 14px;
+            font-family: 'Cinzel', serif;
+            letter-spacing: 0.5px;
+        }
+
+        .goal-amount {
+            font-size: 46px;
+            font-weight: 700;
+            color: var(--text-dark-blue);
+            line-height: 1;
+            margin-bottom: 12px;
+        }
+
+        .goal-amount span {
+            color: var(--text-dark-blue);
+        }
+
+        .progress-wrap {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .progress-bar-bg {
+            flex: 1;
+            height: 18px;
+            border-radius: 9px;
+            background: var(--progress-bar-track);
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            border-radius: 9px;
+            background: var(--accent-teal);
+            width: 50%;
+            transition: width 0.5s ease;
+        }
+
+        .progress-pct {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-dark-blue);
+            white-space: nowrap;
+        }
+
+        /* info box */
+        .goal-info-box {
+            background: var(--accent-yellow-bg);
+            border-radius: 14px;
+            padding: 18px 24px;
+            min-width: 200px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .goal-info-box p {
+            font-weight: 700;
+            font-size: 15px;
+            color: var(--text-dark-blue);
+            text-align: center;
+            line-height: 1.5;
+        }
+
+        .fund-btn {
+            background: var(--btn-teal);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 9px 32px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.1s;
+        }
+
+        .fund-btn:hover {
+            background: #2e9086;
+            transform: scale(1.03);
+        }
+
+        /* ── INVESTMENT STRATEGIES CARD ── */
+        .strategies-body {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .strategy-duration {
+            min-width: 160px;
+        }
+
+        .strategy-duration p {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--text-dark-blue);
+            margin-bottom: 14px;
+        }
+
+        .risk-badge {
+            display: inline-block;
+            background: transparent;
+            border: 2.5px solid var(--accent-teal);
+            color: var(--accent-teal);
+            font-weight: 700;
+            font-size: 14px;
+            padding: 8px 22px;
+            border-radius: 10px;
+        }
+
+        .strategy-box,
+        .allocation-box {
+            background: var(--accent-yellow-bg);
+            border-radius: 14px;
+            padding: 20px 24px;
+            flex: 1;
+            min-width: 180px;
+        }
+
+        .strategy-box h3,
+        .allocation-box h3 {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-dark-blue);
+            text-align: center;
+            margin-bottom: 16px;
+        }
+
+        .tag-list {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .strat-tag {
+            background: var(--tag-teal);
+            color: white;
+            font-weight: 700;
+            font-size: 13px;
+            padding: 6px 24px;
+            border-radius: 6px;
+            display: inline-block;
+        }
+
+        .alloc-table {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .alloc-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .alloc-row:not(:last-child) {
+            padding-bottom: 8px;
+            border-bottom: 1.5px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .alloc-tag {
+            background: var(--tag-teal);
+            color: white;
+            font-weight: 700;
+            font-size: 12px;
+            padding: 5px 14px;
+            border-radius: 5px;
+            min-width: 110px;
+            text-align: center;
+        }
+
+        .alloc-pct {
+            font-weight: 700;
+            font-size: 15px;
+            color: var(--text-dark-blue);
+        }
+
+        /* ── FOOTER ── */
+        footer {
+            text-align: center;
+            color: rgba(0, 0, 0, 0.55);
+            font-size: 14px;
+            font-weight: 600;
+            padding: 12px 0 18px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* responsive */
+        @media (max-width: 600px) {
+            .goal-amount {
+                font-size: 32px;
+            }
+
+            .section-title {
+                font-size: 22px;
+            }
+
+            .goals-body,
+            .strategies-body {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAV -->
+    <nav>
+        <a href="#" class="nav-logout">
+            Log Out
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"
+                stroke-linejoin="round">
+                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                <polyline points="16 17 21 12 16 7" />
+                <line x1="21" y1="12" x2="9" y2="12" />
+            </svg>
+        </a>
+
+        <ul class="nav-links">
+            <li><a href="home-page.html">Home</a></li>
+            <li><a href="#" class="active">Financial Planner</a></li>
+            <li><a href="#">ROI Calculator</a></li>
+            <li><a href="#">Market Insights</a></li>
+        </ul>
+
+        <div class="nav-user">
+            <span>User Name</span>
+            <div class="nav-avatar">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#555" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                    <circle cx="12" cy="7" r="4" />
+                </svg>
+            </div>
+        </div>
+    </nav>
+
+    <!-- MAIN -->
+    <main>
+
+        <!-- INVESTMENT GOALS -->
+        <div class="glass-card">
+            <h2 class="section-title"><a href="Investment_goals.html">Investment Goals</a></h2>
+            <div class="goals-body">
+                <div class="goals-left">
+                    <span class="goal-tag" id="fp-goal-name">Education Funds</span>
+                    <div class="goal-amount" id="fp-goal-amount">RM10,000<span id="fp-goal-target">/RM20,000</span></div>
+                    <div class="progress-wrap">
+                        <div class="progress-bar-bg">
+                            <div class="progress-bar-fill" id="progressBar"></div>
+                        </div>
+                        <span class="progress-pct" id="fp-goal-pct">50%</span>
+                    </div>
+                </div>
+                <div class="goal-info-box">
+                    <p id="fp-goal-info">Duration: 4 years<br>RM416.67/month</p>
+                    <button class="fund-btn" onclick="window.location.href='Investment_goals.html'">Fund</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- INVESTMENT STRATEGIES -->
+        <div class="glass-card">
+            <h2 class="section-title"><a href="investment-strategy.html">Investment Strategies</a></h2>
+            <div class="strategies-body">
+
+                <!-- Duration + Risk -->
+                <div class="strategy-duration">
+                    <p>Duration: 4 years</p>
+                    <span class="risk-badge">Moderate Risk</span>
+                </div>
+
+                <!-- Recommended Strategy -->
+                <div class="strategy-box">
+                    <h3>Recommeded Strategy</h3>
+                    <div class="tag-list">
+                        <span class="strat-tag">Bonds</span>
+                        <span class="strat-tag">Balanced Funds</span>
+                    </div>
+                </div>
+
+                <!-- Suggested Allocation -->
+                <div class="allocation-box">
+                    <h3>Suggested Allocation</h3>
+                    <div class="alloc-table">
+                        <div class="alloc-row">
+                            <span class="alloc-tag">Bonds</span>
+                            <span class="alloc-pct">50%</span>
+                        </div>
+                        <div class="alloc-row">
+                            <span class="alloc-tag">Balanced Funds</span>
+                            <span class="alloc-pct">50%</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </main>
+
+    <!-- BACK BUTTON -->
+    <div class="back-btn-wrap" style="margin-bottom: 32px;">
+        <button class="back-btn" onclick="history.back()">Back</button>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>Made by Group 3 OCC2</footer>
+
+    <script>
+        window.addEventListener('load', () => {
+            // Preset goals (must match Investment_goals.html)
+            const PRESETS = [
+                { name: 'Education Funds',  target: 20000,  duration: '4 years'  },
+                { name: 'Emergency Fund',   target: 15000,  duration: '2 years'  },
+                { name: 'Home Purchase',    target: 80000,  duration: '10 years' },
+                { name: 'Retirement Fund',  target: 500000, duration: '30 years' },
+                { name: 'Travel Fund',      target: 8000,   duration: '1 year'   },
+            ];
+
+            // Load custom goals and state from localStorage
+            let goals = [...PRESETS];
+            try {
+                const custom = JSON.parse(localStorage.getItem('moneta_custom_goals') || '[]');
+                custom.forEach(g => goals.push(g));
+            } catch(e) {}
+
+            let goalIndex = 0, currentAmt = 10000;
+            try {
+                const s = JSON.parse(localStorage.getItem('moneta_state') || 'null');
+                if (s && typeof s.goalIndex === 'number') {
+                    goalIndex  = Math.min(s.goalIndex, goals.length - 1);
+                    // read per-goal amount; fall back to 0 if not set
+                    currentAmt = (s.amounts && s.amounts[goalIndex] != null)
+                        ? s.amounts[goalIndex] : 0;
+                }
+            } catch(e) {}
+
+            const g        = goals[goalIndex];
+            const target   = g.target;
+            const current  = Math.min(currentAmt, target);
+            const pct      = Math.round((current / target) * 100);
+            const remaining = target - current;
+
+            // Parse duration correctly (years or months)
+            const parts    = g.duration.split(' ');
+            const durNum   = parseFloat(parts[0]);
+            const isMonths = parts[1] && parts[1].startsWith('month');
+            const months   = isMonths ? durNum : durNum * 12;
+            const monthly  = (remaining > 0 && months > 0) ? (remaining / months) : 0;
+
+            const fmt = n => 'RM ' + n.toLocaleString('en-MY', { minimumFractionDigits: 0, maximumFractionDigits: 2 });
+
+            document.getElementById('fp-goal-name').textContent   = g.name;
+            document.getElementById('fp-goal-amount').childNodes[0].textContent = fmt(current);
+            document.getElementById('fp-goal-target').textContent = ' / ' + fmt(target);
+            document.getElementById('fp-goal-pct').textContent    = pct + '%';
+            document.getElementById('fp-goal-info').innerHTML     =
+                'Duration: ' + g.duration + '<br>' + fmt(+monthly.toFixed(2)) + '/month';
+
+            // Animate progress bar
+            const bar = document.getElementById('progressBar');
+            bar.style.width = '0%';
+            setTimeout(() => { bar.style.width = pct + '%'; }, 100);
+        });
+    </script>
+</body>
+
+</html>
