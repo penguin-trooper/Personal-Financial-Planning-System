@@ -39,10 +39,11 @@ passport.serializeUser((user, done) => done(null, user));
 passport.deserializeUser((obj, done) => done(null, obj));
 
 passport.use(new GoogleStrategy({
-    clientID: process.env.GOOGLE_CLIENT_ID,
-    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    clientID: process.env.GOOGLE_CLIENT_ID,        
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET, 
     callbackURL: "/auth/google/callback"
 },
+
 (accessToken, refreshToken, profile, done) => {
     return done(null, profile);
 }));
@@ -102,36 +103,6 @@ app.post('/verify-signup-otp', (req, res) => {
         res.redirect('/signup-password.html');
     } else {
         res.redirect('/signup-otp.html?error=otp');
-    }
-});
-
-app.get('/resend-signup-otp', async (req, res) => {
-    try {
-        if (!req.session.signup) {
-            return res.redirect('/signup.html?error=session_expired');
-        }
-
-        const { name, email } = req.session.signup;
-        const newOtp = Math.floor(100000 + Math.random() * 900000);
-        req.session.signup.otp = newOtp;
-
-        const mailOptions = {
-            from: '"Moneta Team" <no-reply@moneta.com>',
-            to: email,
-            subject: 'Your New Moneta Verification Code',
-            html: `<h2>New OTP Requested</h2><p>Hello ${name}, your new verification code is: <b>${newOtp}</b></p>`
-        };
-
-        transporter.sendMail(mailOptions, (error) => {
-            if (error) {
-                console.error("Resend Error:", error);
-                return res.redirect('/signup-otp.html?error=email_failed');
-            }
-            res.redirect('/signup-otp.html?status=resent');
-        });
-    } catch (err) {
-        console.error(err);
-        res.redirect('/signup-otp.html?error=server');
     }
 });
 
@@ -294,24 +265,6 @@ app.post('/verify-forgot-otp', (req, res) => {
     }
 });
 
-app.get('/resend-forgot-otp', async (req, res) => {
-    if (!req.session.forgot) return res.redirect('/forgot.html');
-
-    const otp = Math.floor(100000 + Math.random() * 900000);
-    req.session.forgot.otp = otp;
-
-    const mailOptions = {
-        from: '"Moneta Support" <support@moneta.com>',
-        to: req.session.forgot.email,
-        subject: 'New Password Reset Code',
-        html: `<p>Your new reset code is: <b>${otp}</b></p>`
-    };
-
-    transporter.sendMail(mailOptions, (error) => {
-        if (error) return res.redirect('/forgot-otp.html?error=email_failed');
-        res.redirect('/forgot-otp.html?status=resent');
-    });
-});
 
 app.post('/reset-password-final', async (req, res) => {
     try {
@@ -342,6 +295,49 @@ app.post('/reset-password-final', async (req, res) => {
     } catch (err) {
         console.error(err);
         res.redirect('/forgot-password.html?error=server');
+    }
+});
+
+app.post('/resend-otp', async (req, res) => {
+    try {
+        let email, name, sessionKey;
+
+        // Check if the user is in the Signup flow
+        if (req.session.signup) {
+            email = req.session.signup.email;
+            name = req.session.signup.name || "User";
+            sessionKey = 'signup';
+        } 
+        // Check if the user is in the Forgot Password flow
+        else if (req.session.forgot) {
+            email = req.session.forgot.email;
+            name = "User";
+            sessionKey = 'forgot';
+        } 
+        
+        // If neither exists, the session is empty
+        if (!email) {
+            console.error("Resend failed: No active session data found");
+            return res.status(400).send("Session expired. Please start over.");
+        }
+
+        const newOTP = Math.floor(100000 + Math.random() * 900000);
+        req.session[sessionKey].otp = newOTP; // Update the correct session object
+
+        const mailOptions = {
+            from: '"Moneta Team" <no-reply@moneta.com>',
+            to: email,
+            subject: 'Your New Moneta Verification Code',
+            html: `<h2>New OTP Requested</h2><p>Hello ${name}, your new verification code is: <b>${newOTP}</b></p>`
+        };
+
+        await transporter.sendMail(mailOptions);
+        console.log(`New OTP ${newOTP} sent to ${email}`);
+        res.status(200).send("OTP resent successfully");
+
+    } catch (error) {
+        console.error("Error in /resend-otp:", error);
+        res.status(500).send("Failed to resend email");
     }
 });
 

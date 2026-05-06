@@ -96,6 +96,30 @@ input::placeholder {
     color: #999;
 }
 
+/* ===== PASSWORD TOGGLE FIX ===== */
+/* This container holds the input and the eye icon */
+.password-container {
+    position: relative;
+    width: 100%;
+    margin-bottom: 20px; /* Move the margin from input to the container */
+}
+
+.password-container input {
+    margin-bottom: 0;    /* Remove bottom margin inside the container */
+    padding-right: 45px; /* Leave space so text doesn't overlap the eye */
+}
+
+.toggle-password {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #548c94;
+    z-index: 10;
+    font-size: 18px;
+}
+
 /* ===== BUTTONS ===== */
 .button-row {
     display: flex;
@@ -185,8 +209,8 @@ input::placeholder {
     margin-bottom: 20px;
 }
 
-.resend-link a {
-    color: #666;
+.resend-link a, .resend-link span {
     font-size: 12px;
     text-decoration: underline;
+    cursor: pointer;
 }
