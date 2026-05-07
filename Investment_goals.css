@@ -43,8 +43,10 @@ nav {
     align-items: center;
     gap: 8px;
     color: #fff;
-    font-weight: 700;
-    font-size: 15px;
+    font-family: 'Cinzel', serif;
+    font-weight: bold;
+    font-size: 1.5rem;
+    letter-spacing: 0.05em;
     cursor: pointer;
     text-decoration: none;
 }
