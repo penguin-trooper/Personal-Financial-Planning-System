@@ -8,6 +8,7 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Nunito:wght@400;600;700;800&display=swap"
         rel="stylesheet" />
+    <link rel="stylesheet" href="Investment_goals.css" />
     <style>
         *,
         *::before,
@@ -205,6 +206,45 @@
 
         .edit-btn:hover {
             background: rgba(200, 219, 160, 0.3);
+            color: #fff;
+        }
+
+        /* ── DESCRIPTION AREA (new, inside Your Goal card) ── */
+        .goal-desc-text {
+            font-size: 13px;
+            font-weight: 600;
+            color: rgba(200, 219, 160, 0.75);
+            margin-top: 10px;
+            line-height: 1.55;
+            min-height: 0;
+            word-break: break-word;
+        }
+
+        .goal-desc-text.empty {
+            font-style: italic;
+            color: rgba(200, 219, 160, 0.38);
+        }
+
+        .desc-btn {
+            margin-top: 12px;
+            background: rgba(200, 219, 160, 0.12);
+            border: 1px dashed rgba(200, 219, 160, 0.35);
+            border-radius: 8px;
+            cursor: pointer;
+            color: var(--text-muted);
+            font-size: 12px;
+            font-weight: 700;
+            font-family: 'Nunito', sans-serif;
+            padding: 6px 14px;
+            transition: background 0.2s, color 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            letter-spacing: 0.3px;
+        }
+
+        .desc-btn:hover {
+            background: rgba(200, 219, 160, 0.25);
             color: #fff;
         }
 
@@ -753,6 +793,44 @@
             color: #fff;
         }
 
+        /* ── DESCRIPTION MODAL ── */
+        #descModal .modal-box {
+            max-width: 420px;
+        }
+
+        .desc-textarea-wrap {
+            margin-bottom: 20px;
+        }
+
+        .desc-textarea-wrap label {
+            display: block;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #5a6a8a;
+            margin-bottom: 8px;
+        }
+
+        .desc-textarea-wrap textarea {
+            width: 100%;
+            padding: 12px 14px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            font-family: 'Nunito', sans-serif;
+            color: var(--dark-blue);
+            outline: none;
+            resize: vertical;
+            min-height: 110px;
+            transition: border-color 0.2s;
+        }
+
+        .desc-textarea-wrap textarea:focus {
+            border-color: var(--accent-teal);
+        }
+
         @media (max-width: 640px) {
             main {
                 padding: 24px 16px 20px;
@@ -790,8 +868,8 @@
         <ul class="nav-links">
             <li><a href="home-page.html">Home</a></li>
             <li><a href="Financial_planner.html" class="active">Financial Planner</a></li>
-            <li><a href="#">ROI Calculator</a></li>
-            <li><a href="#">Market Insights</a></li>
+            <li><a href="roi-calculator.html">ROI Calculator</a></li>
+            <li><a href="market-insight.html">Market Insights</a></li>
         </ul>
         <div class="nav-user">
             <span>User Name</span>
@@ -819,6 +897,11 @@
                     <div class="value" id="display-goal">Education Funds</div>
                     <!-- Pen button opens goal selector -->
                     <button class="edit-btn" onclick="openGoalModal()" title="Change goal">✎</button>
+                    <!-- Description display -->
+                    <div class="goal-desc-text empty" id="goal-desc-display">No description yet.</div>
+                    <!-- Add / Edit description button -->
+                    <button class="desc-btn" onclick="openDescModal()" id="desc-toggle-btn"
+                        title="Add a description for this goal">✏ Add Description</button>
                 </div>
 
                 <div class="info-card">
@@ -944,6 +1027,23 @@
         </div>
     </div>
 
+    <!-- ══ DESCRIPTION MODAL ══ -->
+    <div class="modal-overlay" id="descModal">
+        <div class="modal-box">
+            <button class="modal-close" onclick="closeDescModal()">✕</button>
+            <div class="modal-title">Goal Description</div>
+            <div class="modal-subtitle" id="desc-modal-subtitle">Add a personal note or description for this goal.</div>
+            <div class="desc-textarea-wrap">
+                <label>Description</label>
+                <textarea id="descInput" placeholder="e.g. Saving for my child's university tuition fees..."></textarea>
+            </div>
+            <div class="fund-modal-actions">
+                <button class="btn-save" onclick="saveDesc()">Save</button>
+                <button class="btn-cancel" onclick="closeDescModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         /* ─────────────── DATA ─────────────── */
         const PRESET_COUNT = 5;
@@ -969,10 +1069,12 @@
                     s.goalIndex = Math.min(s.goalIndex, GOALS.length - 1);
                     // migrate old single-amount format
                     if (!s.amounts) s.amounts = {};
+                    // migrate: ensure descriptions object exists
+                    if (!s.descriptions) s.descriptions = {};
                     return s;
                 }
             } catch (e) { }
-            return { goalIndex: 0, amounts: { 0: 10000 } };
+            return { goalIndex: 0, amounts: { 0: 10000 }, descriptions: {} };
         })();
 
         /* ─────────────── STORAGE HELPER ─────────────── */
@@ -1020,6 +1122,51 @@
             setTimeout(() => {
                 document.getElementById('progressBar').style.width = pct + '%';
             }, 80);
+
+            // Update description display
+            updateDescDisplay();
+        }
+
+        /* ─────────────── DESCRIPTION HELPERS ─────────────── */
+        function updateDescDisplay() {
+            const desc = state.descriptions[state.goalIndex] || '';
+            const displayEl = document.getElementById('goal-desc-display');
+            const btnEl = document.getElementById('desc-toggle-btn');
+            if (desc) {
+                displayEl.textContent = desc;
+                displayEl.classList.remove('empty');
+                btnEl.textContent = '✏ Edit Description';
+            } else {
+                displayEl.textContent = 'No description yet.';
+                displayEl.classList.add('empty');
+                btnEl.textContent = '✏ Add Description';
+            }
+        }
+
+        function openDescModal() {
+            const existing = state.descriptions[state.goalIndex] || '';
+            document.getElementById('descInput').value = existing;
+            const goalName = GOALS[state.goalIndex].name;
+            document.getElementById('desc-modal-subtitle').textContent =
+                'Add a personal note or description for "' + goalName + '".';
+            document.getElementById('descModal').classList.add('active');
+            setTimeout(() => document.getElementById('descInput').focus(), 100);
+        }
+
+        function closeDescModal() {
+            document.getElementById('descModal').classList.remove('active');
+        }
+
+        function saveDesc() {
+            const val = document.getElementById('descInput').value.trim();
+            if (val) {
+                state.descriptions[state.goalIndex] = val;
+            } else {
+                delete state.descriptions[state.goalIndex];
+            }
+            saveToStorage();
+            closeDescModal();
+            updateDescDisplay();
         }
 
         /* ─────────────── FUND MODAL ─────────────── */
@@ -1092,15 +1239,21 @@
         function deleteGoal(idx) {
             GOALS.splice(idx, 1);
 
-            // Re-key amounts: shift all keys > idx down by 1
+            // Re-key amounts and descriptions: shift all keys > idx down by 1
             const newAmounts = {};
+            const newDescs = {};
             Object.keys(state.amounts).forEach(k => {
                 const ki = parseInt(k);
                 if (ki < idx) newAmounts[ki] = state.amounts[ki];
                 else if (ki > idx) newAmounts[ki - 1] = state.amounts[ki];
-                // ki === idx is deleted
+            });
+            Object.keys(state.descriptions).forEach(k => {
+                const ki = parseInt(k);
+                if (ki < idx) newDescs[ki] = state.descriptions[ki];
+                else if (ki > idx) newDescs[ki - 1] = state.descriptions[ki];
             });
             state.amounts = newAmounts;
+            state.descriptions = newDescs;
 
             if (selectedGoalIndex >= GOALS.length) selectedGoalIndex = GOALS.length - 1;
             else if (selectedGoalIndex > idx) selectedGoalIndex--;
@@ -1200,6 +1353,9 @@
         });
         document.getElementById('goalModal').addEventListener('click', function (e) {
             if (e.target === this) closeGoalModal();
+        });
+        document.getElementById('descModal').addEventListener('click', function (e) {
+            if (e.target === this) closeDescModal();
         });
 
         /* ─────────────── INIT ─────────────── */

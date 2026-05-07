@@ -7,150 +7,113 @@
     <title>Investment Strategy</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Nunito:wght@400;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="investment-strategy.css">
 </head>
 
 <body>
 
-    <!-- NavBar-->
-    <nav class="navbar navbar-expand-lg navbar-dark moneta-section">
+    <nav class="navbar navbar-expand-lg moneta-navbar sticky-top">
         <div class="container-fluid px-4">
-
-            <!-- Brand name -->
-            <a href="home-page.html" class="navbar-brand">Moneta</a>
-
-            <!-- Toggler for mobile -->
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#monetaNavbar">
+            <a class="navbar-brand" href="home-page.html">
+                Moneta
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
                 <span class="navbar-toggler-icon"></span>
             </button>
-
-            <!-- Nav links -->
-            <div class="collapse navbar-collapse" id="monetaNavbar">
-                <ul class="navbar-nav mx-auto">
-                    <li class="nav-item">
-                        <a href="home-page.html" class="nav-link moneta-section-text">Home</a>
+            <div class="collapse navbar-collapse justify-content-center" id="navbarContent">
+                <ul class="navbar-nav gap-1">
+                    <li class="nav-item"><a class="nav-link" href="home-page.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="Financial_planner.html">Financial Planner</a>
                     </li>
-                    <li class="nav-item">
-                        <a href="Financial_planner.html" class="nav-link moneta-section-text active">Financial Planner</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="roi-calculator.html" class="nav-link moneta-section-text">ROI Calculator</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="market-insight.html" class="nav-link moneta-section-text">Market Insights</a>
-                    </li>
+                    <li class="nav-item"><a class="nav-link" href="roi-calculator.html">ROI Calculator</a></li>
+                    <li class="nav-item"><a class="nav-link" href="market-insight.html">Market Insights</a></li>
                 </ul>
-
-                <!-- Username + Profile icon -->
-                <div class="dropdown d-flex align-items-center gap-2">
-                    <span class="moneta-section-text">User Name</span>
-
-                    <a href="#" class="dropdown-toggle d-flex align-items-center" data-bs-toggle="dropdown"
-                        aria-expanded="false" style="text-decoration: none;">
-                        <div class="profile-icon">
-                            <img src="images/profile.svg" alt="Profile" width="20" height="20">
-                        </div>
-                    </a>
-
-                    <ul class="dropdown-menu dropdown-menu-end moneta-dropdown">
+            </div>
+            <div class="d-flex align-items-center gap-2">
+                <span class="nav-username d-none d-lg-inline">User Name</span>
+                <div class="dropdown">
+                    <button class="nav-avatar-btn" data-bs-toggle="dropdown">
+                        <i class="bi bi-person-fill"></i>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end moneta-dropdown-menu">
+                        <li><a class="dropdown-item" href="profile/profile.html"><i class="bi bi-gear"></i> Account
+                                Settings</a></li>
                         <li>
-                            <a href="profile/profile.html" class="dropdown-item">
-                                <img src="images/settings.svg" alt="" width="16" height="16" class="me-2">
-                                Account Settings
-                            </a>
+                            <hr class="dropdown-divider" style="border-color:rgba(255,255,255,0.15);">
                         </li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li>
-                            <a href="#" class="dropdown-item">
-                                <img src="images/log_out.svg" alt="" width="16" height="16" class="me-2">
-                                Log Out
-                            </a>
-                        </li>
+                        <li><a class="dropdown-item" href="#"><i class="bi bi-box-arrow-right"></i> Log Out</a></li>
                     </ul>
                 </div>
             </div>
         </div>
     </nav>
 
+    <main>
+        <div class="glass-card">
 
-    <!-- Investment Strategy Content -->
-    <div class="strategy-background">
-        <div class="strategy-card">
-            <div class="strategy-title">Investment Strategy</div>
-            <div class="strategy-duration"><strong>Duration: 4 years</strong></div>
-            <span class="risk-badge">Moderate Risk</span>
+            <h1 class="section-title">Investment Strategy</h1>
 
-            <div class="section-heading">Recommended Strategy for You:</div>
-
-            <!-- Bonds -->
-            <div class="strategy-item" id="item-bonds">
-                <div class="strategy-item-title">
-                    <a href="https://www.investopedia.com/terms/b/bond.asp">Bonds</a>
-                    <span class="pct-badge">50%</span>
-                </div>
-                <div class="strategy-item-desc">
-                    Bonds are offered by most brokerage platforms. A bond is a fixed-income investment product where
-                    individuals lend money to a government or company at a specified interest rate for a predetermined
-                    period. The entity repays individuals with interest in addition to the original face value of the
-                    bond.
-                </div>
-                <div class="strategy-item-desc mt-2">
-                    Bonds are used by companies, municipalities, states, and sovereign governments to finance projects
-                    and operations.
-                </div>
-                <div class="strategy-item-desc mt-2">
-                    Owners of bonds are debtholders, or creditors, of the issuer. Bond details include the end date when
-                    the principal of the loan is due to be paid to the bond owner, and they usually include the terms
-                    for variable or fixed interest payments made by the borrower.
-                </div>
+            <div class="strategy-meta">
+                <span class="meta-duration">Duration: 4 years</span>
+                <span class="risk-badge">Moderate Risk</span>
             </div>
 
-            <hr class="strategy-divider">
+            <h2 class="section-heading">Recommended Strategy for You:</h2>
 
-            <!-- Balanced Fund -->
-            <div class="strategy-item" id="item-balanced">
-                <div class="strategy-item-title">
-                    <a href="https://www.investopedia.com/terms/b/balancedfund.asp">Balanced Fund</a>
-                    <span class="pct-badge">50%</span>
+            <div class="strategy-list">
+
+                <div class="strategy-item">
+                    <div class="item-header">
+                        <a href="https://www.investopedia.com/terms/b/bond.asp" target="_blank">Bonds</a>
+                        <span class="pct-badge">50%</span>
+                    </div>
+                    <p>Bonds are offered by most brokerage platforms. A bond is a fixed-income investment product where
+                        individuals lend money to a government or company at a specified interest rate for a
+                        predetermined period. The entity repays individuals with interest in addition to the original
+                        face value of the bond.</p>
+                    <p>Bonds are used by companies, municipalities, states, and sovereign governments to finance
+                        projects and operations.</p>
+                    <p>Owners of bonds are debtholders, or creditors, of the issuer. Bond details include the end date
+                        when the principal of the loan is due to be paid to the bond owner, and they usually include the
+                        terms for variable or fixed interest payments made by the borrower.</p>
                 </div>
-                <div class="strategy-item-desc">
-                    A balanced fund is a mutual fund made up of both stocks and bonds expressed as a fixed percentage.
-                    The investment objective is to achieve a mixture of growth and income. For instance, balanced funds
-                    typically have a fixed asset allocation of 70% stocks and 30% bonds. Bonds are debt instruments that
-                    usually pay a stable, fixed rate of return. Balanced mutual funds are geared toward investors with
-                    low risk tolerance who are looking for a mixture of safety, income, and modest capital appreciation.
+
+                <div class="strategy-item">
+                    <div class="item-header">
+                        <a href="https://www.investopedia.com/terms/b/balancedfund.asp" target="_blank">Balanced
+                            Fund</a>
+                        <span class="pct-badge">50%</span>
+                    </div>
+                    <p>A balanced fund is a mutual fund made up of both stocks and bonds expressed as a fixed
+                        percentage. The investment objective is to achieve a mixture of growth and income. For instance,
+                        balanced funds typically have a fixed asset allocation of 70% stocks and 30% bonds.</p>
+                    <p>Bonds are debt instruments that usually pay a stable, fixed rate of return. Balanced mutual funds
+                        are geared toward investors with low risk tolerance who are looking for a mixture of safety,
+                        income, and modest capital appreciation.</p>
                 </div>
-                <div class="strategy-item-desc mt-2">
-                    Balanced mutual funds are geared toward investors with low risk tolerance who are looking for a
-                    mixture of safety, income, and modest capital appreciation.
-                </div>
+
             </div>
 
-            <hr class="strategy-divider">
-
-            <!-- Other Strategies -->
             <div class="other-strategies">
                 Other investment strategies:
-                <a href="https://www.investopedia.com/terms/s/stock.asp">Stock</a>,
-                <a href="https://www.investopedia.com/terms/c/commodity.asp">Commodities</a>,
-                <a href="https://www.investopedia.com/terms/e/etf.asp">ETFs</a>
+                <a href="https://www.investopedia.com/terms/s/stock.asp" target="_blank">Stock</a>,
+                <a href="https://www.investopedia.com/terms/c/commodity.asp" target="_blank">Commodities</a>,
+                <a href="https://www.investopedia.com/terms/e/etf.asp" target="_blank">ETFs</a>
             </div>
 
-            <!-- Back Button -->
             <div class="back-btn-wrap">
                 <button class="back-btn" onclick="history.back()">Back</button>
             </div>
-        </div>
-    </div>
 
-    <section>
-        <div class="moneta-section p-5 text-center">
-            <p class="moneta-section-text">Made by Group 3 OCC2</p>
         </div>
-    </section>
+    </main>
+
+    <footer>Made by Group 3 OCC2</footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
