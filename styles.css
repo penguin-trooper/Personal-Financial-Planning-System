@@ -9,74 +9,137 @@
     --font-title: 'Cinzel', serif;
     --font-body: 'Nunito', sans-serif;
 }
-/* 
-Styling for home-page.html
-text-decoration -> To remove underlines
-overflow -> Removes weird overflow of rectangles
-hover -> To actively show the user that the card is currently being selected
-/*roi calculator page
-*/
-.home-background {
 
+body {
+    font-family: 'Nunito', sans-serif;
+}
+
+.home-background {
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-position: center;
     background-size: cover;
-    background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url("images/investment-home.jpg");
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("images/investment-home.jpg");
+    min-height: 100vh;
+}
 
+/* Hero section */
+
+.hero-section {
+    padding: 90px 24px 60px;
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.hero-section .hero-eyebrow {
+    display: inline-block;
+    background: rgba(237, 246, 189, 0.18);
+    border: 1px solid rgba(237, 246, 189, 0.4);
+    color: #edf6bd;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 6px 20px;
+    border-radius: 20px;
+    margin-bottom: 22px;
+}
+
+.hero-section h1 {
+    font-family: 'Cinzel', serif !important;
+    font-size: clamp(2rem, 5vw, 3.4rem) !important;
+    font-weight: 700 !important;
+    color: #edf6bd !important;
+    line-height: 1.18 !important;
+    letter-spacing: 0.5px !important;
+    margin-bottom: 16px !important;
+}
+
+.hero-section h2 {
+    font-size: clamp(1rem, 2.5vw, 1.3rem) !important;
+    font-weight: 600 !important;
+    color: rgba(237, 246, 189, 0.8) !important;
+    margin-bottom: 20px !important;
+    letter-spacing: 0.3px;
+}
+
+.hero-section p {
+    font-size: 15px !important;
+    color: rgba(255, 255, 255, 0.72) !important;
+    line-height: 1.8 !important;
+    max-width: 620px;
+    margin: 0 auto 32px !important;
 }
 
 .moneta-card {
-    background-color: rgba(217, 217, 217, 0.85);
-    color: #273C2C;
-    border: none;
-    border-radius: 18px;
-    text-decoration: none; 
-    overflow: hidden; 
-    height: 100%;
-    min-height: 100px;
-
-    opacity: 0;
-    transform: translateY(18px);
-    animation: fadeUp 1s forwards;
-
-    transition: translate 0.35s ease, box-shadow 0.35s ease;
+    background: rgba(255, 255, 255, 0.14) !important;
+    border: 1.5px solid rgba(255, 255, 255, 0.28) !important;
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+    border-radius: 20px !important;
+    color: #fff !important;
+    text-decoration: none !important;
+    overflow: hidden !important;
+    height: 100% !important;
+    transition: transform 0.25s ease, box-shadow 0.25s ease !important;
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
 }
 
 .moneta-card:hover {
-    translate: 0 -6px; 
+    transform: translateY(-6px) !important;
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.3) !important;
+}
+
+.moneta-card .card-img-top {
+    opacity: 0.7;
 }
 
 .moneta-card .card-body {
-    padding: 1.5rem;
-    justify-content: center;
-} 
-
-.moneta-card .card-title {
-    color: #281D59;
-    font-weight: 700;
-    text-decoration: none;
+    padding: 22px 20px !important;
 }
 
-.moneta-card .card-text {
-    color: #281D59;
-    text-decoration: none;
+.moneta-card .card-title {
+    font-family: 'Cinzel', serif !important;
+    font-size: 17px !important;
+    font-weight: 700 !important;
+    color: #edf6bd !important;
+    margin-bottom: 10px !important;
+    text-decoration: none !important;
 }
 
 .moneta-card:hover .card-title {
-    color: #4E8D9C;
+    color: #5dc890 !important;
+}
+
+.moneta-card .card-text {
+    font-size: 13px !important;
+    color: rgba(255, 255, 255, 0.72) !important;
+    line-height: 1.7 !important;
+    text-decoration: none !important;
+}
+
+.moneta-card-icon {
+    font-size: 28px;
+    margin-bottom: 4px;
+    display: block;
 }
 
 /* Navbar */
-.navbar-brand{
+.navbar-brand {
     font-family: var(--font-title);
     font-weight: bold;
     font-size: 1.5rem;
     letter-spacing: 0.05em;
 }
 
-.moneta-section { background-color: #37392E; }
-.moneta-section-text { 
+.moneta-section {
+    background-color: #37392E;
+}
+
+.moneta-section-text {
     color: #EDF6BD !important;
     font-family: var(--font-body);
     font-weight: bold;
@@ -88,9 +151,10 @@ hover -> To actively show the user that the card is currently being selected
     font-family: var(--font-body);
 }
 
-.nav-link.active, .nav-link:focus { 
-    background-color: #EDF6BD !important; 
-    color: #37392E !important; 
+.nav-link.active,
+.nav-link:focus {
+    background-color: #EDF6BD !important;
+    color: #37392E !important;
     border-radius: 20px;
     padding-left: 14px !important;
     padding-right: 14px !important;
@@ -119,31 +183,27 @@ hover -> To actively show the user that the card is currently being selected
 }
 
 /* Dropdown menu styling */
-.moneta-dropdown {
-    background-color: var(--dark-green);
-    border: 1px solid var(---army-green);
+.moneta-dropdown-menu {
+    background-color: #2e3a1e;
+    border: 1px solid rgba(255, 255, 255, 0.15);
     border-radius: 10px;
-    min-width: 180px;
-    padding: 6px;
+    min-width: 160px;
 }
 
-.moneta-dropdown .dropdown-item {
-    color: var(--gray-white);
+.moneta-dropdown-menu .dropdown-item {
+    color: #d0d0d0;
     border-radius: 6px;
-    padding: 8px 12px;
+    padding: 8px 14px;
     font-size: 0.9rem;
     display: flex;
     align-items: center;
+    gap: 8px;
+    transition: background 0.15s;
 }
 
-.moneta-dropdown .dropdown-item:hover {
-    background-color: var(---army-green);
+.moneta-dropdown-menu .dropdown-item:hover {
+    background-color: #1a2a10;
     color: #fff;
-}
-
-.moneta-dropdown .dropdown-divider {
-    border-color: var(---army-green);
-    margin: 4px 0;
 }
 
 /* Page Background */
@@ -152,7 +212,7 @@ hover -> To actively show the user that the card is currently being selected
     background-attachment: fixed;
     background-position: center;
     background-size: cover;
-    background-image:url("images/investment_goals.png");
+    background-image: url("images/investment_goals.png");
 }
 
 /* Card */
@@ -281,7 +341,9 @@ hover -> To actively show the user that the card is currently being selected
     transition: opacity 0.18s;
 }
 
-.back-btn:hover { opacity: 0.8; }
+.back-btn:hover {
+    opacity: 0.8;
+}
 
 /* Scroll Reveal */
 .strategy-item {
@@ -289,344 +351,351 @@ hover -> To actively show the user that the card is currently being selected
     transform: translateY(18px);
     animation: fadeUp 0.45s forwards;
 }
-.strategy-item:nth-child(1) { animation-delay: 0.05s; }
-.strategy-item:nth-child(2) { animation-delay: 0.18s; }
-.strategy-item:nth-child(3) { animation-delay: 0.31s; }
+
+.strategy-item:nth-child(1) {
+    animation-delay: 0.05s;
+}
+
+.strategy-item:nth-child(2) {
+    animation-delay: 0.18s;
+}
+
+.strategy-item:nth-child(3) {
+    animation-delay: 0.31s;
+}
 
 @keyframes fadeUp {
-    to { opacity: 1; transform: translateY(0); }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 /*roi calculator page
 */
-        .roi-hero {
-            background-color: #1a2744;
-            padding: 3rem 0 2rem 0;
-        }
+.roi-hero {
+    background-color: #1a2744;
+    padding: 3rem 0 2rem 0;
+}
 
-        .roi-hero h1 {
-            color: #EDF6BD;
-            font-weight: 700;
-        }
+.roi-hero h1 {
+    color: #EDF6BD;
+    font-weight: 700;
+}
 
-        .roi-hero p {
-            color: #EDF6BD;
-            opacity: 0.85;
-        }
+.roi-hero p {
+    color: #EDF6BD;
+    opacity: 0.85;
+}
 
-        .roi-body {
-            background-color: #111e36;
-            min-height: 70vh;
-            padding: 2.5rem 0;
-        }
+.roi-body {
+    background-color: #111e36;
+    min-height: 70vh;
+    padding: 2.5rem 0;
+}
 
-        .roi-form-card {
-            background-color: rgba(217, 217, 217, 0.85);
-            border: none;
-            border-radius: 18px;
-            padding: 2rem;
-        }
+.roi-form-card {
+    background-color: rgba(217, 217, 217, 0.85);
+    border: none;
+    border-radius: 18px;
+    padding: 2rem;
+}
 
-        .roi-form-card label {
-            color: #281D59;
-            font-weight: 600;
-            margin-bottom: 0.3rem;
-        }
+.roi-form-card label {
+    color: #281D59;
+    font-weight: 600;
+    margin-bottom: 0.3rem;
+}
 
-        .roi-form-card .form-control {
-            border-radius: 10px;
-            border: 1.5px solid #281D59;
-            color: #281D59;
-        }
+.roi-form-card .form-control {
+    border-radius: 10px;
+    border: 1.5px solid #281D59;
+    color: #281D59;
+}
 
-        .roi-form-card .form-control:focus {
-            border-color: #4E8D9C;
-            box-shadow: 0 0 0 0.2rem rgba(78,141,156,0.25);
-        }
+.roi-form-card .form-control:focus {
+    border-color: #4E8D9C;
+    box-shadow: 0 0 0 0.2rem rgba(78, 141, 156, 0.25);
+}
 
-        .roi-form-card h4 {
-            color: #281D59;
-            font-weight: 700;
-        }
+.roi-form-card h4 {
+    color: #281D59;
+    font-weight: 700;
+}
 
-        .btn-calculate {
-            background-color: #281D59;
-            color: #EDF6BD;
-            border: none;
-            border-radius: 10px;
-            padding: 0.6rem 2rem;
-            font-weight: 600;
-            transition: background-color 0.2s ease, transform 0.2s ease;
-        }
+.btn-calculate {
+    background-color: #281D59;
+    color: #EDF6BD;
+    border: none;
+    border-radius: 10px;
+    padding: 0.6rem 2rem;
+    font-weight: 600;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
 
-        .btn-calculate:hover {
-            background-color: #4E8D9C;
-            color: white;
-            transform: translateY(-2px);
-        }
+.btn-calculate:hover {
+    background-color: #4E8D9C;
+    color: white;
+    transform: translateY(-2px);
+}
 
-        .btn-reset {
-            background-color: transparent;
-            color: #281D59;
-            border: 1.5px solid #281D59;
-            border-radius: 10px;
-            padding: 0.6rem 2rem;
-            font-weight: 600;
-            transition: all 0.2s ease;
-        }
+.btn-reset {
+    background-color: transparent;
+    color: #281D59;
+    border: 1.5px solid #281D59;
+    border-radius: 10px;
+    padding: 0.6rem 2rem;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
 
-        .btn-reset:hover {
-            background-color: #281D59;
-            color: #EDF6BD;
-        }
+.btn-reset:hover {
+    background-color: #281D59;
+    color: #EDF6BD;
+}
 
-        .result-card {
-            background-color: rgba(217, 217, 217, 0.85);
-            border: none;
-            border-radius: 18px;
-            padding: 2rem;
-            display: none;
-        }
+.result-card {
+    background-color: rgba(217, 217, 217, 0.85);
+    border: none;
+    border-radius: 18px;
+    padding: 2rem;
+    display: none;
+}
 
-        .result-card h4 {
-            color: #281D59;
-            font-weight: 700;
-        }
+.result-card h4 {
+    color: #281D59;
+    font-weight: 700;
+}
 
-        .result-item {
-            border-bottom: 1px solid rgba(39, 60, 44, 0.15);
-            padding: 0.75rem 0;
-        }
+.result-item {
+    border-bottom: 1px solid rgba(39, 60, 44, 0.15);
+    padding: 0.75rem 0;
+}
 
-        .result-item:last-child {
-            border-bottom: none;
-        }
+.result-item:last-child {
+    border-bottom: none;
+}
 
-        .result-label {
-            color: #281D59;
-            font-weight: 600;
-        }
+.result-label {
+    color: #281D59;
+    font-weight: 600;
+}
 
-        .result-value {
-            color: #4E8D9C;
-            font-weight: 700;
-            font-size: 1.1rem;
-        }
+.result-value {
+    color: #4E8D9C;
+    font-weight: 700;
+    font-size: 1.1rem;
+}
 
-        .result-total {
-            color: #281D59;
-            font-weight: 800;
-            font-size: 1.4rem;
-        }
+.result-total {
+    color: #281D59;
+    font-weight: 800;
+    font-size: 1.4rem;
+}
 
-        .result-profit-positive {
-            color: #28a745;
-            font-weight: 800;
-            font-size: 1.4rem;
-        }
+.result-profit-positive {
+    color: #28a745;
+    font-weight: 800;
+    font-size: 1.4rem;
+}
 
-        .result-profit-negative {
-            color: #dc3545;
-            font-weight: 800;
-            font-size: 1.4rem;
-        }
+.result-profit-negative {
+    color: #dc3545;
+    font-weight: 800;
+    font-size: 1.4rem;
+}
 
-        .section-title {
-            color: #EDF6BD;
-            font-weight: 700;
-            margin-bottom: 1.5rem;
-            border-left: 4px solid #4E8D9C;
-            padding-left: 0.75rem;
-        }
+.section-title {
+    color: #EDF6BD;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    border-left: 4px solid #4E8D9C;
+    padding-left: 0.75rem;
+}
 
-        .tip-card {
-            background-color: rgba(217, 217, 217, 0.10);
-            border: 1px solid rgba(237, 246, 189, 0.2);
-            border-radius: 14px;
-            color: #EDF6BD;
-            padding: 1.2rem;
-            margin-bottom: 1rem;
-        }
+.tip-card {
+    background-color: rgba(217, 217, 217, 0.10);
+    border: 1px solid rgba(237, 246, 189, 0.2);
+    border-radius: 14px;
+    color: #EDF6BD;
+    padding: 1.2rem;
+    margin-bottom: 1rem;
+}
 
-        .tip-card .tip-title {
-            font-weight: 600;
-            color: #EDF6BD;
-            margin-bottom: 0.3rem;
-        }
+.tip-card .tip-title {
+    font-weight: 600;
+    color: #EDF6BD;
+    margin-bottom: 0.3rem;
+}
 
-        .tip-card .tip-text {
-            font-size: 0.88rem;
-            opacity: 0.8;
-        }
+.tip-card .tip-text {
+    font-size: 0.88rem;
+    opacity: 0.8;
+}
 
-        .range-label {
-            color: #281D59;
-            font-size: 0.85rem;
-            font-weight: 600;
-        }
+.range-label {
+    color: #281D59;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
 
 /*market insight page
 */
-               .market-hero {
-            background-color: #1a2744;
-            padding: 3rem 0 2rem 0;
-        }
+.market-hero {
+    background-color: #1a2744;
+    padding: 3rem 0 2rem 0;
+}
 
-        .market-hero h1 {
-            color: #EDF6BD;
-            font-weight: 700;
-        }
+.market-hero h1 {
+    color: #EDF6BD;
+    font-weight: 700;
+}
 
-        .market-hero p {
-            color: #EDF6BD;
-            opacity: 0.85;
-        }
+.market-hero p {
+    color: #EDF6BD;
+    opacity: 0.85;
+}
 
-        .market-body {
-            background-color: #111e36;
-            min-height: 60vh;
-            padding: 2.5rem 0;
-        }
+.market-body {
+    background-color: #111e36;
+    min-height: 60vh;
+    padding: 2.5rem 0;
+}
 
-        .insight-card {
-            background-color: rgba(217, 217, 217, 0.85);
-            border: none;
-            border-radius: 18px;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-            height: 100%;
-        }
+.insight-card {
+    background-color: rgba(217, 217, 217, 0.85);
+    border: none;
+    border-radius: 18px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    height: 100%;
+}
 
-        .insight-card:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 8px 24px rgba(0,0,0,0.3);
-        }
+.insight-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
 
-        .insight-card .card-title {
-            color: #281D59;
-            font-weight: 700;
-        }
+.insight-card .card-title {
+    color: #281D59;
+    font-weight: 700;
+}
 
-        .insight-card .card-text {
-            color: #281D59;
-        }
+.insight-card .card-text {
+    color: #281D59;
+}
 
-        .insight-card:hover .card-title {
-            color: #4E8D9C;
-        }
+.insight-card:hover .card-title {
+    color: #4E8D9C;
+}
 
-        .badge-trend-up {
-            background-color: #28a745;
-            color: white;
-            font-size: 0.8rem;
-            padding: 0.3rem 0.6rem;
-            border-radius: 8px;
-        }
+.badge-trend-up {
+    background-color: #28a745;
+    color: white;
+    font-size: 0.8rem;
+    padding: 0.3rem 0.6rem;
+    border-radius: 8px;
+}
 
-        .badge-trend-down {
-            background-color: #dc3545;
-            color: white;
-            font-size: 0.8rem;
-            padding: 0.3rem 0.6rem;
-            border-radius: 8px;
-        }
+.badge-trend-down {
+    background-color: #dc3545;
+    color: white;
+    font-size: 0.8rem;
+    padding: 0.3rem 0.6rem;
+    border-radius: 8px;
+}
 
-        .badge-trend-neutral {
-            background-color: #ffc107;
-            color: #281D59;
-            font-size: 0.8rem;
-            padding: 0.3rem 0.6rem;
-            border-radius: 8px;
-        }
+.badge-trend-neutral {
+    background-color: #ffc107;
+    color: #281D59;
+    font-size: 0.8rem;
+    padding: 0.3rem 0.6rem;
+    border-radius: 8px;
+}
 
-        .section-title {
-            color: #EDF6BD;
-            font-weight: 700;
-            margin-bottom: 1.5rem;
-            border-left: 4px solid #4E8D9C;
-            padding-left: 0.75rem;
-        }
+.news-card {
+    background-color: rgba(217, 217, 217, 0.10);
+    border: 1px solid rgba(237, 246, 189, 0.2);
+    border-radius: 14px;
+    color: #EDF6BD;
+    padding: 1.2rem;
+    margin-bottom: 1rem;
+    transition: background-color 0.2s ease;
+}
 
-        .news-card {
-            background-color: rgba(217, 217, 217, 0.10);
-            border: 1px solid rgba(237, 246, 189, 0.2);
-            border-radius: 14px;
-            color: #EDF6BD;
-            padding: 1.2rem;
-            margin-bottom: 1rem;
-            transition: background-color 0.2s ease;
-        }
+.news-card:hover {
+    background-color: rgba(217, 217, 217, 0.18);
+}
 
-        .news-card:hover {
-            background-color: rgba(217, 217, 217, 0.18);
-        }
+.news-card .news-title {
+    font-weight: 600;
+    color: #EDF6BD;
+    margin-bottom: 0.3rem;
+}
 
-        .news-card .news-title {
-            font-weight: 600;
-            color: #EDF6BD;
-            margin-bottom: 0.3rem;
-        }
+.news-card .news-meta {
+    font-size: 0.82rem;
+    opacity: 0.65;
+}
 
-        .news-card .news-meta {
-            font-size: 0.82rem;
-            opacity: 0.65;
-        }
+.ticker-bar {
+    background-color: #0f1a2e;
+    padding: 0.6rem 0;
+    overflow: hidden;
+    white-space: nowrap;
+}
 
-        .ticker-bar {
-            background-color: #0f1a2e;
-            padding: 0.6rem 0;
-            overflow: hidden;
-            white-space: nowrap;
-        }
+.ticker-content {
+    display: inline-block;
+    animation: ticker 30s linear infinite;
+}
 
-        .ticker-content {
-            display: inline-block;
-            animation: ticker 30s linear infinite;
-        }
+.ticker-item {
+    display: inline-block;
+    margin-right: 3rem;
+    color: #EDF6BD;
+    font-size: 0.9rem;
+}
 
-        .ticker-item {
-            display: inline-block;
-            margin-right: 3rem;
-            color: #EDF6BD;
-            font-size: 0.9rem;
-        }
+.ticker-item .ticker-up {
+    color: #28a745;
+}
 
-        .ticker-item .ticker-up { color: #28a745; }
-        .ticker-item .ticker-down { color: #dc3545; }
+.ticker-item .ticker-down {
+    color: #dc3545;
+}
 
-        @keyframes ticker {
-            0%   { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
-        }
+@keyframes ticker {
+    0% {
+        transform: translateX(0);
+    }
 
-        .filter-btn {
-            background-color: transparent;
-            border: 1px solid rgba(237,246,189,0.4);
-            color: #EDF6BD;
-            border-radius: 20px;
-            padding: 0.3rem 1rem;
-            margin-right: 0.5rem;
-            margin-bottom: 0.5rem;
-            font-size: 0.88rem;
-            transition: all 0.2s ease;
-        }
+    100% {
+        transform: translateX(-50%);
+    }
+}
 
-        .filter-btn:hover, .filter-btn.active {
-            background-color: #4E8D9C;
-            border-color: #4E8D9C;
-            color: white;
-        }
+.filter-btn {
+    background-color: transparent;
+    border: 1px solid rgba(237, 246, 189, 0.4);
+    color: #EDF6BD;
+    border-radius: 20px;
+    padding: 0.3rem 1rem;
+    margin-right: 0.5rem;
+    margin-bottom: 0.5rem;
+    font-size: 0.88rem;
+    transition: all 0.2s ease;
+}
+
+.filter-btn:hover,
+.filter-btn.active {
+    background-color: #4E8D9C;
+    border-color: #4E8D9C;
+    color: white;
+}
 
 /* Section title */
 .section-title {
     font-weight: bold;
-    margin-bottom: 15px;
-}
-
-/* News card container */
-.news-card {
-    background-color: #1f2a38;   /* dark card background */
-    padding: 15px;
-    border-radius: 10px;
     margin-bottom: 15px;
 }
 
@@ -637,15 +706,102 @@ hover -> To actively show the user that the card is currently being selected
     color: #ffffff;
 }
 
-/* News text (this replaces your inline style) */
-.news-card .card-text {
-    color: #EDF6BD;
-    opacity: 0.8;
-    font-size: 0.9rem;
-}
-
 /* Meta info (date + category) */
 .news-meta {
     font-size: 0.8rem;
     color: #cccccc;
-}        
+}
+
+/* Cards section */
+.cards-section {
+    padding: 0 24px 64px;
+}
+
+.cards-section .section-heading {
+    font-family: 'Cinzel', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: #edf6bd;
+    text-align: center;
+    margin-bottom: 32px;
+    letter-spacing: 0.5px;
+}
+
+/* Footer override for home */
+.moneta-section.footer-bar {
+    padding: 18px !important;
+}
+
+/* ── BOOTSTRAP NAVBAR OVERRIDES ── */
+.moneta-navbar {
+    background-color: #2e3129 !important;
+    min-height: 64px;
+    padding: 0 28px;
+}
+
+.moneta-navbar .navbar-brand {
+    font-family: 'Cinzel', serif;
+    font-weight: bold;
+    font-size: 1.5rem;
+    letter-spacing: 0.05em;
+    color: #fff !important;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.moneta-navbar .navbar-brand i {
+    font-size: 18px;
+}
+
+.moneta-navbar .nav-link {
+    color: #fff !important;
+    font-size: 15px;
+    font-weight: 600;
+    padding: 7px 20px !important;
+    border-radius: 20px;
+    transition: background 0.2s;
+}
+
+.moneta-navbar .nav-link:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.moneta-navbar .nav-link.active {
+    background: #f4f5c8 !important;
+    color: #1a2a5e !important;
+}
+
+.moneta-navbar .navbar-toggler {
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+.moneta-navbar .navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 0.75%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
+.moneta-navbar .nav-username {
+    color: #fff;
+    font-weight: 700;
+    font-size: 15px;
+}
+
+.moneta-navbar .nav-avatar-btn {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: #e8e8e8;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #555;
+    font-size: 18px;
+    padding: 0;
+    transition: background 0.2s;
+}
+
+.moneta-navbar .nav-avatar-btn:hover {
+    background: #d0d0d0;
+}
+

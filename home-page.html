@@ -9,241 +9,6 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
-    <style>
-        /* ── HOME PAGE PREMIUM ENHANCEMENTS ── */
-        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Nunito:wght@400;600;700;800&display=swap');
-
-        body {
-            font-family: 'Nunito', sans-serif;
-        }
-
-        /* Hero section */
-        .home-background {
-            background: linear-gradient(135deg,
-                    rgba(39, 60, 44, 0.88) 0%,
-                    rgba(46, 74, 46, 0.78) 40%,
-                    rgba(78, 141, 156, 0.6) 100%), url('images/investment-home.jpg') center/cover no-repeat fixed;
-            min-height: 100vh;
-        }
-
-        .hero-section {
-            padding: 90px 24px 60px;
-            text-align: center;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .hero-section .hero-eyebrow {
-            display: inline-block;
-            background: rgba(237, 246, 189, 0.18);
-            border: 1px solid rgba(237, 246, 189, 0.4);
-            color: #edf6bd;
-            font-size: 12px;
-            font-weight: 700;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            padding: 6px 20px;
-            border-radius: 20px;
-            margin-bottom: 22px;
-        }
-
-        .hero-section h1 {
-            font-family: 'Cinzel', serif !important;
-            font-size: clamp(2rem, 5vw, 3.4rem) !important;
-            font-weight: 700 !important;
-            color: #edf6bd !important;
-            line-height: 1.18 !important;
-            letter-spacing: 0.5px !important;
-            margin-bottom: 16px !important;
-        }
-
-        .hero-section h2 {
-            font-size: clamp(1rem, 2.5vw, 1.3rem) !important;
-            font-weight: 600 !important;
-            color: rgba(237, 246, 189, 0.8) !important;
-            margin-bottom: 20px !important;
-            letter-spacing: 0.3px;
-        }
-
-        .hero-section p {
-            font-size: 15px !important;
-            color: rgba(255, 255, 255, 0.72) !important;
-            line-height: 1.8 !important;
-            max-width: 620px;
-            margin: 0 auto 32px !important;
-        }
-
-        /* Cards section */
-        .cards-section {
-            padding: 0 24px 64px;
-        }
-
-        .cards-section .section-heading {
-            font-family: 'Cinzel', serif;
-            font-size: 22px;
-            font-weight: 700;
-            color: #edf6bd;
-            text-align: center;
-            margin-bottom: 32px;
-            letter-spacing: 0.5px;
-        }
-
-        .moneta-card {
-            background: rgba(255, 255, 255, 0.14) !important;
-            border: 1.5px solid rgba(255, 255, 255, 0.28) !important;
-            backdrop-filter: blur(12px) !important;
-            -webkit-backdrop-filter: blur(12px) !important;
-            border-radius: 20px !important;
-            color: #fff !important;
-            text-decoration: none !important;
-            overflow: hidden !important;
-            height: 100% !important;
-            transition: transform 0.25s ease, box-shadow 0.25s ease !important;
-            animation: none !important;
-            opacity: 1 !important;
-            transform: none !important;
-        }
-
-        .moneta-card:hover {
-            transform: translateY(-6px) !important;
-            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.3) !important;
-        }
-
-        .moneta-card .card-img-top {
-            opacity: 0.7;
-        }
-
-        .moneta-card .card-body {
-            padding: 22px 20px !important;
-        }
-
-        .moneta-card .card-title {
-            font-family: 'Cinzel', serif !important;
-            font-size: 17px !important;
-            font-weight: 700 !important;
-            color: #edf6bd !important;
-            margin-bottom: 10px !important;
-            text-decoration: none !important;
-        }
-
-        .moneta-card:hover .card-title {
-            color: #5dc890 !important;
-        }
-
-        .moneta-card .card-text {
-            font-size: 13px !important;
-            color: rgba(255, 255, 255, 0.72) !important;
-            line-height: 1.7 !important;
-            text-decoration: none !important;
-        }
-
-        .moneta-card-icon {
-            font-size: 28px;
-            margin-bottom: 4px;
-            display: block;
-        }
-
-        /* Footer override for home */
-        .moneta-section.footer-bar {
-            padding: 18px !important;
-        }
-
-        /* ── BOOTSTRAP NAVBAR OVERRIDES ── */
-        .moneta-navbar {
-            background-color: #2e3129 !important;
-            min-height: 64px;
-            padding: 0 28px;
-        }
-
-        .moneta-navbar .navbar-brand {
-            font-family: 'Cinzel', serif;
-            font-weight: bold;
-            font-size: 1.5rem;
-            letter-spacing: 0.05em;
-            color: #fff !important;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .moneta-navbar .navbar-brand i {
-            font-size: 18px;
-        }
-
-        .moneta-navbar .nav-link {
-            color: #fff !important;
-            font-size: 15px;
-            font-weight: 600;
-            padding: 7px 20px !important;
-            border-radius: 20px;
-            transition: background 0.2s;
-        }
-
-        .moneta-navbar .nav-link:hover {
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        .moneta-navbar .nav-link.active {
-            background: #f4f5c8 !important;
-            color: #1a2a5e !important;
-        }
-
-        .moneta-navbar .navbar-toggler {
-            border-color: rgba(255, 255, 255, 0.3);
-        }
-
-        .moneta-navbar .navbar-toggler-icon {
-            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 0.75%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
-        }
-
-        .moneta-navbar .nav-username {
-            color: #fff;
-            font-weight: 700;
-            font-size: 15px;
-        }
-
-        .moneta-navbar .nav-avatar-btn {
-            width: 38px;
-            height: 38px;
-            border-radius: 50%;
-            background: #e8e8e8;
-            border: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #555;
-            font-size: 18px;
-            padding: 0;
-            transition: background 0.2s;
-        }
-
-        .moneta-navbar .nav-avatar-btn:hover {
-            background: #d0d0d0;
-        }
-
-        .moneta-dropdown-menu {
-            background-color: #2e3a1e;
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 10px;
-            min-width: 160px;
-        }
-
-        .moneta-dropdown-menu .dropdown-item {
-            color: #d0d0d0;
-            border-radius: 6px;
-            padding: 8px 14px;
-            font-size: 0.9rem;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: background 0.15s;
-        }
-
-        .moneta-dropdown-menu .dropdown-item:hover {
-            background-color: #1a2a10;
-            color: #fff;
-        }
-    </style>
     <link rel="stylesheet" href="styles.css">
     <title>Moneta – Home</title>
 
@@ -291,13 +56,11 @@
                         <i class="bi bi-person-fill"></i>
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end moneta-dropdown-menu" aria-labelledby="profileDropdown">
-                        <li><a class="dropdown-item" href="profile/profile.html"><i class="bi bi-person"></i>
-                                Profile</a></li>
-                        <li><a class="dropdown-item" href="#"><i class="bi bi-gear"></i> Settings</a></li>
+                        <li><a class="dropdown-item" href="profile/profile.html"><i class="bi bi-gear"></i> Settings</a></li>
                         <li>
                             <hr class="dropdown-divider" style="border-color:rgba(255,255,255,0.15);">
                         </li>
-                        <li><a class="dropdown-item" href="#"><i class="bi bi-box-arrow-right"></i> Log Out</a></li>
+                        <li><a class="dropdown-item" href="Public/login.html"><i class="bi bi-box-arrow-right"></i> Log Out</a></li>
                     </ul>
                 </div>
             </div>
@@ -371,7 +134,7 @@
 
     <!-- Made by our group-->
     <section>
-        <div class="moneta-section p-5 text-center" style="background-color: #2e3129;">
+        <div class="moneta-section p-5 text-center footer-bar">
             <p class="moneta-section-text text-white m-0">Made by Group 3 OCC2</p>
         </div>
 
