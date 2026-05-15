@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Moneta - Financial Planner</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Nunito:wght@400;600;700&display=swap"
+        rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <link rel="stylesheet" href="css/financial-planner.css">
+</head>
+
+<body>
+
+    <nav class="navbar navbar-expand-lg moneta-navbar sticky-top" id="mainNavbar">
+        <div class="container-fluid px-4">
+
+            <!-- Brand / Logo -->
+            <a class="navbar-brand" href="home-page.html">
+                Moneta
+            </a>
+
+            <!-- Mobile Toggler -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
+                aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- Collapsible Nav Links -->
+            <div class="collapse navbar-collapse justify-content-center" id="navbarContent">
+                <ul class="navbar-nav gap-1">
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="home-page.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="financial_planner.html">Financial Planner</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="roi-calculator.html">ROI Calculator</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="market-insight.html">Market Insights</a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- User profile dropdown -->
+            <div class="d-flex align-items-center gap-2">
+                <span class="nav-username d-none d-lg-inline">User Name</span>
+                <div class="dropdown">
+                    <button class="nav-avatar-btn" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-person-fill"></i>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end moneta-dropdown-menu" aria-labelledby="profileDropdown">
+                        <li><a class="dropdown-item" href="profile/profile.html"><i class="bi bi-gear"></i> Settings</a></li>
+                        <li>
+                            <hr class="dropdown-divider" style="border-color:rgba(255,255,255,0.15);">
+                        </li>
+                        <li><a class="dropdown-item" href="/logout"><i class="bi bi-box-arrow-right"></i> Log Out</a></li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </nav>
+
+
+    <main>
+
+        <div class="glass-card">
+            <h2 class="section-title"><a href="Investment_goals.html">Investment Goals</a></h2>
+            <div class="goals-body">
+                <div class="goals-left">
+                    <span class="goal-tag" id="fp-goal-name">Education Funds</span>
+                    <div class="goal-amount" id="fp-goal-amount">RM10,000<span id="fp-goal-target">/RM20,000</span>
+                    </div>
+                    <div class="progress-wrap">
+                        <div class="progress-bar-bg">
+                            <div class="progress-bar-fill" id="progressBar"></div>
+                        </div>
+                        <span class="progress-pct" id="fp-goal-pct">50%</span>
+                    </div>
+                </div>
+                <div class="goal-info-box">
+                    <p id="fp-goal-info">Duration: 4 years<br>RM416.67/month</p>
+                    <button class="fund-btn" onclick="window.location.href='Investment_goals.html'">Fund</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="glass-card">
+            <h2 class="section-title"><a href="investment-strategy.html">Investment Strategies</a></h2>
+            <div class="strategies-body">
+
+                <div class="strategy-duration">
+                    <p>Duration: 4 years</p>
+                    <span class="risk-badge">Moderate Risk</span>
+                </div>
+
+                <div class="strategy-box">
+                    <h3>Recommended Strategy</h3>
+                    <div class="tag-list">
+                        <span class="strat-tag">Bonds</span>
+                        <span class="strat-tag">Balanced Funds</span>
+                    </div>
+                </div>
+
+                <div class="allocation-box">
+                    <h3>Suggested Allocation</h3>
+                    <div class="alloc-table">
+                        <div class="alloc-row">
+                            <span class="alloc-tag">Bonds</span>
+                            <span class="alloc-pct">50%</span>
+                        </div>
+                        <div class="alloc-row">
+                            <span class="alloc-tag">Balanced Funds</span>
+                            <span class="alloc-pct">50%</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </main>
+
+    <div class="back-btn-wrap" style="margin-bottom: 32px;">
+        <button class="back-btn" onclick="history.back()">Back</button>
+    </div>
+
+    <footer>Made by Group 3 OCC2</footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        window.addEventListener('load', () => {
+            // Preset goals (must match Investment_goals.html)
+            const PRESETS = [
+                { name: 'Education Funds', target: 20000, duration: '4 years' },
+                { name: 'Emergency Fund', target: 15000, duration: '2 years' },
+                { name: 'Home Purchase', target: 80000, duration: '10 years' },
+                { name: 'Retirement Fund', target: 500000, duration: '30 years' },
+                { name: 'Travel Fund', target: 8000, duration: '1 year' },
+            ];
+
+            // Load custom goals and state from localStorage
+            let goals = [...PRESETS];
+            try {
+                const custom = JSON.parse(localStorage.getItem('moneta_custom_goals') || '[]');
+                custom.forEach(g => goals.push(g));
+            } catch (e) { }
+
+            let goalIndex = 0, currentAmt = 10000;
+            try {
+                const s = JSON.parse(localStorage.getItem('moneta_state') || 'null');
+                if (s && typeof s.goalIndex === 'number') {
+                    goalIndex = Math.min(s.goalIndex, goals.length - 1);
+                    // read per-goal amount; fall back to 0 if not set
+                    currentAmt = (s.amounts && s.amounts[goalIndex] != null)
+                        ? s.amounts[goalIndex] : 0;
+                }
+            } catch (e) { }
+
+            const g = goals[goalIndex];
+            const target = g.target;
+            const current = Math.min(currentAmt, target);
+            const pct = Math.round((current / target) * 100);
+            const remaining = target - current;
+
+            // Parse duration correctly (years or months)
+            const parts = g.duration.split(' ');
+            const durNum = parseFloat(parts[0]);
+            const isMonths = parts[1] && parts[1].startsWith('month');
+            const months = isMonths ? durNum : durNum * 12;
+            const monthly = (remaining > 0 && months > 0) ? (remaining / months) : 0;
+
+            const fmt = n => 'RM ' + n.toLocaleString('en-MY', { minimumFractionDigits: 0, maximumFractionDigits: 2 });
+
+            document.getElementById('fp-goal-name').textContent = g.name;
+            document.getElementById('fp-goal-amount').childNodes[0].textContent = fmt(current);
+            document.getElementById('fp-goal-target').textContent = ' / ' + fmt(target);
+            document.getElementById('fp-goal-pct').textContent = pct + '%';
+            document.getElementById('fp-goal-info').innerHTML =
+                'Duration: ' + g.duration + '<br>' + fmt(+monthly.toFixed(2)) + '/month';
+
+            // Animate progress bar
+            const bar = document.getElementById('progressBar');
+            bar.style.width = '0%';
+            setTimeout(() => { bar.style.width = pct + '%'; }, 100);
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Investment Strategy</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Nunito:wght@400;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="css/investment-strategy.css">
+</head>
+
+<body>
+
+    <nav class="navbar navbar-expand-lg moneta-navbar sticky-top">
+        <div class="container-fluid px-4">
+            <a class="navbar-brand" href="home-page.html">
+                Moneta
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-center" id="navbarContent">
+                <ul class="navbar-nav gap-1">
+                    <li class="nav-item"><a class="nav-link" href="home-page.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="Financial_planner.html">Financial Planner</a>
+                    </li>
+                    <li class="nav-item"><a class="nav-link" href="roi-calculator.html">ROI Calculator</a></li>
+                    <li class="nav-item"><a class="nav-link" href="market-insight.html">Market Insights</a></li>
+                </ul>
+            </div>
+            <div class="d-flex align-items-center gap-2">
+                <span class="nav-username d-none d-lg-inline">User Name</span>
+                <div class="dropdown">
+                    <button class="nav-avatar-btn" data-bs-toggle="dropdown">
+                        <i class="bi bi-person-fill"></i>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end moneta-dropdown-menu">
+                        <li><a class="dropdown-item" href="profile/profile.html"><i class="bi bi-gear"></i> Account
+                                Settings</a></li>
+                        <li>
+                            <hr class="dropdown-divider" style="border-color:rgba(255,255,255,0.15);">
+                        </li>
+                        <li><a class="dropdown-item" href="#"><i class="bi bi-box-arrow-right"></i> Log Out</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <div class="glass-card">
+
+            <h1 class="section-title">Investment Strategy</h1>
+
+            <div class="strategy-meta">
+                <span class="meta-duration">Duration: 4 years</span>
+                <span class="risk-badge">Moderate Risk</span>
+            </div>
+
+            <h2 class="section-heading">Recommended Strategy for You:</h2>
+
+            <div class="strategy-list">
+
+                <div class="strategy-item">
+                    <div class="item-header">
+                        <a href="https://www.investopedia.com/terms/b/bond.asp" target="_blank">Bonds</a>
+                        <span class="pct-badge">50%</span>
+                    </div>
+                    <p>Bonds are offered by most brokerage platforms. A bond is a fixed-income investment product where
+                        individuals lend money to a government or company at a specified interest rate for a
+                        predetermined period. The entity repays individuals with interest in addition to the original
+                        face value of the bond.</p>
+                    <p>Bonds are used by companies, municipalities, states, and sovereign governments to finance
+                        projects and operations.</p>
+                    <p>Owners of bonds are debtholders, or creditors, of the issuer. Bond details include the end date
+                        when the principal of the loan is due to be paid to the bond owner, and they usually include the
+                        terms for variable or fixed interest payments made by the borrower.</p>
+                </div>
+
+                <div class="strategy-item">
+                    <div class="item-header">
+                        <a href="https://www.investopedia.com/terms/b/balancedfund.asp" target="_blank">Balanced
+                            Fund</a>
+                        <span class="pct-badge">50%</span>
+                    </div>
+                    <p>A balanced fund is a mutual fund made up of both stocks and bonds expressed as a fixed
+                        percentage. The investment objective is to achieve a mixture of growth and income. For instance,
+                        balanced funds typically have a fixed asset allocation of 70% stocks and 30% bonds.</p>
+                    <p>Bonds are debt instruments that usually pay a stable, fixed rate of return. Balanced mutual funds
+                        are geared toward investors with low risk tolerance who are looking for a mixture of safety,
+                        income, and modest capital appreciation.</p>
+                </div>
+
+            </div>
+
+            <div class="other-strategies">
+                Other investment strategies:
+                <a href="https://www.investopedia.com/terms/s/stock.asp" target="_blank">Stock</a>,
+                <a href="https://www.investopedia.com/terms/c/commodity.asp" target="_blank">Commodities</a>,
+                <a href="https://www.investopedia.com/terms/e/etf.asp" target="_blank">ETFs</a>
+            </div>
+
+            <div class="back-btn-wrap">
+                <button class="back-btn" onclick="history.back()">Back</button>
+            </div>
+
+        </div>
+    </main>
+
+    <footer>Made by Group 3 OCC2</footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

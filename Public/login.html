@@ -2,7 +2,7 @@
 <html>
 <head>
     <title>Login - Moneta</title>
-    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="css/auth.css">
     <!-- 1. Add Font Awesome for the eye icon -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
@@ -15,10 +15,10 @@
 
         <div class="tabs">
             <span class="active">LOG IN</span>
-            <span onclick="window.location.href='/signup.html'">SIGN UP</span>
+            <span onclick="window.location.href='signup.html'">SIGN UP</span>
         </div>
 
-        <form action="/login" method="POST">
+        <form action="login" method="POST">
             <label>Email</label>
             <input type="email" name="email" placeholder="example@gmail.com" required>
             
@@ -29,7 +29,7 @@
             </div>
 
             <div class="link">
-                <a href="/forgot.html">Forgot password?</a>
+                <a href="forgot.html">Forgot password?</a>
             </div>
 
             <div class="button-row">
@@ -37,7 +37,7 @@
 
                 <span class="divider">or</span>
 
-                <button type="button" class="google-btn" onclick="window.location.href='/auth/google'">
+                <button type="button" class="google-btn" onclick="window.location.href='auth/google'">
                     <img src="https://developers.google.com/identity/images/g-logo.png" width="18">
                     Log In
                 </button>

@@ -33,7 +33,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, 'Public')));
 
 passport.serializeUser((user, done) => done(null, user));
 passport.deserializeUser((obj, done) => done(null, obj));
@@ -178,7 +178,7 @@ app.post('/login', async (req, res) => {
 
         if (match) {
             req.session.user = { id: user.id, username: user.username }; 
-            return res.redirect('/dashboard.html');
+            return res.redirect('/home-page.html');
         } else {
             return res.redirect('/login.html?error=password');
         }
@@ -200,7 +200,7 @@ app.get('/auth/google/callback',
             id: req.user.id,
             username: req.user.displayName
         };
-        res.redirect('/dashboard.html');
+        res.redirect('/home-page.html');
     }
 );
 
@@ -345,7 +345,7 @@ app.get('/dashboard.html', (req, res) => {
     if (!req.session.user) {
         return res.redirect('/login.html');
     }
-    res.sendFile(path.join(__dirname, 'public', 'dashboard.html')); 
+    res.redirect('/home-page.html');
 });
 
 app.listen(3000, () => {
