@@ -699,14 +699,23 @@ body {
     margin-bottom: 15px;
 }
 
-/* News title */
 .news-title {
     font-size: 1.1rem;
     font-weight: 600;
     color: #ffffff;
 }
 
+<<<<<<< calculator-backend
+
+.news-card .card-text {
+    color: #EDF6BD;
+    opacity: 0.8;
+    font-size: 0.9rem;
+}
+
+=======
 /* Meta info (date + category) */
+>>>>>>> main
 .news-meta {
     font-size: 0.8rem;
     color: #cccccc;
