@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sign Up - Moneta</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="container">
+    <div class="left">
+        <h1>MONETA</h1>
+        <div class="tabs">
+            <span onclick="window.location.href='login.html'">LOG IN</span>
+            <span class="active">SIGN UP</span>
+        </div>
+        <form action="/signup-step1" method="POST">
+            <label>Full Name</label>
+            <input type="text" name="name" placeholder="Enter your full name" required>
+            
+            <label>Email</label>
+            <input type="email" name="email" placeholder="example@gmail.com" required>
+            
+            <div class="button-row">
+                <button type="submit" class="btn-teal">Sign Up</button>
+                <span class="divider">or</span>
+                <button type="button" class="google-btn" onclick="window.location.href='/auth/google'">
+                    <img src="https://developers.google.com/identity/images/g-logo.png" width="18">
+                    Sign Up
+                </button>
+            </div>
+        </form>
+
+        <p id="error-msg" style="color: red; font-size: 12px; font-weight: bold; margin-top: 15px;"></p>
+
+        <script>
+            // This reads the URL parameters (like ?error=email_exists) and shows the message
+            const params = new URLSearchParams(window.location.search);
+            const error = params.get('error');
+            const msgBox = document.getElementById('error-msg');
+
+            if (error === 'email_exists') {
+                msgBox.innerText = "This email is already registered. Please use another email.";
+            } else if (error === 'email_failed') {
+                msgBox.innerText = "Could not send verification email. Please try again.";
+            } else if (error === 'server') {
+                msgBox.innerText = "Internal server error. Please try again later.";
+            }
+        </script>
+    </div>
+    <div class="right"></div>
+</div>
+</body>
+</html>

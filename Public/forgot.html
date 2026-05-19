@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Forget Password - Moneta</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="container">
+    <div class="left">
+        <h1>MONETA</h1>
+        <h3>Forget Password</h3>
+        <p class="sub-text">Provide the email address linked with your account to reset your password</p>
+        
+        <form action="/forgot-step1" method="POST">
+            <label>Email</label>
+            <input type="email" name="email" placeholder="example@gmail.com" required>
+            
+            <div class="button-row">
+                <button type="submit" class="btn-teal">Request Password Reset Link</button>
+                <a href="login.html" class="btn-cancel">Cancel</a>
+            </div>
+        </form>
+        <p id="msg"></p>
+    </div>
+    <div class="right"></div>
+</div>
+</body>
+</html>
