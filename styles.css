@@ -373,171 +373,246 @@ body {
 
 /*roi calculator page
 */
-.roi-hero {
-    background-color: #1a2744;
-    padding: 3rem 0 2rem 0;
-}
+<style>
+        body {
+       background-color: #111e36;
+        margin: 0;
+       padding: 0;
+        }
 
-.roi-hero h1 {
-    color: #EDF6BD;
-    font-weight: 700;
-}
+        .roi-hero {
+            background-color: #1a2744;
+            padding: 3rem 0 2rem 0;
+        }
 
-.roi-hero p {
-    color: #EDF6BD;
-    opacity: 0.85;
-}
+        .roi-hero h1 {
+            color: #EDF6BD;
+            font-weight: 700;
+        }
 
-.roi-body {
-    background-color: #111e36;
-    min-height: 70vh;
-    padding: 2.5rem 0;
-}
+        .roi-hero p {
+            color: #EDF6BD;
+            opacity: 0.85;
+        }
 
-.roi-form-card {
-    background-color: rgba(217, 217, 217, 0.85);
-    border: none;
-    border-radius: 18px;
-    padding: 2rem;
-}
+        .roi-body {
+            background-color: #111e36;
+            min-height: 70vh;
+            padding: 2.5rem 0;
+        }
 
-.roi-form-card label {
-    color: #281D59;
-    font-weight: 600;
-    margin-bottom: 0.3rem;
-}
+        .roi-form-card {
+            background-color: rgba(217, 217, 217, 0.85);
+            border: none;
+            border-radius: 18px;
+            padding: 2rem;
+        }
 
-.roi-form-card .form-control {
-    border-radius: 10px;
-    border: 1.5px solid #281D59;
-    color: #281D59;
-}
+        .roi-form-card label {
+            color: #281D59;
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+        }
 
-.roi-form-card .form-control:focus {
-    border-color: #4E8D9C;
-    box-shadow: 0 0 0 0.2rem rgba(78, 141, 156, 0.25);
-}
+        .roi-form-card .form-control {
+            border-radius: 10px;
+            border: 1.5px solid #281D59;
+            color: #281D59;
+        }
 
-.roi-form-card h4 {
-    color: #281D59;
-    font-weight: 700;
-}
+        .roi-form-card .form-control:focus {
+            border-color: #4E8D9C;
+            box-shadow: 0 0 0 0.2rem rgba(78,141,156,0.25);
+        }
 
-.btn-calculate {
-    background-color: #281D59;
-    color: #EDF6BD;
-    border: none;
-    border-radius: 10px;
-    padding: 0.6rem 2rem;
-    font-weight: 600;
-    transition: background-color 0.2s ease, transform 0.2s ease;
-}
+        .roi-form-card h4 {
+            color: #281D59;
+            font-weight: 700;
+        }
 
-.btn-calculate:hover {
-    background-color: #4E8D9C;
-    color: white;
-    transform: translateY(-2px);
-}
+        .btn-calculate {
+            background-color: #281D59;
+            color: #EDF6BD;
+            border: none;
+            border-radius: 10px;
+            padding: 0.6rem 2rem;
+            font-weight: 600;
+            transition: background-color 0.2s ease, transform 0.2s ease;
+        }
 
-.btn-reset {
-    background-color: transparent;
-    color: #281D59;
-    border: 1.5px solid #281D59;
-    border-radius: 10px;
-    padding: 0.6rem 2rem;
-    font-weight: 600;
-    transition: all 0.2s ease;
-}
+        .btn-calculate:hover {
+            background-color: #4E8D9C;
+            color: white;
+            transform: translateY(-2px);
+        }
 
-.btn-reset:hover {
-    background-color: #281D59;
-    color: #EDF6BD;
-}
+        .btn-reset {
+            background-color: transparent;
+            color: #281D59;
+            border: 1.5px solid #281D59;
+            border-radius: 10px;
+            padding: 0.6rem 2rem;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
 
-.result-card {
-    background-color: rgba(217, 217, 217, 0.85);
-    border: none;
-    border-radius: 18px;
-    padding: 2rem;
-    display: none;
-}
+        .btn-reset:hover {
+            background-color: #281D59;
+            color: #EDF6BD;
+        }
 
-.result-card h4 {
-    color: #281D59;
-    font-weight: 700;
-}
+        .result-card {
+            background-color: rgba(217, 217, 217, 0.85);
+            border: none;
+            border-radius: 18px;
+            padding: 2rem;
+            display: none;
+        }
 
-.result-item {
-    border-bottom: 1px solid rgba(39, 60, 44, 0.15);
-    padding: 0.75rem 0;
-}
+        .result-card h4 {
+            color: #281D59;
+            font-weight: 700;
+        }
 
-.result-item:last-child {
-    border-bottom: none;
-}
+        .result-item {
+            border-bottom: 1px solid rgba(39, 60, 44, 0.15);
+            padding: 0.75rem 0;
+        }
 
-.result-label {
-    color: #281D59;
-    font-weight: 600;
-}
+        .result-item:last-child {
+            border-bottom: none;
+        }
 
-.result-value {
-    color: #4E8D9C;
-    font-weight: 700;
-    font-size: 1.1rem;
-}
+        .result-label {
+            color: #281D59;
+            font-weight: 600;
+        }
 
-.result-total {
-    color: #281D59;
-    font-weight: 800;
-    font-size: 1.4rem;
-}
+        .result-value {
+            color: #4E8D9C;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
 
-.result-profit-positive {
-    color: #28a745;
-    font-weight: 800;
-    font-size: 1.4rem;
-}
+        .result-total {
+            color: #281D59;
+            font-weight: 800;
+            font-size: 1.4rem;
+        }
 
-.result-profit-negative {
-    color: #dc3545;
-    font-weight: 800;
-    font-size: 1.4rem;
-}
+        .result-profit-positive {
+            color: #28a745;
+            font-weight: 800;
+            font-size: 1.4rem;
+        }
 
-.section-title {
-    color: #EDF6BD;
-    font-weight: 700;
-    margin-bottom: 1.5rem;
-    border-left: 4px solid #4E8D9C;
-    padding-left: 0.75rem;
-}
+        .result-profit-negative {
+            color: #dc3545;
+            font-weight: 800;
+            font-size: 1.4rem;
+        }
 
-.tip-card {
-    background-color: rgba(217, 217, 217, 0.10);
-    border: 1px solid rgba(237, 246, 189, 0.2);
-    border-radius: 14px;
-    color: #EDF6BD;
-    padding: 1.2rem;
-    margin-bottom: 1rem;
-}
+        .section-title {
+            color: #EDF6BD;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid #4E8D9C;
+            padding-left: 0.75rem;
+        }
 
-.tip-card .tip-title {
-    font-weight: 600;
-    color: #EDF6BD;
-    margin-bottom: 0.3rem;
-}
+        /* Interest section below ROI — sits on the dark background */
+        .interest-section {
+            background-color: #111e36;
+            padding: 2.5rem 0;
+        }
 
-.tip-card .tip-text {
-    font-size: 0.88rem;
-    opacity: 0.8;
-}
+        .interest-card {
+            background-color: rgba(217, 217, 217, 0.85);
+            border: none;
+            border-radius: 18px;
+            padding: 2rem;
+        }
 
-.range-label {
-    color: #281D59;
-    font-size: 0.85rem;
-    font-weight: 600;
-}
+        .interest-card label {
+            color: #281D59;
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+        }
+
+        .interest-card h4 {
+            color: #281D59;
+            font-weight: 700;
+        }
+
+        .interest-card .form-control,
+        .interest-card .form-select {
+            border-radius: 10px;
+            border: 1.5px solid #281D59;
+            color: #281D59;
+        }
+
+        .interest-card .form-control:focus,
+        .interest-card .form-select:focus {
+            border-color: #4E8D9C;
+            box-shadow: 0 0 0 0.2rem rgba(78,141,156,0.25);
+        }
+
+        .interest-result-card {
+            background-color: rgba(217, 217, 217, 0.85);
+            border: none;
+            border-radius: 18px;
+            padding: 2rem;
+            display: none;
+        }
+
+        .interest-result-card h4 {
+            color: #281D59;
+            font-weight: 700;
+        }
+
+        .tip-card {
+            background-color: rgba(217, 217, 217, 0.10);
+            border: 1px solid rgba(237, 246, 189, 0.2);
+            border-radius: 14px;
+            color: #EDF6BD;
+            padding: 1.2rem;
+            margin-bottom: 1rem;
+        }
+
+        .tip-card .tip-title {
+            font-weight: 600;
+            color: #EDF6BD;
+            margin-bottom: 0.3rem;
+        }
+
+        .tip-card .tip-text {
+            font-size: 0.88rem;
+            opacity: 0.8;
+        }
+
+        .range-label {
+            color: #281D59;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .divider-line {
+            border-top: 1px solid rgba(237, 246, 189, 0.15);
+            margin: 0;
+        }
+
+        /* Nav tab styling for Simple / Compound toggle */
+        .interest-tabs .nav-link {
+            color: #281D59;
+            font-weight: 600;
+            border-radius: 10px 10px 0 0;
+        }
+
+        .interest-tabs .nav-link.active {
+            background-color: #281D59;
+            color: #EDF6BD;
+            border-color: #281D59;
+        }
 
 /*market insight page
 */
