@@ -211,7 +211,65 @@
         crossorigin="anonymous"></script>
 
     <script>
+        function calculateROI() {
+            const initial = parseFloat(document.getElementById('initialInvestment').value) || 0;
+            const monthly = parseFloat(document.getElementById('monthlyContribution').value) || 0;
+            const annualRate = parseFloat(document.getElementById('annualRate').value) / 100;
+            const years = parseInt(document.getElementById('years').value);
+            const n = parseInt(document.getElementById('compounding').value);
 
+            if (initial <= 0 && monthly <= 0) {
+                alert('Please enter an investment amount.');
+                return;
+            }
+
+            const r = annualRate / n;
+            const t = years * n;
+
+            // Compound interest for initial investment
+            const finalInitial = initial * Math.pow(1 + r, t);
+
+            // Future value of monthly contributions (annuity)
+            let finalContributions = 0;
+            if (monthly > 0) {
+                const monthlyRate = annualRate / 12;
+                const months = years * 12;
+                finalContributions = monthly * ((Math.pow(1 + monthlyRate, months) - 1) / monthlyRate);
+            }
+
+            const finalValue = finalInitial + finalContributions;
+            const totalContributed = initial + (monthly * years * 12);
+            const totalInterest = finalValue - totalContributed;
+            const profit = finalValue - totalContributed;
+            const roi = ((finalValue - totalContributed) / totalContributed) * 100;
+
+            const fmt = (val) => 'RM ' + val.toLocaleString('en-MY', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+            document.getElementById('resInitial').textContent = fmt(initial);
+            document.getElementById('resContributions').textContent = fmt(monthly * years * 12);
+            document.getElementById('resInterest').textContent = fmt(totalInterest);
+            document.getElementById('resFinal').textContent = fmt(finalValue);
+            document.getElementById('resROI').textContent = roi.toFixed(2) + '%';
+
+            const profitEl = document.getElementById('resProfit');
+            profitEl.textContent = (profit >= 0 ? '+' : '') + fmt(profit);
+            profitEl.className = profit >= 0 ? 'result-profit-positive' : 'result-profit-negative';
+
+            document.getElementById('resultCard').style.display = 'block';
+            document.getElementById('resultPlaceholder').style.display = 'none';
+        }
+
+        function resetForm() {
+            document.getElementById('initialInvestment').value = '';
+            document.getElementById('monthlyContribution').value = '0';
+            document.getElementById('annualRate').value = 6;
+            document.getElementById('rateDisplay').textContent = '6%';
+            document.getElementById('years').value = 5;
+            document.getElementById('yearsDisplay').textContent = '5 years';
+            document.getElementById('compounding').value = '12';
+            document.getElementById('resultCard').style.display = 'none';
+            document.getElementById('resultPlaceholder').style.display = 'block';
+        }
     </script>
 </body>
 </html>
