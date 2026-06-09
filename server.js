@@ -385,4 +385,5 @@ app.get('/logout', (req, res) => {
 
 app.listen(3000, () => {
     console.log("Server running on port 3000");
+    require('child_process').exec('start http://localhost:3000/login.html');
 });

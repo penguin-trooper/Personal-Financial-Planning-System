@@ -68,7 +68,62 @@ GOOGLE_CLIENT_ID=your_google_client_id_here
 GOOGLE_CLIENT_SECRET=your_google_client_secret_here
 ```
 
-### 3. Initialize the MySQL Database
+### 3. Get your Google OAuth Credentials (GOOGLE_CLIENT_ID,GOOGLE_CLIENT_SECRET)
+
+1.Go to the Google Cloud Console.
+
+2.Create a new Project (or select your existing one).
+
+3.Navigate to APIs & Services > OAuth consent screen and set it up (Internal).
+
+4.Go to APIs & Services -> Credentials.
+
+5.Click Create Credentials -> OAuth client ID.
+
+6.Choose Web application as the application type.
+
+7.Under Authorized redirect URIs, add the callback URL for your backend (http://localhost:3000/auth/google/callback).
+
+8.Click Create. You will be given a Client ID and a Client Secret
+
+### 4. Get EMAIL_PASS
+
+1. Turn on 2-Step Verification
+Go to your Google Account management page and log in.
+
+On the left navigation panel, click on Security.
+
+Scroll down to the "How you sign in to Google" section.
+
+Look for 2-Step Verification.
+
+If it says "Off", click it and follow the on-screen instructions to turn it on (you will need to link your phone number).
+
+If it says "On", proceed to Step 2.
+
+2. Generate the App Password
+While still on the Security page, type "App passwords" into the search bar at the top of your Google Account settings. (Note: Google recently moved this setting, so searching for it is the fastest way to find it).
+
+Alternatively, click on 2-Step Verification, scroll all the way to the bottom of that page, and click on App passwords.
+
+You may be asked to sign in to your Google account again to verify it is you.
+
+In the "Select app" dropdown menu, choose Other (Custom name).
+
+Type a name for it so you remember what it is for (e.g., "Moneta App" or "Node Mailer").
+
+Click the Generate button.
+
+3. Use the App Password
+A popup box will appear with a 16-letter password highlighted in yellow.
+
+Copy this exact password. Do not include the spaces when you copy it.
+
+Open your .env file and paste it like this:
+
+Click "Done" on the Google popup. You won't be able to see this specific password again once you close the window, so if you lose it, you will just need to delete it from the list and generate a new one.
+
+### 5. Initialize the MySQL Database
 
 Log into MySQL Workbench or the MySQL command line and execute:
 
@@ -87,7 +142,7 @@ CREATE TABLE IF NOT EXISTS users (
 
 > **Note:** The `password` field is allowed to be `NULL` so users who register via Google OAuth can be stored without a local password.
 
-### 4. Start the Server
+### 6. Start the Server
 
 Run:
 
