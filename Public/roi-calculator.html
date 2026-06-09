@@ -2,17 +2,15 @@
 <html lang="en">
 
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Moneta - ROI Calculator</title>
     <link
-        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Nunito:wght@400;600;700;800&display=swap"
-        rel="stylesheet">
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Nunito:wght@400;600;700&display=swap"
+        rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="css/styles.css">
-    <title>Moneta - ROI Calculator</title>
-
 </head>
 
 <body>
@@ -57,13 +55,11 @@
                         <i class="bi bi-person-fill"></i>
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end moneta-dropdown-menu" aria-labelledby="profileDropdown">
-                        <li><a class="dropdown-item" href="profile/profile.html"><i class="bi bi-gear"></i> Settings</a>
-                        </li>
+                        <li><a class="dropdown-item" href="profile/profile.html"><i class="bi bi-gear"></i> Settings</a></li>
                         <li>
                             <hr class="dropdown-divider" style="border-color:rgba(255,255,255,0.15);">
                         </li>
-                        <li><a class="dropdown-item" href="/logout"><i class="bi bi-box-arrow-right"></i> Log
-                                Out</a></li>
+                        <li><a class="dropdown-item" href="Public/login.html"><i class="bi bi-box-arrow-right"></i> Log Out</a></li>
                     </ul>
                 </div>
             </div>
@@ -71,69 +67,57 @@
         </div>
     </nav>
 
-
-
     <!-- Hero -->
     <div class="roi-hero">
         <div class="container text-center">
-            <h1>ROI Calculator</h1>
-            <p class="lead">Calculate your Return on Investment and estimate interest growth on your capital.</p>
+            <h1>Financial Calculators</h1>
+            <p class="lead">Estimate your potential returns based on your investment amount, expected rate of return, and investment duration.</p>
         </div>
     </div>
 
-    <!-- ── ROI CALCULATOR SECTION ── -->
+    <!-- ===== ROI CALCULATOR SECTION ===== -->
     <div class="roi-body">
         <div class="container">
-            <div class="row g-4">
+            <h2 class="calc-section-header">📊 ROI Calculator</h2>
 
+            <div class="row g-4 mb-0">
                 <!-- ROI Form -->
                 <div class="col-lg-6">
-                    <h4 class="section-title">Return on Investment (ROI)</h4>
+                    <h4 class="section-title">Calculate Your ROI</h4>
                     <div class="roi-form-card">
-                        <h4 class="mb-1">Investment Details</h4>
-                        <p style="color:#4E8D9C; font-size:0.85rem; margin-bottom:1.5rem;">
-                            Formula: (Current Value − Initial Cost) ÷ Initial Cost × 100
-                        </p>
+                        <h4 class="mb-4">Investment Details</h4>
 
                         <div class="mb-3">
-                            <label for="initialCost">Initial Cost (RM)</label>
-                            <input type="number" class="form-control" id="initialCost" placeholder="e.g. 10000" min="0">
+                            <label for="roiInitial">Initial Investment (RM)</label>
+                            <input type="number" class="form-control" id="roiInitial" placeholder="e.g. 10000" min="0">
                         </div>
 
                         <div class="mb-4">
-                            <label for="currentValue">Current Value (RM)</label>
-                            <input type="number" class="form-control" id="currentValue" placeholder="e.g. 13500"
-                                min="0">
+                            <label for="roiFinal">Final Value / Return (RM)</label>
+                            <input type="number" class="form-control" id="roiFinal" placeholder="e.g. 13500" min="0">
                         </div>
 
                         <div class="d-flex gap-2">
-                            <button class="btn-calculate" onclick="calculateROI()">Calculate ROI</button>
-                            <button class="btn-reset" onclick="resetROI()">Reset</button>
+                            <button class="btn-calculate" onclick="calculateROI()">Calculate</button>
+                            <button class="btn-reset" onclick="resetROIForm()">Reset</button>
                         </div>
                     </div>
                 </div>
 
                 <!-- ROI Results -->
                 <div class="col-lg-6">
-                    <h4 class="section-title">Your ROI Results</h4>
+                    <h4 class="section-title">Your Results</h4>
 
-                    <!-- Placeholder -->
-                    <div id="roiPlaceholder" class="tip-card text-center py-4">
-                        <div style="font-size:2.5rem;">📊</div>
-                        <p class="tip-title mt-2">Enter your investment details and click Calculate</p>
-                        <p class="tip-text">Your ROI summary will appear here.</p>
-                    </div>
-
-                    <!-- Results card -->
-                    <div class="result-card" id="roiResultCard">
+                    <!-- Result card (hidden until calculated) -->
+                    <div class="result-card" id="roiResultCard" style="display:none;">
                         <h4 class="mb-3">📊 ROI Summary</h4>
                         <div class="result-item d-flex justify-content-between">
-                            <span class="result-label">Initial Cost</span>
+                            <span class="result-label">Initial Investment</span>
                             <span class="result-value" id="roiResInitial">-</span>
                         </div>
                         <div class="result-item d-flex justify-content-between">
-                            <span class="result-label">Current Value</span>
-                            <span class="result-value" id="roiResCurrent">-</span>
+                            <span class="result-label">Final Value</span>
+                            <span class="result-value" id="roiResFinal">-</span>
                         </div>
                         <div class="result-item d-flex justify-content-between align-items-center">
                             <span class="result-label">Profit / Loss</span>
@@ -144,21 +128,280 @@
                             <span class="result-total" id="roiResROI">-</span>
                         </div>
                     </div>
-                </div>
 
+                    <!-- Placeholder -->
+                    <div id="roiResultPlaceholder" class="tip-card text-center py-4">
+                        <div style="font-size:2.5rem;">📈</div>
+                        <p class="tip-title mt-2">Enter your details and click Calculate</p>
+                        <p class="tip-text">Your ROI summary will appear here.</p>
+                    </div>
+
+                    <!-- Tips -->
+                    <div class="mt-4">
+                        <h4 class="section-title">Investment Tips</h4>
+                        <div class="tip-card">
+                            <div class="tip-title">💡 Start Early</div>
+                            <div class="tip-text">The earlier you invest, the more time compound interest has to grow your wealth. Even small amounts make a big difference over time.</div>
+                        </div>
+                        <div class="tip-card">
+                            <div class="tip-title">📅 Invest Consistently</div>
+                            <div class="tip-text">Regular monthly contributions — even small ones — can dramatically increase your final returns through dollar-cost averaging.</div>
+                        </div>
+                        <div class="tip-card">
+                            <div class="tip-title">🔄 Reinvest Your Returns</div>
+                            <div class="tip-text">Compounding works best when you reinvest your earnings. Choose monthly or quarterly compounding for maximum growth.</div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- Footer -->
+    <!-- ===== INTEREST CALCULATOR SECTION ===== -->
+    <div class="interest-section">
+        <div class="container">
+            <h2 class="calc-section-header">💰 Interest Calculator</h2>
+
+            <div class="row g-4">
+                <!-- Interest Form -->
+                <div class="col-lg-6">
+                    <h4 class="section-title">Calculate Interest</h4>
+                    <div class="interest-card">
+                        <h4 class="mb-4">Interest Calculation Details</h4>
+
+                        <div class="mb-3">
+                            <label for="interestType">Interest Type</label>
+                            <select class="form-control" id="interestType" onchange="toggleInterestFields()">
+                                <option value="compound">Compound Interest</option>
+                                <option value="simple">Simple Interest</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="principal">Principal Amount (RM)</label>
+                            <input type="number" class="form-control" id="principal" placeholder="e.g. 10000" min="0">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="monthlyContribution">Monthly Contribution (RM) <span style="font-weight:400; font-size:0.85rem;">(optional)</span></label>
+                            <input type="number" class="form-control" id="monthlyContribution" placeholder="e.g. 500" min="0" value="0">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="interestRate">Annual Interest Rate (%)</label>
+                            <input type="number" class="form-control" id="interestRate" placeholder="e.g. 5" min="0" step="0.01">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="timePeriod">Time Period (Years)</label>
+                            <input type="number" class="form-control" id="timePeriod" placeholder="e.g. 5" min="0" step="0.5">
+                        </div>
+
+                        <!-- Only for Compound Interest -->
+                        <div class="mb-4" id="compoundingFreqField">
+                            <label for="compoundingFreq">Compounding Frequency</label>
+                            <select class="form-control" id="compoundingFreq">
+                                <option value="1">Annually</option>
+                                <option value="2">Semi-Annually</option>
+                                <option value="4">Quarterly</option>
+                                <option value="12">Monthly</option>
+                                <option value="365">Daily</option>
+                            </select>
+                        </div>
+
+                        <div class="d-flex gap-2">
+                            <button class="btn-calculate" onclick="calculateInterest()">Calculate</button>
+                            <button class="btn-reset" onclick="resetInterestForm()">Reset</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Interest Results (now rich display) -->
+                <div class="col-lg-6">
+                    <h4 class="section-title">Interest Results</h4>
+
+                    <div class="result-card" id="interestResultCard" style="display:none;">
+                        <h4 class="mb-3" id="interestResultTitle">📈 Compound Interest Results</h4>
+                        <div class="result-item d-flex justify-content-between">
+                            <span class="result-label">Principal Amount</span>
+                            <span class="result-value" id="intResPrincipal">-</span>
+                        </div>
+                        <div class="result-item d-flex justify-content-between">
+                            <span class="result-label">Total Contributions</span>
+                            <span class="result-value" id="intResContributions">-</span>
+                        </div>
+                        <div class="result-item d-flex justify-content-between">
+                            <span class="result-label">Total Interest Earned</span>
+                            <span class="result-value" id="intResEarned">-</span>
+                        </div>
+                        <div class="result-item d-flex justify-content-between align-items-center">
+                            <span class="result-label">Final Value</span>
+                            <span class="result-total" id="intResTotal">-</span>
+                        </div>
+                        <div class="result-item d-flex justify-content-between align-items-center">
+                            <span class="result-label">Total Profit / Loss</span>
+                            <span id="intResProfit">-</span>
+                        </div>
+                        <div class="result-item d-flex justify-content-between align-items-center">
+                            <span class="result-label">ROI</span>
+                            <span class="result-total" id="intResROI">-</span>
+                        </div>
+                        <div class="result-item d-flex justify-content-between">
+                            <span class="result-label">Annual Interest Rate</span>
+                            <span class="result-value" id="intResRate">-</span>
+                        </div>
+                    </div>
+
+                    <!-- Placeholder -->
+                    <div id="interestResultPlaceholder" class="tip-card text-center py-4">
+                        <div style="font-size:2.5rem;">💡</div>
+                        <p class="tip-title mt-2">Enter your details and click Calculate</p>
+                        <p class="tip-text">Your interest calculation will appear here.</p>
+                    </div>
+
+                    <!-- Educational Info -->
+                    <div class="mt-4">
+                        <h4 class="section-title">Understanding Interest</h4>
+                        <div class="tip-card">
+                            <div class="tip-title">🔄 Compound Interest</div>
+                            <div class="tip-text">Interest is calculated on both the principal and previously earned interest. The more frequently it compounds, the more you earn.</div>
+                        </div>
+                        <div class="tip-card">
+                            <div class="tip-title">📊 Simple Interest</div>
+                            <div class="tip-text">Interest is calculated only on the principal amount. It grows linearly over time and is easier to predict.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Made by our group-->
     <section>
-        <div class="moneta-section p-5 text-center">
-            <p class="moneta-section-text">Made by Group 3 OCC2</p>
+        <div class="moneta-section p-5 text-center footer-bar">
+            <p class="moneta-section-text text-white m-0">Made by Group 3 OCC2</p>
         </div>
     </section>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
-        crossorigin="anonymous"></script>
-</body>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        const fmt = (val) => 'RM ' + val.toLocaleString('en-MY', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+        // ===== ROI CALCULATOR =====
+        // Simple: ROI % = (Final Value - Initial Investment) / Initial Investment * 100
+        function calculateROI() {
+            const initial = parseFloat(document.getElementById('roiInitial').value) || 0;
+            const finalVal = parseFloat(document.getElementById('roiFinal').value) || 0;
+
+            if (initial <= 0) {
+                alert('Please enter a valid initial investment amount.');
+                return;
+            }
+            if (finalVal < 0) {
+                alert('Please enter a valid final value.');
+                return;
+            }
+
+            const profit = finalVal - initial;
+            const roi = (profit / initial) * 100;
+
+            document.getElementById('roiResInitial').textContent = fmt(initial);
+            document.getElementById('roiResFinal').textContent = fmt(finalVal);
+            document.getElementById('roiResROI').textContent = roi.toFixed(2) + '%';
+
+            const profitEl = document.getElementById('roiResProfit');
+            profitEl.textContent = (profit >= 0 ? '+' : '') + fmt(profit);
+            profitEl.className = profit >= 0 ? 'result-profit-positive' : 'result-profit-negative';
+
+            document.getElementById('roiResultCard').style.display = 'block';
+            document.getElementById('roiResultPlaceholder').style.display = 'none';
+        }
+
+        function resetROIForm() {
+            document.getElementById('roiInitial').value = '';
+            document.getElementById('roiFinal').value = '';
+            document.getElementById('roiResultCard').style.display = 'none';
+            document.getElementById('roiResultPlaceholder').style.display = 'block';
+        }
+
+        // ===== INTEREST CALCULATOR =====
+        function toggleInterestFields() {
+            const interestType = document.getElementById('interestType').value;
+            document.getElementById('compoundingFreqField').style.display =
+                interestType === 'compound' ? 'block' : 'none';
+        }
+
+        function calculateInterest() {
+            const principal = parseFloat(document.getElementById('principal').value) || 0;
+            const monthly = parseFloat(document.getElementById('monthlyContribution').value) || 0;
+            const rate = parseFloat(document.getElementById('interestRate').value) / 100 || 0;
+            const time = parseFloat(document.getElementById('timePeriod').value) || 0;
+            const interestType = document.getElementById('interestType').value;
+
+            if (principal <= 0 || rate <= 0 || time <= 0) {
+                alert('Please enter valid values for all required fields.');
+                return;
+            }
+
+            let finalValue = 0;
+
+            if (interestType === 'compound') {
+                const n = parseInt(document.getElementById('compoundingFreq').value);
+                // Compound growth on principal
+                finalValue = principal * Math.pow(1 + (rate / n), n * time);
+                // Future value of monthly contributions (annuity)
+                if (monthly > 0) {
+                    const monthlyRate = rate / 12;
+                    const months = time * 12;
+                    finalValue += monthly * ((Math.pow(1 + monthlyRate, months) - 1) / monthlyRate);
+                }
+            } else {
+                // Simple Interest: A = P(1 + rt), no compounding on contributions
+                finalValue = principal * (1 + rate * time);
+                // For simple interest, contributions just add up without compounding
+                finalValue += monthly * time * 12;
+            }
+
+            const totalContributed = principal + (monthly * time * 12);
+            const interestEarned = finalValue - totalContributed;
+            const profit = finalValue - totalContributed;
+            const roi = (profit / totalContributed) * 100;
+
+            const resultTitle = interestType === 'compound' ? '📈 Compound Interest Results' : '📊 Simple Interest Results';
+            document.getElementById('interestResultTitle').textContent = resultTitle;
+
+            document.getElementById('intResPrincipal').textContent = fmt(principal);
+            document.getElementById('intResContributions').textContent = fmt(monthly * time * 12);
+            document.getElementById('intResEarned').textContent = fmt(interestEarned);
+            document.getElementById('intResTotal').textContent = fmt(finalValue);
+            document.getElementById('intResRate').textContent = (rate * 100).toFixed(2) + '%';
+            document.getElementById('intResROI').textContent = roi.toFixed(2) + '%';
+
+            const profitEl = document.getElementById('intResProfit');
+            profitEl.textContent = (profit >= 0 ? '+' : '') + fmt(profit);
+            profitEl.className = profit >= 0 ? 'result-profit-positive' : 'result-profit-negative';
+
+            document.getElementById('interestResultCard').style.display = 'block';
+            document.getElementById('interestResultPlaceholder').style.display = 'none';
+        }
+
+        function resetInterestForm() {
+            document.getElementById('principal').value = '';
+            document.getElementById('monthlyContribution').value = '0';
+            document.getElementById('interestRate').value = '';
+            document.getElementById('timePeriod').value = '';
+            document.getElementById('interestType').value = 'compound';
+            document.getElementById('compoundingFreq').value = '12';
+            document.getElementById('interestResultCard').style.display = 'none';
+            document.getElementById('interestResultPlaceholder').style.display = 'block';
+            toggleInterestFields();
+        }
+
+        // Initialize on page load
+        window.addEventListener('load', function () {
+            toggleInterestFields();
+        });
+    </script>
+</body>
 </html>

@@ -417,14 +417,18 @@ main::before {
 }
 
 /* FOOTER */
-footer {
-    text-align: center;
-    color: rgba(0, 0, 0, 0.55);
-    font-size: 14px;
-    font-weight: 600;
-    padding: 12px 0 18px;
-    position: relative;
-    z-index: 1;
+.moneta-section {
+    background-color: #37392E;
+}
+
+.moneta-section-text {
+    color: #EDF6BD !important;
+    font-family: var(--font-body);
+    font-weight: bold;
+}
+
+.moneta-section.footer-bar {
+    padding: 18px !important;
 }
 
 /* responsive */
