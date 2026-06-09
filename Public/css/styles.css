@@ -19,7 +19,7 @@ body {
     background-attachment: fixed;
     background-position: center;
     background-size: cover;
-    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("images/investment-home.jpg");
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("../images/investment-home.jpg");
     min-height: 100vh;
 }
 
@@ -212,7 +212,7 @@ body {
     background-attachment: fixed;
     background-position: center;
     background-size: cover;
-    background-image: url("images/investment_goals.png");
+    background-image: url("/images/investment_goals.png");
 }
 
 /* Card */
@@ -770,19 +770,14 @@ body {
     margin-bottom: 15px;
 }
 
+/* News title */
 .news-title {
     font-size: 1.1rem;
     font-weight: 600;
     color: #ffffff;
 }
 
-
-.news-card .card-text {
-    color: #EDF6BD;
-    opacity: 0.8;
-    font-size: 0.9rem;
-}
-
+/* Meta info (date + category) */
 .news-meta {
     font-size: 0.8rem;
     color: #cccccc;
