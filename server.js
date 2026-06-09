@@ -7,6 +7,7 @@ const db = require('./db');
 const bcrypt = require('bcrypt');
 const session = require('express-session');
 const path = require('path');
+const nodemailer = require('nodemailer');
 
 const app = express();
 
@@ -15,15 +16,12 @@ const isStrongPassword = (password) => {
     return regex.test(password);
 };
 
-
-//middleware
-
 app.use(session({
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
     cookie: { 
-        maxAge: 600000,  // auto logout for 10 minutes
+        maxAge: 600000,
         httpOnly: true,
         secure: false 
     } 
@@ -33,7 +31,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, 'Public')));
 
 passport.serializeUser((user, done) => done(null, user));
 passport.deserializeUser((obj, done) => done(null, obj));
@@ -43,12 +41,43 @@ passport.use(new GoogleStrategy({
     clientSecret: process.env.GOOGLE_CLIENT_SECRET, 
     callbackURL: "/auth/google/callback"
 },
+async (accessToken, refreshToken, profile, done) => {
+    const email = profile.emails && profile.emails[0] ? profile.emails[0].value : null;
+    const googleId = profile.id;
+    const fallbackUsername = email ? email.split('@')[0] : `user_${googleId.substring(0, 6)}`;
 
-(accessToken, refreshToken, profile, done) => {
-    return done(null, profile);
+    if (!email) {
+        return done(new Error("No email found from Google account"), null);
+    }
+
+    try {
+        const [existingUsers] = await db.query(
+            'SELECT * FROM users WHERE email = ? OR google_id = ?', 
+            [email, googleId]
+        );
+
+        if (existingUsers.length > 0) {
+            const user = existingUsers[0];
+            if (!user.google_id) {
+                await db.query('UPDATE users SET google_id = ? WHERE id = ?', [googleId, user.id]);
+                user.google_id = googleId;
+            }
+            return done(null, user);
+        }
+
+        const [result] = await db.query(
+            'INSERT INTO users (username, email, google_id) VALUES (?, ?, ?)',
+            [fallbackUsername, email, googleId]
+        );
+
+        const [newUser] = await db.query('SELECT * FROM users WHERE id = ?', [result.insertId]);
+        return done(null, newUser[0]);
+
+    } catch (err) {
+        console.error(err);
+        return done(err, null);
+    }
 }));
-
-const nodemailer = require('nodemailer');
 
 const transporter = nodemailer.createTransport({
     service: 'gmail',
@@ -178,7 +207,7 @@ app.post('/login', async (req, res) => {
 
         if (match) {
             req.session.user = { id: user.id, username: user.username }; 
-            return res.redirect('/dashboard.html');
+            return res.redirect('/home-page.html');
         } else {
             return res.redirect('/login.html?error=password');
         }
@@ -187,7 +216,6 @@ app.post('/login', async (req, res) => {
         res.redirect('/login.html?error=server');
     }
 });
-
 
 app.get('/auth/google',
     passport.authenticate('google', { scope: ['profile', 'email'] })
@@ -198,9 +226,9 @@ app.get('/auth/google/callback',
     (req, res) => {
         req.session.user = {
             id: req.user.id,
-            username: req.user.displayName
+            username: req.user.username
         };
-        res.redirect('/dashboard.html');
+        res.redirect('/home-page.html');
     }
 );
 
@@ -265,7 +293,6 @@ app.post('/verify-forgot-otp', (req, res) => {
     }
 });
 
-
 app.post('/reset-password-final', async (req, res) => {
     try {
         const { password, confirm } = req.body;
@@ -302,27 +329,24 @@ app.post('/resend-otp', async (req, res) => {
     try {
         let email, name, sessionKey;
 
-        // Check if the user is in the Signup flow
         if (req.session.signup) {
             email = req.session.signup.email;
             name = req.session.signup.name || "User";
             sessionKey = 'signup';
         } 
-        // Check if the user is in the Forgot Password flow
         else if (req.session.forgot) {
             email = req.session.forgot.email;
             name = "User";
             sessionKey = 'forgot';
         } 
         
-        // If neither exists, the session is empty
         if (!email) {
             console.error("Resend failed: No active session data found");
             return res.status(400).send("Session expired. Please start over.");
         }
 
         const newOTP = Math.floor(100000 + Math.random() * 900000);
-        req.session[sessionKey].otp = newOTP; // Update the correct session object
+        req.session[sessionKey].otp = newOTP;
 
         const mailOptions = {
             from: '"Moneta Team" <no-reply@moneta.com>',
@@ -345,11 +369,7 @@ app.get('/dashboard.html', (req, res) => {
     if (!req.session.user) {
         return res.redirect('/login.html');
     }
-    res.sendFile(path.join(__dirname, 'public', 'dashboard.html')); 
-});
-
-app.listen(3000, () => {
-    console.log("Server running on port 3000");
+    res.redirect('/home-page.html');
 });
 
 app.get('/logout', (req, res) => {
@@ -358,9 +378,11 @@ app.get('/logout', (req, res) => {
             console.error(err);
             return res.send("Error logging out");
         }
-
         res.clearCookie('connect.sid');
-
         res.redirect('/login.html');
     });
+});
+
+app.listen(3000, () => {
+    console.log("Server running on port 3000");
 });

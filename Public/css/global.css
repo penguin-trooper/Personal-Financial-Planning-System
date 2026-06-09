@@ -1,0 +1,149 @@
+:root {
+    --army-green: #37392E;
+    --yellow: #EDF6BD;
+    --dark-green: #273C2C;
+    --dark-blue: #281D59;
+    --light-blue: #4E8D9C;
+    --light-green: #85C69B;
+    --gray-white: #D9D9D9;
+    --font-title: 'Cinzel', serif;
+    --font-body: 'Nunito', sans-serif;
+}
+
+body {
+    font-family: var(--font-body);
+}
+
+.navbar-brand {
+    font-family: var(--font-title);
+    font-weight: bold;
+    font-size: 1.5rem;
+    letter-spacing: 0.05em;
+}
+
+.moneta-section {
+    background-color: #37392E;
+}
+
+.moneta-section-text {
+    color: #EDF6BD !important;
+    font-family: var(--font-body);
+    font-weight: bold;
+}
+
+.navbar-nav .nav-link {
+    transition: background-color 0.3s ease, color 0.3s ease, padding 0.3s ease;
+    border-radius: 20px;
+    font-family: var(--font-body);
+}
+
+.nav-link.active,
+.nav-link:focus {
+    background-color: #EDF6BD !important;
+    color: #37392E !important;
+    border-radius: 20px;
+    padding-left: 14px !important;
+    padding-right: 14px !important;
+}
+
+.nav-link:hover {
+    background-color: var(--yellow);
+    color: var(--army-green) !important;
+    border-radius: 20px;
+}
+
+.profile-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: var(--gray-white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.dropdown-toggle::after {
+    display: none;
+}
+
+.moneta-dropdown-menu {
+    background-color: #2e3a1e;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 10px;
+    min-width: 160px;
+}
+
+.moneta-dropdown-menu .dropdown-item {
+    color: #d0d0d0;
+    border-radius: 6px;
+    padding: 8px 14px;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: background 0.15s;
+}
+
+.moneta-dropdown-menu .dropdown-item:hover {
+    background-color: #1a2a10;
+    color: #fff;
+}
+
+.moneta-navbar {
+    background-color: #2e3129 !important;
+    min-height: 64px;
+    padding: 0 28px;
+}
+
+.moneta-navbar .navbar-brand {
+    font-family: 'Cinzel', serif;
+    font-weight: bold;
+    font-size: 1.5rem;
+    letter-spacing: 0.05em;
+    color: #fff !important;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.moneta-navbar .nav-link {
+    color: #fff !important;
+    font-size: 15px;
+    font-weight: 600;
+    padding: 7px 20px !important;
+    border-radius: 20px;
+    transition: background 0.2s;
+}
+
+.moneta-navbar .nav-link:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.moneta-navbar .nav-link.active {
+    background: #f4f5c8 !important;
+    color: #1a2a5e !important;
+}
+
+.moneta-navbar .nav-username {
+    color: #fff;
+    font-weight: 700;
+    font-size: 15px;
+}
+
+.moneta-navbar .nav-avatar-btn {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: #e8e8e8;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #555;
+    font-size: 18px;
+    padding: 0;
+}
+
+.moneta-navbar .nav-avatar-btn:hover {
+    background: #d0d0d0;
+}

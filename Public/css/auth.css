@@ -69,7 +69,7 @@ body {
 /* ===== RIGHT SECTION ===== */
 .right {
     flex: 1;
-    background: url('/LoginPage.jpg') no-repeat center;
+    background: url('../images/LoginPage.jpg') no-repeat center;
     background-size: cover;
     border-radius: 20px; 
 }
