@@ -19,7 +19,7 @@ body {
     background-attachment: fixed;
     background-position: center;
     background-size: cover;
-    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("images/investment-home.jpg");
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("../images/investment-home.jpg");
     min-height: 100vh;
 }
 
