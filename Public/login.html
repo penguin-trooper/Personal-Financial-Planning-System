@@ -75,6 +75,8 @@ if (error === 'user') {
     msgBox.innerText = "Wrong password.";
 } else if (error === 'server') {
     msgBox.innerText = "Something went wrong. Try again.";
+} else if (error === 'session') {
+    msgBox.innerText = "Your session expired. Please log in again.";
 }
 </script>
 
