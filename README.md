@@ -75,14 +75,13 @@ Log into MySQL Workbench or the MySQL command line and execute:
 ```sql
 CREATE DATABASE IF NOT EXISTS finance_app;
 USE finance_app;
-
+SELECT * FROM users;
 CREATE TABLE IF NOT EXISTS users (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    username VARCHAR(255) NOT NULL UNIQUE,
-    email VARCHAR(255) NOT NULL UNIQUE,
-    password VARCHAR(255) NULL,
+    username VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE,
     google_id VARCHAR(255) UNIQUE,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    password VARCHAR(255) NULL
 );
 ```
 
