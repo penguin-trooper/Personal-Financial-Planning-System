@@ -35,6 +35,9 @@ app.use(passport.session());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'Public')));
+const marketRoutes = require('./Routes/market');
+
+app.use('/api/market', marketRoutes);
 app.use('/images', express.static(path.join(__dirname, 'images')));
 app.get('/styles.css', (req, res) => res.sendFile(path.join(__dirname, 'styles.css')));
 
