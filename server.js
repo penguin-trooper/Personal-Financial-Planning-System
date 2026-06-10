@@ -34,7 +34,7 @@ app.use(passport.session());
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, 'Public')));
 app.use('/images', express.static(path.join(__dirname, 'images')));
 app.get('/styles.css', (req, res) => res.sendFile(path.join(__dirname, 'styles.css')));
 
@@ -387,7 +387,7 @@ app.get('/dashboard.html', (req, res) => {
     if (!req.session.user) {
         return res.redirect('/login.html');
     }
-    res.sendFile(path.join(__dirname, 'public', 'dashboard.html')); 
+    res.redirect('/home-page.html'); 
 });
 
 app.get('/roi-calculator.html', requireLogin, (req, res) => {
@@ -478,6 +478,7 @@ app.get('/api/market/news', requireLogin, async (req, res) => {
 
 app.listen(3000, () => {
     console.log("Server running on port 3000");
+    require('child_process').exec('start http://localhost:3000/login.html');
 });
 
 app.get('/logout', (req, res) => {
