@@ -144,7 +144,7 @@ CREATE TABLE IF NOT EXISTS users (
 
 ### 6. Start the Server
 
-Run:
+To Run the Website:
 
 ```bash
 npm start
@@ -155,6 +155,7 @@ The console should display:
 ```text
 Server running on port 3000
 ```
+or 
 
 Open your browser and navigate to:
 
