@@ -19,7 +19,7 @@
             <div class="collapse navbar-collapse justify-content-center" id="navbarContent">
                 <ul class="navbar-nav gap-1">
                     <li class="nav-item"><a class="nav-link" aria-current="page" href="home-page.html">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="Financial_planner.html">Financial Planner</a></li>
+                    <li class="nav-item"><a class="nav-link" href="financial_planner.html">Financial Planner</a></li>
                     <li class="nav-item"><a class="nav-link" href="roi-calculator.html">ROI Calculator</a></li>
                     <li class="nav-item"><a class="nav-link active" href="market-insight.html">Market Insights</a></li>
                 </ul>
@@ -63,7 +63,10 @@
 
             <div class="row g-4">
                 <div class="col-md-6">
-                    <h4 class="section-title">Top Stocks</h4>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h4 class="section-title mb-0">Top Stocks</h4>
+                        <button class="btn btn-sm btn-outline-light" type="button" data-bs-toggle="modal" data-bs-target="#stockPickerModal">Choose Stocks</button>
+                    </div>
                     <div id="stockList"><div class="insight-card card p-3 mb-3">Loading live market data...</div></div>
                 </div>
                 <div class="col-md-6">
@@ -80,11 +83,70 @@
         </div>
     </section>
 
+    <div class="modal fade" id="stockPickerModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Choose Stocks</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="d-flex gap-2 mb-3">
+                        <input type="text" id="stockSearch" class="form-control" placeholder="Search stocks">
+                        <button type="button" class="btn btn-outline-secondary" id="selectAllStocks">Select All</button>
+                        <button type="button" class="btn btn-outline-secondary" id="clearStocks">Clear Selection</button>
+                    </div>
+                    <div class="small mb-2">Selected: <span id="selectedStockCount">0</span></div>
+                    <div id="stockPickerList" class="list-group" style="max-height:320px; overflow:auto;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
     <script>
         const escapeHtml = (value) => String(value).replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[char]));
         const pct = (value) => `${Number(value).toFixed(2)}%`;
         const money = (value) => Number(value).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        const STOCK_ORDER = ['NVDA', 'AAPL', 'TSLA', 'GOOGL', 'AMZN', 'MSFT', 'META', 'AMD', 'NFLX', 'INTC', 'PLTR', 'CRM', 'ORCL', 'JPM', 'V', 'MA', 'KO', 'PEP', 'DIS', 'UBER'];
+        let liveStocks = [];
+        let pickerStocks = [];
+        let selectedStocks = JSON.parse(localStorage.getItem('selectedStocks') || '[]').map((s) => String(s).toUpperCase());
+
+        function normalizeStock(value) {
+            return String(value || '').toUpperCase();
+        }
+
+        function getDisplayedStocks(data) {
+            const bySymbol = new Map((data || []).map((item) => [normalizeStock(item.symbol), item]));
+            const selected = selectedStocks.map((symbol) => bySymbol.get(symbol)).filter(Boolean);
+            const ranked = (data || [])
+                .filter((item) => !selectedStocks.includes(normalizeStock(item.symbol)))
+                .sort((a, b) => Number(b.change) - Number(a.change));
+            return selected.concat(ranked).slice(0, 5);
+        }
+
+        function persistSelections() {
+            localStorage.setItem('selectedStocks', JSON.stringify(selectedStocks));
+        }
+
+        function renderPicker() {
+            const el = document.getElementById('stockPickerList');
+            const query = normalizeStock(document.getElementById('stockSearch').value);
+            const filtered = pickerStocks.filter((stock) => !query || normalizeStock(stock.symbol).includes(query) || normalizeStock(stock.name).includes(query));
+            el.innerHTML = filtered.map((stock) => {
+                const symbol = normalizeStock(stock.symbol);
+                const checked = selectedStocks.includes(symbol) ? 'checked' : '';
+                return `
+                    <label class="list-group-item d-flex align-items-center justify-content-between">
+                        <span>
+                            <input class="form-check-input me-2 stock-checkbox" type="checkbox" value="${symbol}" ${checked}>
+                            ${escapeHtml(stock.symbol)} <small class="text-muted">${escapeHtml(stock.name)}</small>
+                        </span>
+                    </label>`;
+            }).join('') || '<div class="text-center py-3">Data unavailable</div>';
+            document.getElementById('selectedStockCount').textContent = String(selectedStocks.length);
+        }
 
         function renderOverview(data) {
             const el = document.getElementById('overviewCards');
@@ -94,9 +156,10 @@
             }
             el.innerHTML = data.map((item) => {
                 const up = Number(item.change) >= 0;
+                const url = item.url || 'https://finance.yahoo.com';
                 return `
                     <div class="col-md-3 col-6">
-                        <a href="${item.url}" target="_blank" rel="noopener" style="text-decoration:none;">
+                        <a href="${url}" target="_blank" rel="noopener" style="text-decoration:none;">
                             <div class="insight-card card p-3 text-center">
                                 <div class="card-body p-1">
                                     <p class="card-text mb-1">${escapeHtml(item.name)}</p>
@@ -110,15 +173,18 @@
         }
 
         function renderStocks(data) {
+            liveStocks = data || [];
             const el = document.getElementById('stockList');
             if (!data || !data.length) {
                 el.innerHTML = '<div class="insight-card card p-3 mb-3">Data unavailable</div>';
                 return;
             }
-            el.innerHTML = data.map((stock) => {
+            const display = getDisplayedStocks(data);
+            el.innerHTML = display.map((stock) => {
                 const up = Number(stock.change) >= 0;
+                const url = stock.url || 'https://finance.yahoo.com';
                 return `
-                    <a href="${stock.url}" target="_blank" rel="noopener" style="text-decoration:none;">
+                    <a href="${url}" target="_blank" rel="noopener" style="text-decoration:none;">
                         <div class="insight-card card p-3 mb-3">
                             <div class="card-body p-1 d-flex justify-content-between align-items-center">
                                 <div>
@@ -133,6 +199,12 @@
                         </div>
                     </a>`;
             }).join('');
+            pickerStocks = data.slice().sort((a, b) => {
+                const ai = STOCK_ORDER.indexOf(normalizeStock(a.symbol));
+                const bi = STOCK_ORDER.indexOf(normalizeStock(b.symbol));
+                return (ai === -1 ? 999 : ai) - (bi === -1 ? 999 : bi);
+            });
+            renderPicker();
         }
 
         function renderTicker(data) {
@@ -158,8 +230,9 @@
                 const description = article.description || '';
                 const shortDescription = description.length > 120 ? `${description.slice(0, 120)}...` : description;
                 const published = article.publishedAt ? new Date(article.publishedAt).toLocaleDateString() : '';
+                const url = article.url || 'https://finance.yahoo.com';
                 return `
-                    <a href="${article.url}" target="_blank" rel="noopener" style="text-decoration:none;">
+                    <a href="${url}" target="_blank" rel="noopener" style="text-decoration:none;">
                         <div class="news-card">
                             <div class="news-title">${escapeHtml(article.title)}</div>
                             <div class="card-text news-text">${escapeHtml(shortDescription)}</div>
@@ -168,6 +241,41 @@
                     </a>`;
             }).join('');
         }
+
+        document.addEventListener('click', (event) => {
+            if (event.target.matches('.stock-checkbox')) {
+                const symbol = normalizeStock(event.target.value);
+                if (event.target.checked) {
+                    selectedStocks = Array.from(new Set([...selectedStocks, symbol]));
+                } else {
+                    selectedStocks = selectedStocks.filter((item) => item !== symbol);
+                }
+                persistSelections();
+                renderStocks(liveStocks);
+                renderPicker();
+            }
+        });
+
+        document.addEventListener('input', (event) => {
+            if (event.target && event.target.id === 'stockSearch') {
+                renderPicker();
+            }
+        });
+
+        document.addEventListener('click', (event) => {
+            if (event.target && event.target.id === 'selectAllStocks') {
+                selectedStocks = pickerStocks.map((stock) => normalizeStock(stock.symbol));
+                persistSelections();
+                renderStocks(liveStocks);
+                renderPicker();
+            }
+            if (event.target && event.target.id === 'clearStocks') {
+                selectedStocks = [];
+                persistSelections();
+                renderStocks(liveStocks);
+                renderPicker();
+            }
+        });
 
         Promise.all([
             fetch('/api/market/overview').then(r => r.json()),

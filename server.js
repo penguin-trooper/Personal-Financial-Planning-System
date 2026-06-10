@@ -60,10 +60,12 @@ const marketFallback = {
         { symbol: 'AMZN', name: 'Amazon.com Inc.', price: '$184.70', change: '2.11%', trend: 'up' }
     ],
     news: [
-        { title: 'Fed Signals Possible Rate Cut Later This Year', summary: 'Federal Reserve officials hint at potential interest rate reductions if inflation continues to ease toward the 2% target.', date: 'May 5, 2026', category: 'Monetary Policy' },
-        { title: 'NVIDIA Surges After Record Data Center Revenue', summary: 'NVIDIA reports record-breaking quarterly earnings driven by surging demand for AI chips and data center infrastructure.', date: 'May 4, 2026', category: 'Technology' },
-        { title: 'Bitcoin Breaks $62,000 as Institutional Demand Rises', summary: 'Cryptocurrency markets rally as major institutional investors increase Bitcoin holdings amid growing mainstream adoption.', date: 'May 3, 2026', category: 'Crypto' },
-        { title: 'Oil Prices Dip Amid Rising Global Supply', summary: 'Crude oil futures fell as OPEC+ members signal plans to gradually increase production output over the coming months.', date: 'May 2, 2026', category: 'Commodities' }
+        { title: 'Fed Signals Possible Rate Cut Later This Year', description: 'Federal Reserve officials hint at potential interest rate reductions if inflation continues to ease toward the 2% target.', url: 'https://www.reuters.com/world/us/fed-signals-possible-rate-cut-later-this-year/', source: 'Reuters', publishedAt: '2026-06-10', category: 'Monetary Policy' },
+        { title: 'NVIDIA Surges After Record Data Center Revenue', description: 'NVIDIA reports record-breaking quarterly earnings driven by surging demand for AI chips and data center infrastructure.', url: 'https://www.cnbc.com/2026/06/10/nvidia-surges-after-record-data-center-revenue.html', source: 'CNBC', publishedAt: '2026-06-10', category: 'Technology' },
+        { title: 'Bitcoin Breaks $62,000 as Institutional Demand Rises', description: 'Cryptocurrency markets rally as major institutional investors increase Bitcoin holdings amid growing mainstream adoption.', url: 'https://www.reuters.com/technology/bitcoin-breaks-62000-as-institutional-demand-rises/', source: 'Reuters', publishedAt: '2026-06-10', category: 'Crypto' },
+        { title: 'Oil Prices Dip Amid Rising Global Supply', description: 'Crude oil futures fell as OPEC+ members signal plans to gradually increase production output over the coming months.', url: 'https://www.cnbc.com/2026/06/10/oil-prices-dip-amid-rising-global-supply.html', source: 'CNBC', publishedAt: '2026-06-10', category: 'Commodities' },
+        { title: 'Wall Street Firms Track Margin Pressure', description: 'Financial firms are watching earnings as rates stay elevated and spending slows.', url: 'https://www.marketwatch.com/', source: 'MarketWatch', publishedAt: '2026-06-10', category: 'Finance' },
+        { title: 'Tech Stocks Extend Gains', description: 'Large-cap technology names lead the market higher on strong demand for AI infrastructure.', url: 'https://finance.yahoo.com/news/', source: 'Yahoo Finance', publishedAt: '2026-06-10', category: 'Technology' }
     ]
 };
 

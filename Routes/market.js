@@ -11,9 +11,22 @@ const NAMES = {
     GOOGL: 'Alphabet Inc.',
     AMZN: 'Amazon.com Inc.',
     MSFT: 'Microsoft Corporation',
-    META: 'Meta Platforms Inc.'
+    META: 'Meta Platforms Inc.',
+    AMD: 'Advanced Micro Devices, Inc.',
+    NFLX: 'Netflix, Inc.',
+    INTC: 'Intel Corporation',
+    PLTR: 'Palantir Technologies Inc.',
+    CRM: 'Salesforce, Inc.',
+    ORCL: 'Oracle Corporation',
+    JPM: 'JPMorgan Chase & Co.',
+    V: 'Visa Inc.',
+    MA: 'Mastercard Incorporated',
+    KO: 'The Coca-Cola Company',
+    PEP: 'PepsiCo, Inc.',
+    DIS: 'The Walt Disney Company',
+    UBER: 'Uber Technologies, Inc.'
 };
-const STOCK_SYMBOLS = ['NVDA', 'AAPL', 'TSLA', 'GOOGL', 'AMZN', 'MSFT', 'META'];
+const STOCK_SYMBOLS = ['NVDA', 'AAPL', 'TSLA', 'GOOGL', 'AMZN', 'MSFT', 'META', 'AMD', 'NFLX', 'INTC', 'PLTR', 'CRM', 'ORCL', 'JPM', 'V', 'MA', 'KO', 'PEP', 'DIS', 'UBER'];
 const OVERVIEW_SYMBOLS = ['^GSPC', '^IXIC', '^DJI', 'BTC-USD'];
 const OVERVIEW_NAMES = { '^GSPC': 'S&P 500', '^IXIC': 'NASDAQ', '^DJI': 'DOW JONES', 'BTC-USD': 'Bitcoin' };
 const FALLBACK_STOCKS = [
@@ -23,7 +36,26 @@ const FALLBACK_STOCKS = [
     { symbol: 'GOOGL', name: NAMES.GOOGL, price: 171.95, change: -0.43, url: 'https://finance.yahoo.com/quote/GOOGL' },
     { symbol: 'AMZN', name: NAMES.AMZN, price: 184.7, change: 2.11, url: 'https://finance.yahoo.com/quote/AMZN' },
     { symbol: 'MSFT', name: NAMES.MSFT, price: 430.1, change: 0.87, url: 'https://finance.yahoo.com/quote/MSFT' },
-    { symbol: 'META', name: NAMES.META, price: 493.2, change: 0.65, url: 'https://finance.yahoo.com/quote/META' }
+    { symbol: 'META', name: NAMES.META, price: 493.2, change: 0.65, url: 'https://finance.yahoo.com/quote/META' },
+    { symbol: 'AMD', name: NAMES.AMD, price: 165.4, change: 1.95, url: 'https://finance.yahoo.com/quote/AMD' },
+    { symbol: 'NFLX', name: NAMES.NFLX, price: 675.2, change: 1.12, url: 'https://finance.yahoo.com/quote/NFLX' },
+    { symbol: 'INTC', name: NAMES.INTC, price: 31.84, change: -0.76, url: 'https://finance.yahoo.com/quote/INTC' },
+    { symbol: 'PLTR', name: NAMES.PLTR, price: 23.41, change: 4.21, url: 'https://finance.yahoo.com/quote/PLTR' },
+    { symbol: 'CRM', name: NAMES.CRM, price: 272.9, change: 0.58, url: 'https://finance.yahoo.com/quote/CRM' },
+    { symbol: 'ORCL', name: NAMES.ORCL, price: 139.6, change: 0.44, url: 'https://finance.yahoo.com/quote/ORCL' },
+    { symbol: 'JPM', name: NAMES.JPM, price: 201.2, change: 0.91, url: 'https://finance.yahoo.com/quote/JPM' },
+    { symbol: 'V', name: NAMES.V, price: 273.8, change: 0.63, url: 'https://finance.yahoo.com/quote/V' },
+    { symbol: 'MA', name: NAMES.MA, price: 458.7, change: 0.74, url: 'https://finance.yahoo.com/quote/MA' },
+    { symbol: 'KO', name: NAMES.KO, price: 63.9, change: -0.22, url: 'https://finance.yahoo.com/quote/KO' },
+    { symbol: 'PEP', name: NAMES.PEP, price: 171.5, change: 0.37, url: 'https://finance.yahoo.com/quote/PEP' },
+    { symbol: 'DIS', name: NAMES.DIS, price: 116.3, change: 1.08, url: 'https://finance.yahoo.com/quote/DIS' },
+    { symbol: 'UBER', name: NAMES.UBER, price: 71.4, change: 2.14, url: 'https://finance.yahoo.com/quote/UBER' }
+];
+const RSS_FEEDS = [
+    { url: 'https://feeds.reuters.com/reuters/businessNews', source: 'Reuters' },
+    { url: 'https://www.cnbc.com/id/10001147/device/rss/rss.html', source: 'CNBC' },
+    { url: 'https://finance.yahoo.com/news/rssindex', source: 'Yahoo Finance' },
+    { url: 'https://feeds.marketwatch.com/marketwatch/topstories/', source: 'MarketWatch' }
 ];
 const FALLBACK_OVERVIEW = [
     { name: 'S&P 500', symbol: '^GSPC', price: '5,248.49', change: 0.55, url: 'https://finance.yahoo.com/quote/%5EGSPC' },
@@ -75,10 +107,51 @@ function tagCategory(title) {
     return 'Finance';
 }
 
+function stripTags(text) {
+    return String(text || '').replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim();
+}
+
+function parseRssItems(xml, source) {
+    const items = [];
+    const itemRegex = /<item[\s\S]*?<\/item>/gi;
+    const titleRegex = /<title><!\[CDATA\[([\s\S]*?)\]\]><\/title>|<title>([\s\S]*?)<\/title>/i;
+    const descRegex = /<description><!\[CDATA\[([\s\S]*?)\]\]><\/description>|<description>([\s\S]*?)<\/description>/i;
+    const linkRegex = /<link>([\s\S]*?)<\/link>/i;
+    const pubRegex = /<pubDate>([\s\S]*?)<\/pubDate>/i;
+    const matches = String(xml || '').match(itemRegex) || [];
+    for (const item of matches) {
+        const titleMatch = item.match(titleRegex);
+        const descMatch = item.match(descRegex);
+        const linkMatch = item.match(linkRegex);
+        const pubMatch = item.match(pubRegex);
+        const title = stripTags(titleMatch && (titleMatch[1] || titleMatch[2]));
+        const description = stripTags(descMatch && (descMatch[1] || descMatch[2]));
+        const url = (linkMatch && linkMatch[1] ? linkMatch[1].trim() : '') || 'https://finance.yahoo.com';
+        const published = pubMatch && pubMatch[1] ? new Date(pubMatch[1]).toISOString().slice(0, 10) : '';
+        if (title) {
+            items.push({
+                title,
+                description,
+                url,
+                publishedAt: published,
+                source,
+                category: tagCategory(title)
+            });
+        }
+    }
+    return items;
+}
+
 async function safeJson(url) {
     const response = await fetch(url, { timeout: 10000 });
     if (!response.ok) throw new Error(`Request failed: ${response.status}`);
     return response.json();
+}
+
+async function safeText(url) {
+    const response = await fetch(url, { timeout: 10000 });
+    if (!response.ok) throw new Error(`Request failed: ${response.status}`);
+    return response.text();
 }
 
 function formatOverviewPrice(symbol, value) {
@@ -134,26 +207,38 @@ router.get('/overview', async (req, res) => {
 router.get('/news', async (req, res) => {
     const cached = getCached('news');
     try {
-        if (!process.env.NEWS_API_KEY) {
-            return res.status(200).json(cached || fallbackFrom('news'));
+        if (process.env.NEWS_API_KEY) {
+            const data = await safeJson(`https://newsapi.org/v2/top-headlines?category=business&language=en&pageSize=6&apiKey=${process.env.NEWS_API_KEY}`);
+            const result = (data && data.articles ? data.articles : []).map((item) => ({
+                title: item.title,
+                description: item.description || item.content || '',
+                url: item.url,
+                publishedAt: item.publishedAt ? String(item.publishedAt).slice(0, 10) : '',
+                source: item.source && item.source.name ? item.source.name : 'News',
+                category: tagCategory(item.title)
+            }));
+            if (result.length) {
+                setCache('news', result);
+                return res.status(200).json(result);
+            }
         }
-        const data = await safeJson(`https://newsapi.org/v2/top-headlines?category=business&language=en&pageSize=6&apiKey=${process.env.NEWS_API_KEY}`);
-        const result = (data && data.articles ? data.articles : []).map((item) => ({
-            title: item.title,
-            description: item.description || item.content || '',
-            url: item.url,
-            publishedAt: item.publishedAt ? String(item.publishedAt).slice(0, 10) : '',
-            source: item.source && item.source.name ? item.source.name : 'News',
-            category: tagCategory(item.title)
-        }));
-        if (result.length) {
-            setCache('news', result);
-            return res.status(200).json(result);
+        for (const feed of RSS_FEEDS) {
+            try {
+                const xml = await safeText(feed.url);
+                const parsed = parseRssItems(xml, feed.source);
+                if (parsed.length) {
+                    const result = parsed.slice(0, 6);
+                    setCache('news', result);
+                    return res.status(200).json(result);
+                }
+            } catch (rssErr) {
+                continue;
+            }
         }
-        throw new Error('Empty news response');
     } catch (err) {
-        return res.status(200).json(cached || fallbackFrom('news'));
+        console.error('Market news fetch failed:', err);
     }
+    return res.status(200).json(cached || fallbackFrom('news'));
 });
 
 module.exports = router;
