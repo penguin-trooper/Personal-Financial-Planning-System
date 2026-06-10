@@ -24,9 +24,16 @@ const NAMES = {
     KO: 'The Coca-Cola Company',
     PEP: 'PepsiCo, Inc.',
     DIS: 'The Walt Disney Company',
-    UBER: 'Uber Technologies, Inc.'
+    UBER: 'Uber Technologies, Inc.',
+    BAC: 'Bank of America Corporation',
+    WMT: 'Walmart Inc.',
+    COST: 'Costco Wholesale Corporation',
+    ADBE: 'Adobe Inc.',
+    CSCO: 'Cisco Systems, Inc.',
+    PYPL: 'PayPal Holdings, Inc.',
+    SHOP: 'Shopify Inc.'
 };
-const STOCK_SYMBOLS = ['NVDA', 'AAPL', 'TSLA', 'GOOGL', 'AMZN', 'MSFT', 'META', 'AMD', 'NFLX', 'INTC', 'PLTR', 'CRM', 'ORCL', 'JPM', 'V', 'MA', 'KO', 'PEP', 'DIS', 'UBER'];
+const STOCK_SYMBOLS = ['NVDA', 'AAPL', 'TSLA', 'GOOGL', 'AMZN', 'MSFT', 'META', 'AMD', 'NFLX', 'INTC', 'PLTR', 'CRM', 'ORCL', 'JPM', 'V', 'MA', 'KO', 'PEP', 'DIS', 'UBER', 'BAC', 'WMT', 'COST', 'ADBE', 'CSCO', 'PYPL', 'SHOP'];
 const OVERVIEW_SYMBOLS = ['^GSPC', '^IXIC', '^DJI', 'BTC-USD'];
 const OVERVIEW_NAMES = { '^GSPC': 'S&P 500', '^IXIC': 'NASDAQ', '^DJI': 'DOW JONES', 'BTC-USD': 'Bitcoin' };
 const FALLBACK_STOCKS = [
@@ -49,7 +56,14 @@ const FALLBACK_STOCKS = [
     { symbol: 'KO', name: NAMES.KO, price: 63.9, change: -0.22, url: 'https://finance.yahoo.com/quote/KO' },
     { symbol: 'PEP', name: NAMES.PEP, price: 171.5, change: 0.37, url: 'https://finance.yahoo.com/quote/PEP' },
     { symbol: 'DIS', name: NAMES.DIS, price: 116.3, change: 1.08, url: 'https://finance.yahoo.com/quote/DIS' },
-    { symbol: 'UBER', name: NAMES.UBER, price: 71.4, change: 2.14, url: 'https://finance.yahoo.com/quote/UBER' }
+    { symbol: 'UBER', name: NAMES.UBER, price: 71.4, change: 2.14, url: 'https://finance.yahoo.com/quote/UBER' },
+    { symbol: 'BAC', name: NAMES.BAC, price: 39.8, change: 0.41, url: 'https://finance.yahoo.com/quote/BAC' },
+    { symbol: 'WMT', name: NAMES.WMT, price: 67.2, change: 0.52, url: 'https://finance.yahoo.com/quote/WMT' },
+    { symbol: 'COST', name: NAMES.COST, price: 815.6, change: 0.34, url: 'https://finance.yahoo.com/quote/COST' },
+    { symbol: 'ADBE', name: NAMES.ADBE, price: 475.9, change: -0.31, url: 'https://finance.yahoo.com/quote/ADBE' },
+    { symbol: 'CSCO', name: NAMES.CSCO, price: 47.5, change: 0.18, url: 'https://finance.yahoo.com/quote/CSCO' },
+    { symbol: 'PYPL', name: NAMES.PYPL, price: 61.8, change: -0.48, url: 'https://finance.yahoo.com/quote/PYPL' },
+    { symbol: 'SHOP', name: NAMES.SHOP, price: 66.3, change: 1.26, url: 'https://finance.yahoo.com/quote/SHOP' }
 ];
 const RSS_FEEDS = [
     { url: 'https://feeds.reuters.com/reuters/businessNews', source: 'Reuters' },
@@ -64,12 +78,10 @@ const FALLBACK_OVERVIEW = [
     { name: 'Bitcoin', symbol: 'BTC-USD', price: '62,410.00', change: 4.2, url: 'https://finance.yahoo.com/quote/BTC-USD' }
 ];
 const FALLBACK_NEWS = [
-    { title: 'Fed Signals Rate Cut Later This Year', description: 'Federal Reserve officials hint at potential interest rate reductions if inflation continues to ease.', url: 'https://www.reuters.com', publishedAt: '2026-06-10', source: 'Reuters', category: 'Monetary Policy' },
-    { title: 'NVIDIA Surges After Record Data Center Revenue', description: 'NVIDIA reports record-breaking quarterly earnings driven by surging demand for AI chips.', url: 'https://www.cnbc.com', publishedAt: '2026-06-10', source: 'CNBC', category: 'Technology' },
-    { title: 'Bitcoin Breaks $62,000 as Demand Rises', description: 'Cryptocurrency markets rally as major institutional investors increase Bitcoin holdings.', url: 'https://www.reuters.com', publishedAt: '2026-06-10', source: 'Reuters', category: 'Crypto' },
-    { title: 'Oil Prices Dip Amid Rising Global Supply', description: 'Crude oil futures fell as OPEC+ members signal plans to increase production.', url: 'https://www.cnbc.com', publishedAt: '2026-06-10', source: 'CNBC', category: 'Commodities' },
-    { title: 'Wall Street Firms Track Margin Pressure', description: 'Financial firms are watching earnings as rates stay elevated and spending slows.', url: 'https://www.reuters.com', publishedAt: '2026-06-10', source: 'Reuters', category: 'Finance' },
-    { title: 'Tech Stocks Extend Gains', description: 'Large-cap technology names lead the market higher on strong demand for AI infrastructure.', url: 'https://www.cnbc.com', publishedAt: '2026-06-10', source: 'CNBC', category: 'Technology' }
+    { title: 'Markets News and Analysis', description: 'Latest market coverage from Reuters business news.', url: 'https://www.reuters.com/markets/', publishedAt: '2026-06-10', source: 'Reuters', category: 'Finance' },
+    { title: 'Stocks and Markets News', description: 'Latest market updates from CNBC Markets.', url: 'https://www.cnbc.com/markets/', publishedAt: '2026-06-10', source: 'CNBC', category: 'Finance' },
+    { title: 'Latest Financial Market News', description: 'Market headlines and financial news from Yahoo Finance.', url: 'https://finance.yahoo.com/topic/stock-market-news/', publishedAt: '2026-06-10', source: 'Yahoo Finance', category: 'Finance' },
+    { title: 'MarketWatch Top Stories', description: 'Latest financial market stories and analysis from MarketWatch.', url: 'https://www.marketwatch.com/latest-news', publishedAt: '2026-06-10', source: 'MarketWatch', category: 'Finance' }
 ];
 
 function getCached(key) {
@@ -108,7 +120,24 @@ function tagCategory(title) {
 }
 
 function stripTags(text) {
-    return String(text || '').replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim();
+    return String(text || '')
+        .replace(/<!\[CDATA\[|\]\]>/g, '')
+        .replace(/<[^>]*>/g, '')
+        .replace(/&amp;/g, '&')
+        .replace(/&quot;/g, '"')
+        .replace(/&#39;/g, "'")
+        .replace(/\s+/g, ' ')
+        .trim();
+}
+
+function cleanUrl(url) {
+    return stripTags(url).replace(/&amp;/g, '&').trim();
+}
+
+function isValidArticleUrl(url) {
+    if (!url || url === '#') return false;
+    if (!/^https?:\/\//i.test(url)) return false;
+    return !/^(https?:\/\/)?(www\.)?(reuters\.com|cnbc\.com|finance\.yahoo\.com|marketwatch\.com)\/?$/i.test(url);
 }
 
 function parseRssItems(xml, source) {
@@ -126,9 +155,9 @@ function parseRssItems(xml, source) {
         const pubMatch = item.match(pubRegex);
         const title = stripTags(titleMatch && (titleMatch[1] || titleMatch[2]));
         const description = stripTags(descMatch && (descMatch[1] || descMatch[2]));
-        const url = (linkMatch && linkMatch[1] ? linkMatch[1].trim() : '') || 'https://finance.yahoo.com';
+        const url = cleanUrl(linkMatch && linkMatch[1]);
         const published = pubMatch && pubMatch[1] ? new Date(pubMatch[1]).toISOString().slice(0, 10) : '';
-        if (title) {
+        if (title && isValidArticleUrl(url)) {
             items.push({
                 title,
                 description,
@@ -152,6 +181,20 @@ async function safeText(url) {
     const response = await fetch(url, { timeout: 10000 });
     if (!response.ok) throw new Error(`Request failed: ${response.status}`);
     return response.text();
+}
+
+function uniqueNews(items) {
+    const seen = new Set();
+    return items.filter((item) => {
+        const key = (item.url || item.title || '').toLowerCase();
+        if (!key || seen.has(key)) return false;
+        seen.add(key);
+        return true;
+    });
+}
+
+function sortNewsNewest(items) {
+    return items.sort((a, b) => new Date(b.publishedAt || 0) - new Date(a.publishedAt || 0));
 }
 
 function formatOverviewPrice(symbol, value) {
@@ -206,39 +249,25 @@ router.get('/overview', async (req, res) => {
 
 router.get('/news', async (req, res) => {
     const cached = getCached('news');
-    try {
-        if (process.env.NEWS_API_KEY) {
-            const data = await safeJson(`https://newsapi.org/v2/top-headlines?category=business&language=en&pageSize=6&apiKey=${process.env.NEWS_API_KEY}`);
-            const result = (data && data.articles ? data.articles : []).map((item) => ({
-                title: item.title,
-                description: item.description || item.content || '',
-                url: item.url,
-                publishedAt: item.publishedAt ? String(item.publishedAt).slice(0, 10) : '',
-                source: item.source && item.source.name ? item.source.name : 'News',
-                category: tagCategory(item.title)
-            }));
-            if (result.length) {
-                setCache('news', result);
-                return res.status(200).json(result);
-            }
+    const articles = [];
+
+    for (const feed of RSS_FEEDS) {
+        try {
+            const xml = await safeText(feed.url);
+            articles.push(...parseRssItems(xml, feed.source));
+        } catch (rssErr) {
+            console.warn('[Market News] RSS source unavailable.');
         }
-        for (const feed of RSS_FEEDS) {
-            try {
-                const xml = await safeText(feed.url);
-                const parsed = parseRssItems(xml, feed.source);
-                if (parsed.length) {
-                    const result = parsed.slice(0, 6);
-                    setCache('news', result);
-                    return res.status(200).json(result);
-                }
-            } catch (rssErr) {
-                continue;
-            }
-        }
-    } catch (err) {
-        console.error('Market news fetch failed:', err);
     }
-    return res.status(200).json(cached || fallbackFrom('news'));
+
+    const latest = sortNewsNewest(uniqueNews(articles)).slice(0, 20);
+    if (latest.length) {
+        setCache('news', latest);
+        return res.status(200).json(latest);
+    }
+
+    const fallback = (cached || fallbackFrom('news')).filter((item) => item && isValidArticleUrl(item.url));
+    return res.status(200).json(fallback);
 });
 
 module.exports = router;

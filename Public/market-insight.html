@@ -67,7 +67,7 @@
                         <h4 class="section-title mb-0">Top Stocks</h4>
                         <button class="btn btn-sm btn-outline-light" type="button" data-bs-toggle="modal" data-bs-target="#stockPickerModal">Choose Stocks</button>
                     </div>
-                    <div id="stockList"><div class="insight-card card p-3 mb-3">Loading live market data...</div></div>
+                    <div class="mt-3" id="stockList"><div class="insight-card card p-3 mb-3">Loading live market data...</div></div>
                 </div>
                 <div class="col-md-6">
                     <h4 class="section-title">Market News</h4>
@@ -99,6 +99,10 @@
                     <div class="small mb-2">Selected: <span id="selectedStockCount">0</span></div>
                     <div id="stockPickerList" class="list-group" style="max-height:320px; overflow:auto;"></div>
                 </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" id="cancelStocks" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="confirmStocks">Confirm</button>
+                </div>
             </div>
         </div>
     </div>
@@ -108,10 +112,11 @@
         const escapeHtml = (value) => String(value).replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[char]));
         const pct = (value) => `${Number(value).toFixed(2)}%`;
         const money = (value) => Number(value).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-        const STOCK_ORDER = ['NVDA', 'AAPL', 'TSLA', 'GOOGL', 'AMZN', 'MSFT', 'META', 'AMD', 'NFLX', 'INTC', 'PLTR', 'CRM', 'ORCL', 'JPM', 'V', 'MA', 'KO', 'PEP', 'DIS', 'UBER'];
+        const STOCK_ORDER = ['NVDA', 'AAPL', 'TSLA', 'GOOGL', 'AMZN', 'MSFT', 'META', 'AMD', 'NFLX', 'INTC', 'PLTR', 'CRM', 'ORCL', 'JPM', 'V', 'MA', 'KO', 'PEP', 'DIS', 'UBER', 'BAC', 'WMT', 'COST', 'ADBE', 'CSCO', 'PYPL', 'SHOP'];
         let liveStocks = [];
         let pickerStocks = [];
         let selectedStocks = JSON.parse(localStorage.getItem('selectedStocks') || '[]').map((s) => String(s).toUpperCase());
+        let draftStocks = selectedStocks.slice();
 
         function normalizeStock(value) {
             return String(value || '').toUpperCase();
@@ -123,7 +128,7 @@
             const ranked = (data || [])
                 .filter((item) => !selectedStocks.includes(normalizeStock(item.symbol)))
                 .sort((a, b) => Number(b.change) - Number(a.change));
-            return selected.concat(ranked).slice(0, 5);
+            return selected.concat(ranked);
         }
 
         function persistSelections() {
@@ -136,7 +141,7 @@
             const filtered = pickerStocks.filter((stock) => !query || normalizeStock(stock.symbol).includes(query) || normalizeStock(stock.name).includes(query));
             el.innerHTML = filtered.map((stock) => {
                 const symbol = normalizeStock(stock.symbol);
-                const checked = selectedStocks.includes(symbol) ? 'checked' : '';
+                const checked = draftStocks.includes(symbol) ? 'checked' : '';
                 return `
                     <label class="list-group-item d-flex align-items-center justify-content-between">
                         <span>
@@ -145,7 +150,19 @@
                         </span>
                     </label>`;
             }).join('') || '<div class="text-center py-3">Data unavailable</div>';
-            document.getElementById('selectedStockCount').textContent = String(selectedStocks.length);
+            document.getElementById('selectedStockCount').textContent = String(draftStocks.length);
+        }
+
+        function openPicker() {
+            draftStocks = selectedStocks.slice();
+            renderPicker();
+        }
+
+        function applyPickerChanges() {
+            selectedStocks = draftStocks.slice();
+            persistSelections();
+            renderStocks(liveStocks);
+            renderPicker();
         }
 
         function renderOverview(data) {
@@ -230,7 +247,10 @@
                 const description = article.description || '';
                 const shortDescription = description.length > 120 ? `${description.slice(0, 120)}...` : description;
                 const published = article.publishedAt ? new Date(article.publishedAt).toLocaleDateString() : '';
-                const url = article.url || 'https://finance.yahoo.com';
+                if (!article.url) {
+                    return '';
+                }
+                const url = article.url;
                 return `
                     <a href="${url}" target="_blank" rel="noopener" style="text-decoration:none;">
                         <div class="news-card">
@@ -239,19 +259,17 @@
                             <div class="news-meta mt-2">${escapeHtml(article.source)} | ${escapeHtml(published)} | ${escapeHtml(article.category)}</div>
                         </div>
                     </a>`;
-            }).join('');
+            }).filter(Boolean).join('');
         }
 
         document.addEventListener('click', (event) => {
             if (event.target.matches('.stock-checkbox')) {
                 const symbol = normalizeStock(event.target.value);
                 if (event.target.checked) {
-                    selectedStocks = Array.from(new Set([...selectedStocks, symbol]));
+                    draftStocks = Array.from(new Set([...draftStocks, symbol]));
                 } else {
-                    selectedStocks = selectedStocks.filter((item) => item !== symbol);
+                    draftStocks = draftStocks.filter((item) => item !== symbol);
                 }
-                persistSelections();
-                renderStocks(liveStocks);
                 renderPicker();
             }
         });
@@ -264,18 +282,20 @@
 
         document.addEventListener('click', (event) => {
             if (event.target && event.target.id === 'selectAllStocks') {
-                selectedStocks = pickerStocks.map((stock) => normalizeStock(stock.symbol));
-                persistSelections();
-                renderStocks(liveStocks);
+                draftStocks = pickerStocks.map((stock) => normalizeStock(stock.symbol));
                 renderPicker();
             }
             if (event.target && event.target.id === 'clearStocks') {
-                selectedStocks = [];
-                persistSelections();
-                renderStocks(liveStocks);
+                draftStocks = [];
                 renderPicker();
             }
+            if (event.target && event.target.id === 'confirmStocks') {
+                applyPickerChanges();
+                event.target.closest('.modal').querySelector('[data-bs-dismiss="modal"]').click();
+            }
         });
+
+        document.getElementById('stockPickerModal').addEventListener('show.bs.modal', openPicker);
 
         Promise.all([
             fetch('/api/market/overview').then(r => r.json()),
