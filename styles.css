@@ -19,7 +19,7 @@ body {
     background-attachment: fixed;
     background-position: center;
     background-size: cover;
-    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("../images/investment-home.jpg");
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("images/investment-home.jpg");
     min-height: 100vh;
 }
 
@@ -212,7 +212,7 @@ body {
     background-attachment: fixed;
     background-position: center;
     background-size: cover;
-    background-image: url("/images/investment_goals.png");
+    background-image: url("images/investment_goals.png");
 }
 
 /* Card */
@@ -373,7 +373,6 @@ body {
 
 /*roi calculator page
 */
-<style>
         body {
        background-color: #111e36;
         margin: 0;
@@ -435,6 +434,10 @@ body {
             color: #281D59;
             font-weight: 700;
         }
+
+        .placeholder-icon {
+         font-size: 2.5rem;
+        }   
 
         .btn-calculate {
             background-color: #281D59;
@@ -526,11 +529,7 @@ body {
             padding-left: 0.75rem;
         }
 
-        .placeholder-icon {
-        font-size: 2.5rem;
-        }
-
-        /* Interest section below ROI — sits on the dark background */
+        /* Interest section below ROI  */
         .interest-section {
             background-color: #111e36;
             padding: 2.5rem 0;
@@ -774,14 +773,19 @@ body {
     margin-bottom: 15px;
 }
 
-/* News title */
 .news-title {
     font-size: 1.1rem;
     font-weight: 600;
     color: #ffffff;
 }
 
-/* Meta info (date + category) */
+
+.news-card .card-text {
+    color: #EDF6BD;
+    opacity: 0.8;
+    font-size: 0.9rem;
+}
+
 .news-meta {
     font-size: 0.8rem;
     color: #cccccc;
