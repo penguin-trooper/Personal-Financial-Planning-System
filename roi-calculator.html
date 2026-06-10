@@ -1,0 +1,359 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="styles.css">
+    <title>ROI Calculator - Moneta</title>
+
+<body>
+    <!-- NavBar-->
+    <nav class="navbar navbar-expand-lg navbar-dark moneta-section">
+        <div class="container-fluid px-4">
+
+            <!-- Brand name -->
+            <a href="#" class="navbar-brand">Moneta</a>
+
+            <!-- Toggler for mobile -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#monetaNavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- Nav links -->
+            <div class="collapse navbar-collapse" id="monetaNavbar">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link moneta-section-text">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="investment-strategy.html" class="nav-link moneta-section-text active">Financial Planner</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="roi-calculator.html" class="nav-link moneta-section-text">ROI Calculator</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="market-insight.html" class="nav-link moneta-section-text">Market Insights</a>
+                    </li>
+                </ul>
+
+                <!-- Username + Profile icon -->
+                <div class="dropdown d-flex align-items-center gap-2">
+                    <span class="moneta-section-text">User Name</span>
+
+                    <a href="#" class="dropdown-toggle d-flex align-items-center" 
+                    data-bs-toggle="dropdown" aria-expanded="false"
+                    style="text-decoration: none;">
+                        <div class="profile-icon">
+                            <img src="images/profile.svg" alt="Profile" width="20" height="20">
+                        </div>
+                    </a>
+
+                    <ul class="dropdown-menu dropdown-menu-end moneta-dropdown">
+                        <li>
+                            <a href="#" class="dropdown-item">
+                                <img src="images/settings.svg" alt="" width="16" height="16" class="me-2">
+                                Account Settings
+                            </a>
+                        </li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                            <a href="#" class="dropdown-item">
+                                <img src="images/log_out.svg" alt="" width="16" height="16" class="me-2">
+                                Log Out
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+</nav>
+
+    <!-- Hero -->
+    <div class="roi-hero">
+        <div class="container text-center">
+            <h1>ROI Calculator</h1>
+            <p class="lead">Estimate your potential returns based on your investment amount, expected rate of return, and investment duration.</p>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="roi-body">
+        <div class="container">
+            <div class="row g-4">
+
+                <!-- Calculator Form -->
+                <div class="col-lg-6">
+                    <h4 class="section-title">Calculate Your Returns</h4>
+                    <div class="roi-form-card">
+                        <h4 class="mb-4">Investment Details</h4>
+
+                        <div class="mb-3">
+                            <label for="initialInvestment">Initial Investment (RM)</label>
+                            <input type="number" class="form-control" id="initialInvestment" placeholder="e.g. 10000" min="0">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="monthlyContribution">Monthly Contribution (RM) <span style="font-weight:400; font-size:0.85rem;">(optional)</span></label>
+                            <input type="number" class="form-control" id="monthlyContribution" placeholder="e.g. 500" min="0" value="0">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="annualRate">Expected Annual Return Rate: <span id="rateDisplay">6%</span></label>
+                            <input type="range" class="form-range" id="annualRate" min="1" max="30" value="6" step="0.5"
+                                oninput="document.getElementById('rateDisplay').textContent = this.value + '%'">
+                            <div class="d-flex justify-content-between range-label">
+                                <span>1%</span><span>15%</span><span>30%</span>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="years">Investment Duration: <span id="yearsDisplay">5 years</span></label>
+                            <input type="range" class="form-range" id="years" min="1" max="40" value="5" step="1"
+                                oninput="document.getElementById('yearsDisplay').textContent = this.value + ' year' + (this.value > 1 ? 's' : '')">
+                            <div class="d-flex justify-content-between range-label">
+                                <span>1 yr</span><span>20 yrs</span><span>40 yrs</span>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="compounding">Compounding Frequency</label>
+                            <select class="form-control" id="compounding">
+                                <option value="12">Monthly</option>
+                                <option value="4">Quarterly</option>
+                                <option value="2">Semi-Annually</option>
+                                <option value="1">Annually</option>
+                            </select>
+                        </div>
+
+                        <div class="d-flex gap-2">
+                            <button class="btn-calculate" onclick="calculateROI()">Calculate</button>
+                            <button class="btn-reset" onclick="resetForm()">Reset</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Results + Tips -->
+                <div class="col-lg-6">
+
+                    <!-- Results -->
+                    <div id="resultSection">
+                        <h4 class="section-title">Your Results</h4>
+                        <div class="result-card" id="resultCard">
+                            <h4 class="mb-3">📊 Investment Summary</h4>
+                            <div class="result-item d-flex justify-content-between">
+                                <span class="result-label">Initial Investment</span>
+                                <span class="result-value" id="resInitial">-</span>
+                            </div>
+                            <div class="result-item d-flex justify-content-between">
+                                <span class="result-label">Total Contributions</span>
+                                <span class="result-value" id="resContributions">-</span>
+                            </div>
+                            <div class="result-item d-flex justify-content-between">
+                                <span class="result-label">Total Interest Earned</span>
+                                <span class="result-value" id="resInterest">-</span>
+                            </div>
+                            <div class="result-item d-flex justify-content-between align-items-center">
+                                <span class="result-label">Final Value</span>
+                                <span class="result-total" id="resFinal">-</span>
+                            </div>
+                            <div class="result-item d-flex justify-content-between align-items-center">
+                                <span class="result-label">Total Profit / Loss</span>
+                                <span id="resProfit">-</span>
+                            </div>
+                            <div class="result-item d-flex justify-content-between align-items-center">
+                                <span class="result-label">ROI</span>
+                                <span class="result-total" id="resROI">-</span>
+                            </div>
+                        </div>
+
+                        <!-- Placeholder before calculation -->
+                        <div id="resultPlaceholder" class="tip-card text-center py-4">
+                            <div style="font-size:2.5rem;">📈</div>
+                            <p class="tip-title mt-2">Enter your details and click Calculate</p>
+                            <p class="tip-text">Your investment summary will appear here.</p>
+                        </div>
+                        <div id="roiMessage" class="mt-3 small"></div>
+                        <div class="mt-4">
+                            <h4 class="section-title">History</h4>
+                            <div id="roiHistory" class="tip-card">
+                                <p class="tip-text mb-0">No saved calculations yet.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Investment Tips -->
+                    <div class="mt-4">
+                        <h4 class="section-title">Investment Tips</h4>
+                        <div class="tip-card">
+                            <div class="tip-title">💡 Start Early</div>
+                            <div class="tip-text">The earlier you invest, the more time compound interest has to grow your wealth. Even small amounts make a big difference over time.</div>
+                        </div>
+                        <div class="tip-card">
+                            <div class="tip-title">📅 Invest Consistently</div>
+                            <div class="tip-text">Regular monthly contributions — even small ones — can dramatically increase your final returns through dollar-cost averaging.</div>
+                        </div>
+                        <div class="tip-card">
+                            <div class="tip-title">🔄 Reinvest Your Returns</div>
+                            <div class="tip-text">Compounding works best when you reinvest your earnings. Choose monthly or quarterly compounding for maximum growth.</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <section>
+        <div class="moneta-section p-5 text-center">
+            <p class="moneta-section-text">Made by Group 3 OCC2</p>
+        </div>
+    </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+        crossorigin="anonymous"></script>
+
+    <script>
+        const fmtMoney = (val) => 'RM ' + Number(val).toLocaleString('en-MY', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+        function handleApiError(response) {
+            if (response.status === 401) {
+                window.location.href = '/login.html?error=session';
+                return true;
+            }
+            return false;
+        }
+
+        function showRoiMessage(message, isError = false) {
+            const box = document.getElementById('roiMessage');
+            box.textContent = message;
+            box.style.color = isError ? '#b00020' : '#198754';
+        }
+
+        async function calculateROI() {
+            const initial = parseFloat(document.getElementById('initialInvestment').value) || 0;
+            const monthly = parseFloat(document.getElementById('monthlyContribution').value) || 0;
+            const annualRate = parseFloat(document.getElementById('annualRate').value) / 100;
+            const years = parseInt(document.getElementById('years').value);
+            const n = parseInt(document.getElementById('compounding').value);
+
+            if (initial <= 0 && monthly <= 0) {
+                alert('Please enter an investment amount.');
+                return;
+            }
+
+            const r = annualRate / n;
+            const t = years * n;
+            const finalInitial = initial * Math.pow(1 + r, t);
+            let finalContributions = 0;
+
+            if (monthly > 0) {
+                const monthlyRate = annualRate / 12;
+                const months = years * 12;
+                finalContributions = monthly * ((Math.pow(1 + monthlyRate, months) - 1) / monthlyRate);
+            }
+
+            const finalValue = finalInitial + finalContributions;
+            const totalContributed = initial + (monthly * years * 12);
+            const totalInterest = finalValue - totalContributed;
+            const profit = finalValue - totalContributed;
+            const roi = ((finalValue - totalContributed) / totalContributed) * 100;
+
+            document.getElementById('resInitial').textContent = fmtMoney(initial);
+            document.getElementById('resContributions').textContent = fmtMoney(monthly * years * 12);
+            document.getElementById('resInterest').textContent = fmtMoney(totalInterest);
+            document.getElementById('resFinal').textContent = fmtMoney(finalValue);
+            document.getElementById('resROI').textContent = roi.toFixed(2) + '%';
+
+            const profitEl = document.getElementById('resProfit');
+            profitEl.textContent = (profit >= 0 ? '+' : '') + fmtMoney(profit);
+            profitEl.className = profit >= 0 ? 'result-profit-positive' : 'result-profit-negative';
+
+            document.getElementById('resultCard').style.display = 'block';
+            document.getElementById('resultPlaceholder').style.display = 'none';
+            await saveRoiCalculation({ initial, monthly, annualRate, years, finalValue, roi });
+        }
+
+        async function saveRoiCalculation(data) {
+            try {
+                const response = await fetch('/api/roi/save', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        calc_type: 'compound',
+                        initial_amount: data.initial,
+                        monthly_contribution: data.monthly,
+                        interest_rate: data.annualRate * 100,
+                        time_period: data.years,
+                        result_final_value: data.finalValue,
+                        result_roi_pct: data.roi
+                    })
+                });
+                if (handleApiError(response)) return;
+                const payload = await response.json();
+                if (!response.ok) throw new Error(payload.error || 'Unable to save calculation');
+                showRoiMessage('Calculation saved.');
+                loadRoiHistory();
+            } catch (err) {
+                showRoiMessage(err.message, true);
+            }
+        }
+
+        async function loadRoiHistory() {
+            const historyBox = document.getElementById('roiHistory');
+            try {
+                const response = await fetch('/api/roi/history');
+                if (handleApiError(response)) return;
+                const rows = await response.json();
+                if (!response.ok) throw new Error(rows.error || 'Unable to load history');
+                if (!rows.length) {
+                    historyBox.innerHTML = '<p class="tip-text mb-0">No saved calculations yet.</p>';
+                    return;
+                }
+                historyBox.innerHTML = rows.map(item => `
+                    <div class="d-flex justify-content-between align-items-center border-bottom py-2">
+                        <div>
+                            <div class="tip-title mb-1">${fmtMoney(item.final_value)} (${Number(item.result_roi_pct).toFixed(2)}%)</div>
+                            <div class="tip-text">Initial ${fmtMoney(item.initial_amount)} | Monthly ${fmtMoney(item.monthly_contribution)} | ${item.interest_rate}% for ${item.time_period} years</div>
+                        </div>
+                        <button class="btn btn-sm btn-outline-danger" onclick="deleteRoiHistory(${item.id})">Delete</button>
+                    </div>
+                `).join('');
+            } catch (err) {
+                historyBox.innerHTML = `<p class="tip-text mb-0">${err.message}</p>`;
+            }
+        }
+
+        async function deleteRoiHistory(id) {
+            try {
+                const response = await fetch(`/api/roi/history/${id}`, { method: 'DELETE' });
+                if (handleApiError(response)) return;
+                const payload = await response.json();
+                if (!response.ok) throw new Error(payload.error || 'Unable to delete item');
+                loadRoiHistory();
+            } catch (err) {
+                showRoiMessage(err.message, true);
+            }
+        }
+
+        function resetForm() {
+            document.getElementById('initialInvestment').value = '';
+            document.getElementById('monthlyContribution').value = '0';
+            document.getElementById('annualRate').value = 6;
+            document.getElementById('rateDisplay').textContent = '6%';
+            document.getElementById('years').value = 5;
+            document.getElementById('yearsDisplay').textContent = '5 years';
+            document.getElementById('compounding').value = '12';
+            document.getElementById('resultCard').style.display = 'none';
+            document.getElementById('resultPlaceholder').style.display = 'block';
+            showRoiMessage('');
+        }
+
+        document.addEventListener('DOMContentLoaded', loadRoiHistory);
+    </script>
+</body>
+</html>
