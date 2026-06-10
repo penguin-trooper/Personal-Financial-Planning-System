@@ -436,6 +436,10 @@ body {
             font-weight: 700;
         }
 
+        .placeholder-icon {
+         font-size: 2.5rem;
+        }   
+
         .btn-calculate {
             background-color: #281D59;
             color: #EDF6BD;
@@ -526,7 +530,7 @@ body {
             padding-left: 0.75rem;
         }
 
-        /* Interest section below ROI — sits on the dark background */
+        /* Interest section below ROI  */
         .interest-section {
             background-color: #111e36;
             padding: 2.5rem 0;
