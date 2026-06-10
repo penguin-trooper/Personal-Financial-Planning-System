@@ -20,10 +20,12 @@
     --progress-bar-track: #c8dbb5;
     --btn-teal: #3da89a;
     --tag-teal: #3da89a;
+    --font-title: 'Alegreya Sans', sans-serif !important;
+    --font-body: 'Roboto', sans-serif;
 }
 
 body {
-    font-family: 'Nunito', sans-serif;
+    font-family: 'Roboto', sans-serif;
     background: linear-gradient(135deg, #3a4a3a 0%, #8fa89a 40%, #b0c4b8 70%, #a0b8c0 100%);
     min-height: 100vh;
     display: flex;
@@ -38,7 +40,7 @@ body {
 }
 
 .moneta-navbar .navbar-brand {
-    font-family: 'Cinzel', serif;
+    font-family: var(--font-title);
     font-weight: bold;
     font-size: 1.5rem;
     letter-spacing: 0.05em;
@@ -166,7 +168,7 @@ main::before {
 
 /*SECTION TITLE */
 .section-title {
-    font-family: 'Cinzel', serif;
+    font-family: var(--font-title);
     font-size: 28px;
     font-weight: 700;
     color: var(--text-dark-blue);
@@ -235,7 +237,7 @@ main::before {
     padding: 6px 32px;
     border-radius: 20px;
     margin-bottom: 14px;
-    font-family: 'Cinzel', serif;
+    font-family: var(--font-body);
     letter-spacing: 0.5px;
 }
 

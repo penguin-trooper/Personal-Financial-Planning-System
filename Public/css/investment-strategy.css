@@ -17,10 +17,12 @@
     --text-dark-blue: #1a2a5e;
     --text-white: #ffffff;
     --tag-teal: #3da89a;
+    --font-title: 'Alegreya Sans', sans-serif;
+    --font-body: 'Roboto', sans-serif;
 }
 
 body {
-    font-family: 'Nunito', sans-serif;
+    font-family: 'Roboto', sans-serif;
     background: linear-gradient(135deg, #3a4a3a 0%, #8fa89a 40%, #b0c4b8 70%, #a0b8c0 100%);
     min-height: 100vh;
     display: flex;
@@ -35,7 +37,7 @@ body {
 }
 
 .moneta-navbar .navbar-brand {
-    font-family: 'Cinzel', serif;
+    font-family: var(--font-title);
     font-weight: bold;
     font-size: 1.5rem;
     letter-spacing: 0.05em;
@@ -121,6 +123,15 @@ main {
     position: relative;
 }
 
+h1 {
+    font-family: var(--font-title);
+    font-size: 34px;
+    font-weight: 700;
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+    position: relative;
+    z-index: 1;
+}
+
 /* background decorative chart lines */
 main::before {
     content: '';
@@ -151,7 +162,7 @@ main::before {
 
 /* ── TYPOGRAPHY & COMPONENTS ── */
 .section-title {
-    font-family: 'Cinzel', serif;
+    font-family: var(--font-title);
     font-size: 32px;
     font-weight: 700;
     color: var(--text-dark-blue);
@@ -226,7 +237,7 @@ main::before {
 }
 
 .item-header a {
-    font-family: 'Cinzel', serif;
+    font-family: var(--font-title);
     font-size: 22px;
     font-weight: 700;
     color: var(--accent-teal);
