@@ -237,23 +237,18 @@ app.post('/reset-password', async (req, res) => {
         const { email, newPassword } = req.body;
         const hashedPassword = await bcrypt.hash(newPassword, 10);
 
-        db.query(
+        const [result] = await db.query(
             'UPDATE users SET password = ? WHERE email = ?',
-            [hashedPassword, email],
-            (err, result) => {
-                if (err) {
-                    console.error(err);
-                    return res.redirect('/forgot.html?status=error'); 
-                }
-
-                if (result.affectedRows === 0) {
-                    return res.redirect('/forgot.html?status=notfound'); 
-                }
-
-                res.redirect('/forgot.html?status=success'); 
-            }
+            [hashedPassword, email]
         );
+
+        if (result.affectedRows === 0) {
+            return res.redirect('/forgot.html?status=notfound'); 
+        }
+
+        res.redirect('/forgot.html?status=success'); 
     } catch (err) {
+        console.error("Reset Password Error:", err);
         res.redirect('/forgot.html?status=error');
     }
 });
@@ -385,4 +380,15 @@ app.get('/logout', (req, res) => {
 
 app.listen(3000, () => {
     console.log("Server running on port 3000");
+});
+
+app.get('/api/current-user', (req, res) => {
+    if (req.session && req.session.user) {
+        res.json({ 
+            loggedIn: true, 
+            username: req.session.user.username 
+        });
+    } else {
+        res.json({ loggedIn: false });
+    }
 });
