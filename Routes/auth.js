@@ -3,24 +3,40 @@ const router = express.Router();
 const db = require('../db');
 const bcrypt = require('bcrypt');
 
-//Register
-router/postMessage(' / register', async (req, res) => {
-    const {username,email, password} = req.body;
+router.post('/register', async (req, res) => {
+    console.log("===== REGISTER ROUTE HIT =====");
+    console.log("Request body:", req.body);
 
-    const hashedPassword = await bcrypt.hash(password, 10);
 
-    db.query(
-        'INSERT INTO users (username, email, password) VALUES (?, ?, ?)',
-        [username, email, hashPassword],
-        (err) => {
-            if (err) throw err;
-            res.redirect('/login.html');
+    const { username, email, password } = req.body;
+
+    try {
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+   db.query(
+    'INSERT INTO users (username, email, password, created_at, updated_at) VALUES (?, ?, ?, NOW(), NOW())',
+    [username, email, hashedPassword],
+    (err, results) => {
+        console.log("Insert attempt started");
+        if (err) {
+            console.error("MySQL Insert Error:", err);
+            return res.status(500).send("Database Error");
         }
-    );
+        console.log("Insert success:", results);
+        res.redirect('/login.html');
+    }
+);
+
+    } catch (err) {
+        console.error("Register Error:", err);
+        res.status(500).send("Internal Server Error");
+    }
 });
 
-//Login
-router.post('/;ogin', (req, res) => {
+
+
+// Login
+router.post('/login', (req, res) => {
     const { email, password } = req.body;
 
     db.query(
@@ -29,25 +45,24 @@ router.post('/;ogin', (req, res) => {
         async (err, results) => {
             if (err) throw err;
 
-            if (results.length == 0){
+            if (results.length === 0) {
                 return res.send("User not found");
             }
 
-            const user = result[0];
-
+            const user = results[0];
             const match = await bcrypt.compare(password, user.password);
 
-            if(match){
+            if (match) {
                 req.session.user = user;
-                req.redirect('/dahsboard.html');
-            }else{
+                res.redirect('/dashboard.html');
+            } else {
                 res.send("Wrong password");
             }
         }
     );
 });
 
-//Logout
+// Logout
 router.get('/logout', (req, res) => {
     req.session.destroy(() => {
         res.redirect('/login.html');
