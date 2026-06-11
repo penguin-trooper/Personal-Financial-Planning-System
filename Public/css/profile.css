@@ -14,7 +14,7 @@ body {
     background: linear-gradient(rgba(255, 255, 255, 0.15), rgba(240, 244, 248, 0.4)), 
                 url("/images/user-page.jpg") no-repeat fixed center / cover;
     font-family: var(--font-body);
-    color: #333333;
+    color: var(--army-green);
     min-height: 100vh;
 }
 
@@ -82,7 +82,7 @@ body .form-control:focus {
 
 .btn-moneta-accent {
     background-color: rgba(78, 141, 156, 0.08);
-    color: #3b6d79;
+    color: var(--light-blue);
     border: 1.5px solid rgba(78, 141, 156, 0.2);
     border-radius: 10px;
     transition: all 0.2s ease-in-out;
