@@ -3,18 +3,16 @@ const router = express.Router();
 const db = require('../db');
 const bcrypt = require('bcrypt');
 
-// ==========================================
+
 // PASSWORD STRENGTH VALIDATOR (SYNCHRONIZED)
-// ==========================================
 const isStrongPassword = (password) => {
     // Requires min 8 characters, 1 lowercase, 1 uppercase, and 1 special symbol character
     const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*(),.?":{}|<>]).{8,}$/;
     return regex.test(password);
 };
 
-// ==========================================
+
 // SESSION AUTHENTICATION GUARD MIDDLEWARE
-// ==========================================
 const isAuthenticated = (req, res, next) => {
     if (req.session && req.session.user && req.session.user.id) {
         return next();
@@ -25,9 +23,8 @@ const isAuthenticated = (req, res, next) => {
     });
 };
 
-// ==============================
+
 // GET PROFILE
-// ==============================
 router.get('/', isAuthenticated, async (req, res) => {
     try {
         const userId = req.session.user.id;
@@ -53,9 +50,8 @@ router.get('/', isAuthenticated, async (req, res) => {
     }
 });
 
-// ==============================
 // UPDATE PROFILE
-// ==============================
+
 router.put('/', isAuthenticated, async (req, res) => {
     try {
         const userId = req.session.user.id;

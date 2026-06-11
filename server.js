@@ -16,14 +16,15 @@ const authRouter = require('./Routes/auth');
 
 const app = express();
 
+// GLOBAL PASSWORD STRENGTH VALIDATOR
 const isStrongPassword = (password) => {
-    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*(),.?":{}|<>]).+$/;
+    // Requires min 8 characters, 1 lowercase, 1 uppercase, and 1 special symbol character
+    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*(),.?":{}|<>]).{8,}$/;
     return regex.test(password);
 };
 
-// ==========================================
+
 // 1. GLOBAL BODY PARSERS & SESSIONS
-// ==========================================
 app.use(express.json()); 
 app.use(express.urlencoded({ extended: true }));
 
@@ -38,9 +39,8 @@ app.use(session({
     } 
 }));
 
-// ==========================================
+
 // 2. PASSPORT AUTHENTICATION SETUP
-// ==========================================
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -90,9 +90,8 @@ async (accessToken, refreshToken, profile, done) => {
     }
 }));
 
-// ==========================================
+
 // 3. NODEMAILER EMAIL SETUP
-// ==========================================
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
@@ -101,22 +100,14 @@ const transporter = nodemailer.createTransport({
     }
 });
 
-// ==========================================
 // 4. MOUNT BACKEND ROUTE CONTROLLERS
-// ==========================================
 app.use('/api/profile', profileRouter);
 app.use('/api/auth', authRouter);
 
-// ==========================================
 // 5. STATIC ASSET MAPS (CONFLICT RESOLVED)
-// ==========================================
-// This mounts your root folder directly. Anything inside /Public can be found cleanly
 app.use(express.static(path.join(__dirname, 'Public')));
 
-// ==========================================
 // 6. CORE AUTHENTICATION ENDPOINTS
-// ==========================================
-
 app.post('/signup-step1', async (req, res) => {
     const { name, email } = req.body;
     try {
@@ -337,9 +328,7 @@ app.get('/logout', (req, res) => {
     });
 });
 
-// ==========================================
-// 7. LISTEN ON ALL IP ADAPTER INTERFACES
-// ==========================================
+// 7. LISTEN ON PORT
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, '0.0.0.0', () => {
     console.log(`Server running securely on port ${PORT}`);

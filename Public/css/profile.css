@@ -6,175 +6,113 @@
     --light-blue: #4E8D9C;
     --light-green: #85C69B;
     --gray-white: #D9D9D9;
-    --font-title: 'Alegreya Sans', sans-serif !important;
+    --font-title: 'Alegreya Sans', sans-serif;
     --font-body: 'Roboto', sans-serif;
 }
 
 body {
-  font-family: 'Roboto', sans-serif;
-  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("/images/user-page.jpg");
-  color: #fff;
-  margin: 0;
-  min-height: 100vh;
+    background: linear-gradient(rgba(255, 255, 255, 0.15), rgba(240, 244, 248, 0.4)), 
+                url("/images/user-page.jpg") no-repeat fixed center / cover;
+    font-family: var(--font-body);
+    color: #333333;
+    min-height: 100vh;
 }
 
-.custom-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 90vh;
-  padding-top: 10px; 
+body .bootstrap-profile-card {
+    background: rgba(255, 255, 255, 0.65);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 20px;
+    max-width: 460px;
+    box-shadow: 0 15px 35px rgba(50, 65, 90, 0.15);
+    padding: 28px;
 }
 
-.card h2 {
-  color: #273C2C; 
-  font-family: var(--font-title); 
-  margin-bottom: 15px;
+.profile-card-title {
+    font-family: var(--font-body);
+    font-weight: 800;
+    color: #1e293b; 
+    letter-spacing: -0.02em;
+    font-size: 1.75rem;
+    margin-bottom: 20px;
+    text-align: center;
 }
 
-.card {
-  /* FIXED: Smooth frosted semi-transparent card wash overlay */
-  background-color: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(5px);
-  padding: 20px;
-  border-radius: 10px;
-  text-align: center;
-  width: 320px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+.text-moneta-yellow {
+    color: var(--dark-green);
 }
 
-.user-box {
-  background-color: #f5f5f5;
-  color: #000;
-  border-radius: 10px;
-  padding: 20px;
+body .form-control:focus {
+    border-color: var(--light-blue);
+    box-shadow: 0 0 0 4px rgba(78, 141, 156, 0.15);
 }
 
-.icon {
-  width: 60px;
-  height: 60px;
-  background-color: #EDF6BD;
-  border-radius: 50%;
-  margin: 0 auto 10px;
-  position: relative;
+.min-h-20 {
+    min-height: 20px;
 }
 
-.icon::before {
-  content: "👤";
-  position: absolute;
-  top: 15px;
-  left: 18px;
-  font-size: 24px;
+.btn-moneta {
+    background-color: var(--dark-blue);
+    color: #ffffff;
+    font-weight: 700;
+    border-radius: 10px;
+    transition: all 0.2s ease-in-out;
 }
 
-label {
-  display: block;
-  margin-top: 12px;
-  font-weight: bold;
-  text-align: left; /* Left aligns clean descriptors above inputs */
+.btn-moneta:hover {
+    background-color: #1a123a;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(40, 29, 89, 0.2);
 }
 
-input {
-  width: 100%; /* Spans across entire available parent container content row */
-  box-sizing: border-box; /* Includes interior boundaries safely inside computational rules */
-  padding: 8px 12px;
-  margin-top: 5px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  font-size: 14px;
+.btn-outline-moneta {
+    background-color: transparent;
+    border: 1.5px solid #cbd5e1;
+    color: #475569;
+    border-radius: 10px;
+    transition: all 0.2s ease-in-out;
 }
 
-/* ========================================================
-   Password Field Container Elements & Eye Toggle Positions
-   ======================================================== */
-.password-wrapper {
-  position: relative;
-  width: 100%;
+.btn-outline-moneta:hover {
+    background-color: #f1f5f9;
+    border-color: #94a3b8;
+    color: #1e293b;
 }
 
-/* Keeps password dots text from getting clipped behind eye toggles */
-.password-wrapper input {
-  padding-right: 40px !important; 
+.btn-moneta-accent {
+    background-color: rgba(78, 141, 156, 0.08);
+    color: #3b6d79;
+    border: 1.5px solid rgba(78, 141, 156, 0.2);
+    border-radius: 10px;
+    transition: all 0.2s ease-in-out;
 }
 
-.toggle-password {
-  position: absolute;
-  right: 5px;
-  top: 50%;
-  transform: translateY(-35%); /* Adjusts perfectly inside the white field box */
-  background: none !important;
-  border: none !important;
-  color: #555555 !important;
-  font-size: 16px;
-  cursor: pointer;
-  padding: 5px !important;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.btn-moneta-accent:hover {
+    background-color: var(--light-blue);
+    color: #ffffff;
+    border-color: var(--light-blue);
 }
 
-.toggle-password:hover {
-  color: #000000 !important;
+body .btn-danger {
+    border-radius: 10px;
+    padding: 10px 22px;
 }
 
-/* Real-time Field alert directly under new password input */
-.field-alert {
-  font-size: 11px;
-  color: #c94c4c; /* Crisp warning red */
-  margin-top: 5px;
-  text-align: left;
-  min-height: 16px;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  gap: 4px;
+.navbar-brand,
+.moneta-navbar .navbar-brand {
+    font-family: var(--font-title) !important;
+    font-weight: bold !important;
+    font-size: 1.5rem !important;
+    letter-spacing: 0.05em !important;
+    color: #ffffff !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    text-transform: uppercase !important;
 }
 
-/* ========================================================
-   Action Controllers & Button Themes
-   ======================================================== */
-.buttons {
-  margin-top: 20px;
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-}
-
-button {
-  padding: 8px 15px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-weight: 500;
-  transition: opacity 0.2s ease;
-}
-
-button:hover {
-  opacity: 0.9;
-}
-
-#save-password, .save {
-  background-color: #281D59; 
-  color: white;
-}
-
-#cancel-password, .cancel {
-  background-color: #273C2C; 
-  color: white;
-}
-
-.edit {
-  background-color: #281D59;
-  color: white;
-}
-
-.delete {
-  background-color: #dc3545; /* Clean destructive red for profile deletions */
-  color: white;
-}
-
-.yellow {
-  background-color: #EDF6BD;
-  color: #000;
-  border: 1px solid #d4dcab;
+.navbar-brand i,
+.moneta-navbar .navbar-brand i {
+    font-size: 18px !important;
 }
