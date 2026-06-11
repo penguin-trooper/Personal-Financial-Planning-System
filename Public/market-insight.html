@@ -56,9 +56,83 @@
 
     <div class="market-body">
         <div class="container">
-            <h4 class="section-title">Market Overview</h4>
+            <h4 class="section-title">Market Overview &amp; AI Forecast</h4>
             <div id="overviewCards" class="row g-4 mb-5">
-                <div class="col-12 text-center text-white py-4">Loading live market data...</div>
+                <div class="col-12">
+                    <div class="insight-card card forecast-card gf-widget">
+                        <div class="card-body p-0">
+
+                            <!-- GF Widget Header -->
+                            <div class="gf-widget-header">
+                                <div class="gf-header-left">
+                                    <div id="gf-asset-name" class="gf-asset-name">S&amp;P 500</div>
+                                    <div class="d-flex align-items-baseline flex-wrap gap-2">
+                                        <span id="gf-price" class="gf-price">--</span>
+                                        <span id="gf-change-badge" class="gf-change-badge gf-badge-neutral">-- --</span>
+                                    </div>
+                                    <div id="gf-timestamp" class="gf-timestamp">Fetching live data&hellip;</div>
+                                </div>
+                                <div class="gf-header-right">
+                                    <select id="forecastAssetSelect" class="forecast-dropdown" aria-label="Select market">
+                                        <optgroup label="US Indices">
+                                            <option value="^GSPC">S&amp;P 500</option>
+                                            <option value="^IXIC">NASDAQ</option>
+                                            <option value="^DJI">Dow Jones</option>
+                                            <option value="^RUT">Russell 2000</option>
+                                        </optgroup>
+                                        <optgroup label="Global Indices">
+                                            <option value="^FTSE">FTSE 100</option>
+                                            <option value="^N225">Nikkei 225</option>
+                                            <option value="^GDAXI">DAX</option>
+                                        </optgroup>
+                                        <optgroup label="Commodities">
+                                            <option value="GC=F">Gold</option>
+                                            <option value="CL=F">Crude Oil</option>
+                                        </optgroup>
+                                        <optgroup label="Crypto">
+                                            <option value="BTC-USD">Bitcoin</option>
+                                            <option value="ETH-USD">Ethereum</option>
+                                        </optgroup>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Timeframe Tabs -->
+                            <div class="gf-tabs" role="tablist" aria-label="Chart timeframe">
+                                <button class="gf-tab" data-range="1D">1D</button>
+                                <button class="gf-tab" data-range="5D">5D</button>
+                                <button class="gf-tab gf-tab-active" data-range="1M">1M</button>
+                                <button class="gf-tab" data-range="6M">6M</button>
+                                <button class="gf-tab" data-range="YTD">YTD</button>
+                                <button class="gf-tab" data-range="1Y">1Y</button>
+                                <button class="gf-tab" data-range="5Y">5Y</button>
+                                <button class="gf-tab" data-range="MAX">Max</button>
+                            </div>
+
+                            <!-- Loading -->
+                            <div id="forecastLoading" class="forecast-loading">Fetching live data&hellip;</div>
+
+                            <!-- Chart -->
+                            <div class="forecast-chart-wrap gf-chart-wrap">
+                                <canvas id="forecastChart" aria-label="Market forecast chart" role="img"></canvas>
+                            </div>
+
+                            <!-- Forecast Summary -->
+                            <div id="forecastSummary" class="forecast-summary gf-forecast-label" aria-live="polite"></div>
+
+                            <!-- Stats Grid -->
+                            <div class="gf-stats-grid">
+                                <div class="gf-stat"><span class="gf-stat-label">Open</span><span id="gf-open" class="gf-stat-value">--</span></div>
+                                <div class="gf-stat"><span class="gf-stat-label">High</span><span id="gf-high" class="gf-stat-value">--</span></div>
+                                <div class="gf-stat"><span class="gf-stat-label">Low</span><span id="gf-low" class="gf-stat-value">--</span></div>
+                                <div class="gf-stat"><span class="gf-stat-label">Prev Close</span><span id="gf-prev-close" class="gf-stat-value">--</span></div>
+                                <div class="gf-stat"><span class="gf-stat-label">52-wk High</span><span id="gf-52h" class="gf-stat-value">--</span></div>
+                                <div class="gf-stat"><span class="gf-stat-label">52-wk Low</span><span id="gf-52l" class="gf-stat-value">--</span></div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div class="row g-4">
@@ -108,6 +182,7 @@
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
     <script>
         const escapeHtml = (value) => String(value).replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[char]));
@@ -172,6 +247,8 @@
 
         function renderOverview(data) {
             const el = document.getElementById('overviewCards');
+            // GUARD: forecast card is present — skip legacy 4-card rendering
+            if (el && el.querySelector('.forecast-card')) return;
             if (!data || !data.length) {
                 el.innerHTML = '<div class="col-12 text-center text-white py-4">Data unavailable</div>';
                 return;
@@ -323,6 +400,307 @@
         .catch(() => {
             document.getElementById('lastUpdated').textContent = 'Could not load live data.';
         });
+    </script>
+
+    <script>
+    /* ================================================================
+       MARKET FORECAST WIDGET — IIFE (zero global scope leak)
+       Google Finance-style dark widget with live Yahoo Finance data
+       ================================================================ */
+    (function () {
+        'use strict';
+
+        // ── Color palette ────────────────────────────────────────────
+        const GF = {
+            positive:     '#81c995',
+            negative:     '#f28b82',
+            posFill:      'rgba(129,201,149,0.15)',
+            negFill:      'rgba(242,139,130,0.15)',
+            grid:         '#3c4043',
+            tick:         '#9aa0a6',
+            tooltipBg:    '#303134',
+            tooltipTitle: '#e8eaed',
+            tooltipBody:  '#9aa0a6'
+        };
+
+        let forecastChart        = null;
+        let forecastCurrentAsset = '^GSPC';
+
+        // ── Utility: format price with commas ─────────────────────
+        function fmtPrice(val, decimals) {
+            if (val === null || val === undefined) return '--';
+            var d = decimals !== undefined ? decimals : (val < 100 ? 2 : 2);
+            return Number(val).toLocaleString('en-US', {
+                minimumFractionDigits: d,
+                maximumFractionDigits: d
+            });
+        }
+
+        // ── Update header: price, badge, timestamp ─────────────────
+        function gfUpdateHeader(data) {
+            var nameEl   = document.getElementById('gf-asset-name');
+            var priceEl  = document.getElementById('gf-price');
+            var badgeEl  = document.getElementById('gf-change-badge');
+            var tsEl     = document.getElementById('gf-timestamp');
+
+            if (nameEl)  nameEl.textContent  = data.name || data.symbol || '';
+            if (priceEl) priceEl.textContent = fmtPrice(data.currentPrice);
+
+            var pct   = Number(data.percentChange  || 0);
+            var pts   = Number(data.pointChange    || 0);
+            var isUp  = pct >= 0;
+            var sign  = isUp ? '+' : '';
+            if (badgeEl) {
+                badgeEl.textContent = sign + fmtPrice(pts) + ' (' + sign + pct.toFixed(2) + '%)';
+                badgeEl.className   = 'gf-change-badge ' + (isUp ? 'gf-badge-up' : 'gf-badge-down');
+            }
+
+            if (tsEl && data.timestamp) {
+                var ts = new Date(data.timestamp);
+                tsEl.textContent = 'As of ' + ts.toLocaleString('en-US', {
+                    month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit', timeZoneName: 'short'
+                }) + (data.isFallback ? '  (fallback data)' : '');
+            }
+        }
+
+        // ── Update stats grid ─────────────────────────────────────
+        function gfUpdateStats(data) {
+            var fields = {
+                'gf-open':      data.open,
+                'gf-high':      data.high,
+                'gf-low':       data.low,
+                'gf-prev-close':data.previousClose,
+                'gf-52h':       data.fiftyTwoWeekHigh,
+                'gf-52l':       data.fiftyTwoWeekLow
+            };
+            Object.keys(fields).forEach(function (id) {
+                var el = document.getElementById(id);
+                if (el) el.textContent = fmtPrice(fields[id]);
+            });
+        }
+
+        var forecastCurrentRange = '1M';
+
+        // ── Fetch from backend ────────────────────────────────────
+        async function forecastLoad(symbol, range) {
+            range = range || forecastCurrentRange;
+            var loadEl    = document.getElementById('forecastLoading');
+            var summaryEl = document.getElementById('forecastSummary');
+            if (loadEl) loadEl.style.display = 'block';
+            try {
+                var res = await fetch('/api/market/market-data/' + encodeURIComponent(symbol) + '?range=' + encodeURIComponent(range));
+                if (!res.ok) throw new Error('HTTP ' + res.status);
+                var data = await res.json();
+                gfUpdateHeader(data);
+                gfUpdateStats(data);
+                forecastRender(data);
+            } catch (err) {
+                if (summaryEl) {
+                    summaryEl.textContent  = 'Live data unavailable. Please try again shortly.';
+                    summaryEl.style.color  = GF.negative;
+                }
+                console.error('[Forecast] Failed:', err.message);
+            } finally {
+                if (loadEl) loadEl.style.display = 'none';
+            }
+        }
+
+        // ── Build gradient fill ───────────────────────────────────
+        function buildGradient(ctx, chartArea, color) {
+            var gradient = ctx.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
+            gradient.addColorStop(0,   color.replace(')', ', 0.35)').replace('rgb', 'rgba'));
+            gradient.addColorStop(1,   color.replace(')', ', 0)').replace('rgb', 'rgba'));
+            return gradient;
+        }
+
+        // ── Render chart ──────────────────────────────────────────
+        function forecastRender(data) {
+            var histPrices = data.historical.map(function (d) { return d.price; });
+            var predPrices = data.prediction.map(function (d) { return d.price; });
+
+            var histLabels = data.historical.map(function (d) { return d.date; });
+            var predLabels = data.prediction.slice(1).map(function (d) { return d.date; });
+            var allLabels  = histLabels.concat(predLabels);
+
+            // Historical: solid for hist indices, null for pred indices
+            var histDataset = histPrices.concat(
+                data.prediction.slice(1).map(function () { return null; })
+            );
+
+            // Prediction: null for hist-1 indices, bridge + pred values
+            var predNulls   = histPrices.slice(0, -1).map(function () { return null; });
+            var bridged     = [histPrices[histPrices.length - 1]].concat(predPrices.slice(1));
+            var predDataset = predNulls.concat(bridged);
+
+            // Trend direction — drives unified color scheme
+            var lastHist  = histPrices[histPrices.length - 1];
+            var lastPred  = predPrices[predPrices.length - 1];
+            var isUp      = lastPred >= lastHist;
+            var trendColor = isUp ? GF.positive : GF.negative;
+            var fillColor  = isUp ? GF.posFill  : GF.negFill;
+
+            // Percentage change for summary badge
+            var pct   = (((lastPred - lastHist) / lastHist) * 100).toFixed(2);
+            var arrow = isUp ? '\u25b2' : '\u25bc';
+            var sign  = isUp ? '+' : '';
+            var summaryEl = document.getElementById('forecastSummary');
+            if (summaryEl) {
+                summaryEl.textContent = 'AI Forecast (7 Days): ' + arrow + ' ' + sign + pct + '% ' + (isUp ? 'Expected Growth' : 'Expected Decline');
+                summaryEl.style.color = trendColor;
+            }
+
+            var canvas = document.getElementById('forecastChart');
+            if (!canvas) return;
+
+            // Gradient fill via plugin — built after chart has dimensions
+            var gradientFill = null;
+            var gradientPlugin = {
+                id: 'forecastGradient',
+                beforeDatasetsDraw: function (chart) {
+                    var ctx  = chart.ctx;
+                    var area = chart.chartArea;
+                    if (!area) return;
+                    if (!gradientFill) {
+                        var base = isUp ? [129,201,149] : [242,139,130];
+                        var g = ctx.createLinearGradient(0, area.top, 0, area.bottom);
+                        g.addColorStop(0,   'rgba(' + base + ',0.35)');
+                        g.addColorStop(1,   'rgba(' + base + ',0)');
+                        gradientFill = g;
+                    }
+                    // Apply to both datasets
+                    chart.data.datasets.forEach(function (ds) {
+                        ds.backgroundColor = gradientFill;
+                    });
+                }
+            };
+
+            var chartCfg = {
+                type: 'line',
+                data: { labels: allLabels, datasets: [
+                    {
+                        label:                     'Historical',
+                        data:                      histDataset,
+                        borderColor:               trendColor,
+                        backgroundColor:           fillColor,
+                        borderWidth:               2,
+                        tension:                   0.35,
+                        fill:                      true,
+                        spanGaps:                  false,
+                        pointRadius:               0,
+                        pointHoverRadius:          5,
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor:     trendColor,
+                        pointHoverBorderWidth:     2
+                    },
+                    {
+                        label:                     'Predicted',
+                        data:                      predDataset,
+                        borderColor:               trendColor,
+                        backgroundColor:           fillColor,
+                        borderWidth:               2,
+                        borderDash:                [5, 4],
+                        tension:                   0.35,
+                        fill:                      true,
+                        spanGaps:                  false,
+                        pointRadius:               0,
+                        pointHoverRadius:          5,
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor:     trendColor,
+                        pointHoverBorderWidth:     2
+                    }
+                ]},
+                options: {
+                    responsive:          true,
+                    maintainAspectRatio: true,
+                    aspectRatio:         3.2,
+                    animation:           { duration: 500, easing: 'easeInOutQuart' },
+                    interaction:         { mode: 'index', intersect: false },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: GF.tooltipBg,
+                            titleColor:      GF.tooltipTitle,
+                            bodyColor:       GF.tooltipBody,
+                            borderColor:     'rgba(255,255,255,0.1)',
+                            borderWidth:     1,
+                            padding:         10,
+                            callbacks: {
+                                title: function (items) { return items[0] ? items[0].label : ''; },
+                                label: function (item) {
+                                    if (item.parsed.y === null) return null;
+                                    var price = item.parsed.y.toLocaleString('en-US', {
+                                        minimumFractionDigits: 2,
+                                        maximumFractionDigits: 2
+                                    });
+                                    return ' ' + item.dataset.label + ': $' + price;
+                                },
+                                filter: function (item) { return item.parsed.y !== null; }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid:   { display: false },
+                            border: { display: false },
+                            ticks:  {
+                                color:         GF.tick,
+                                font:          { family: 'Nunito', size: 11 },
+                                maxTicksLimit: 8,
+                                maxRotation:   0
+                            }
+                        },
+                        y: {
+                            position: 'right',
+                            grid:   { color: GF.grid, display: true, drawBorder: false },
+                            border: { display: false },
+                            ticks:  {
+                                color: GF.tick,
+                                font:  { family: 'Nunito', size: 11 },
+                                callback: function (val) {
+                                    return val.toLocaleString('en-US', { maximumFractionDigits: 0 });
+                                }
+                            }
+                        }
+                    }
+                },
+                plugins: [gradientPlugin]
+            };
+
+            if (forecastChart) {
+                forecastChart.destroy();
+                forecastChart = null;
+            }
+            forecastChart = new Chart(canvas, chartCfg);
+        }
+
+        // ── Timeframe tabs ─────────────────────────────────────────
+        document.querySelectorAll('.gf-tab').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                document.querySelectorAll('.gf-tab').forEach(function (b) { b.classList.remove('gf-tab-active'); });
+                btn.classList.add('gf-tab-active');
+                forecastCurrentRange = btn.dataset.range;
+                forecastLoad(forecastCurrentAsset, forecastCurrentRange);
+            });
+        });
+
+        // ── Dropdown change ────────────────────────────────────────
+        var forecastSelect = document.getElementById('forecastAssetSelect');
+        if (forecastSelect) {
+            forecastSelect.addEventListener('change', function () {
+                forecastCurrentAsset = this.value;
+                // Reset tab to 1M on asset change
+                document.querySelectorAll('.gf-tab').forEach(function (b) { b.classList.remove('gf-tab-active'); });
+                var m = document.querySelector('.gf-tab[data-range="1M"]');
+                if (m) m.classList.add('gf-tab-active');
+                forecastCurrentRange = '1M';
+                forecastLoad(forecastCurrentAsset, forecastCurrentRange);
+            });
+        }
+
+        // Load default on page ready
+        forecastLoad(forecastCurrentAsset, forecastCurrentRange);
+
+    }()); // end IIFE
     </script>
 </body>
 </html>

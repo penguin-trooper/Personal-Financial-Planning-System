@@ -66,10 +66,10 @@ const FALLBACK_STOCKS = [
     { symbol: 'SHOP', name: NAMES.SHOP, price: 66.3, change: 1.26, url: 'https://finance.yahoo.com/quote/SHOP' }
 ];
 const RSS_FEEDS = [
-    { url: 'https://feeds.reuters.com/reuters/businessNews', source: 'Reuters' },
-    { url: 'https://www.cnbc.com/id/10001147/device/rss/rss.html', source: 'CNBC' },
-    { url: 'https://finance.yahoo.com/news/rssindex', source: 'Yahoo Finance' },
-    { url: 'https://feeds.marketwatch.com/marketwatch/topstories/', source: 'MarketWatch' }
+    { url: 'https://feeds.a.dj.com/rss/RSSMarketsMain.xml', source: 'Wall Street Journal' },
+    { url: 'https://feeds.content.dowjones.io/public/rss/mw_topstories', source: 'MarketWatch' },
+    { url: 'https://search.cnbc.com/rs/search/combinedcms/view.xml?partnerId=wrss01&id=10001147', source: 'CNBC' },
+    { url: 'https://feeds.bbci.co.uk/news/business/rss.xml', source: 'BBC Business' }
 ];
 const FALLBACK_OVERVIEW = [
     { name: 'S&P 500', symbol: '^GSPC', price: '5,248.49', change: 0.55, url: 'https://finance.yahoo.com/quote/%5EGSPC' },
@@ -178,8 +178,11 @@ async function safeJson(url) {
 }
 
 async function safeText(url) {
-    const response = await fetch(url, { timeout: 10000 });
-    if (!response.ok) throw new Error(`Request failed: ${response.status}`);
+    const response = await fetch(url, {
+        timeout: 10000,
+        headers: { 'User-Agent': 'Mozilla/5.0 (compatible; MonetaApp/1.0; +https://moneta.app)' }
+    });
+    if (!response.ok) throw new Error(`HTTP ${response.status} from ${url}`);
     return response.text();
 }
 
@@ -256,7 +259,7 @@ router.get('/news', async (req, res) => {
             const xml = await safeText(feed.url);
             articles.push(...parseRssItems(xml, feed.source));
         } catch (rssErr) {
-            console.warn('[Market News] RSS source unavailable.');
+            console.error('[Market News] RSS source unavailable:', rssErr.message);
         }
     }
 
@@ -270,4 +273,361 @@ router.get('/news', async (req, res) => {
     return res.status(200).json(fallback);
 });
 
+// ── Market Forecast API (Live — yahoo-finance2) ──────────────────────────────
+
+let yahooFinance;
+try {
+    const YahooFinanceClass = require('yahoo-finance2').default;
+    yahooFinance = new YahooFinanceClass();
+} catch (e) {
+    console.warn('[Market Forecast] yahoo-finance2 not available, will use fallback data.');
+}
+
+/**
+ * Generates a 7-day AI prediction from historical prices.
+ * Algorithm: EWM trend + volatility noise (deterministic sine wave).
+ * @param {number[]} prices  Array of closing prices (oldest first)
+ * @param {number}   currentPrice  Live price to bridge from
+ */
+function generateAIPrediction(prices, currentPrice) {
+    const all = [...prices, currentPrice];
+    const n = all.length;
+
+    // Exponential weighted momentum over last 10 days (decay = 0.85)
+    let ewmSum = 0, ewmWeight = 0, decay = 0.85;
+    const slice = all.slice(-10);
+    for (let i = 0; i < slice.length; i++) {
+        const w = Math.pow(decay, slice.length - 1 - i);
+        ewmSum += slice[i] * w;
+        ewmWeight += w;
+    }
+    const ewm = ewmSum / ewmWeight;
+
+    // 5-day momentum ratio
+    const momentum5 = n >= 5 ? (all[n - 1] - all[n - 5]) / all[n - 5] : 0;
+    const dailyTrend = (momentum5 / 5) * 0.35; // dampen 65% — mean reversion
+
+    // Historical volatility: std dev of daily % returns (last 14 days)
+    const retSlice = all.slice(-15);
+    const rets = [];
+    for (let i = 1; i < retSlice.length; i++) {
+        rets.push((retSlice[i] - retSlice[i - 1]) / retSlice[i - 1]);
+    }
+    const avgRet = rets.reduce((a, b) => a + b, 0) / rets.length;
+    const variance = rets.reduce((a, b) => a + Math.pow(b - avgRet, 2), 0) / rets.length;
+    const vol = Math.sqrt(variance);
+
+    const prediction = [];
+    let price = currentPrice;
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    for (let i = 0; i < 7; i++) {
+        if (i === 0) {
+            // Bridge: first prediction point = live price
+            prediction.push({ date: today.toISOString().slice(0, 10), price: Math.round(price * 100) / 100 });
+            continue;
+        }
+        const d = new Date(today);
+        d.setDate(today.getDate() + i);
+        // Deterministic noise — sine wave keyed to price magnitude
+        const noise = Math.sin(i * 1.9 + price * 0.0007) * price * vol * 0.55;
+        // Pull slightly toward EWM (mean reversion)
+        const meanPull = (ewm - price) * 0.04;
+        price = Math.max(0.01, price * (1 + dailyTrend) + noise + meanPull);
+        prediction.push({
+            date: d.toISOString().slice(0, 10),
+            price: Math.round(price * 100) / 100
+        });
+    }
+    return prediction;
+}
+
+/** Static fallback per symbol for when Yahoo is unavailable */
+const MARKET_FALLBACK = {
+    '^GSPC': { name: 'S&P 500', currentPrice: 5248.49, pointChange: 28.8, percentChange: 0.55 },
+    '^IXIC': { name: 'NASDAQ', currentPrice: 16421.33, pointChange: 149.5, percentChange: 0.92 },
+    '^DJI': { name: 'Dow Jones', currentPrice: 38904.04, pointChange: -82.1, percentChange: -0.21 },
+    '^RUT': { name: 'Russell 2000', currentPrice: 2041.5, pointChange: 12.3, percentChange: 0.61 },
+    '^FTSE': { name: 'FTSE 100', currentPrice: 8285.71, pointChange: 31.4, percentChange: 0.38 },
+    '^N225': { name: 'Nikkei 225', currentPrice: 38835.1, pointChange: -215.4, percentChange: -0.55 },
+    '^GDAXI': { name: 'DAX', currentPrice: 18772.85, pointChange: 94.2, percentChange: 0.50 },
+    'GC=F': { name: 'Gold', currentPrice: 2318.4, pointChange: 8.9, percentChange: 0.38 },
+    'CL=F': { name: 'Crude Oil', currentPrice: 78.55, pointChange: -0.82, percentChange: -1.03 },
+    'BTC-USD': { name: 'Bitcoin', currentPrice: 67420.0, pointChange: 2180, percentChange: 3.34 },
+    'ETH-USD': { name: 'Ethereum', currentPrice: 3512.0, pointChange: 87.4, percentChange: 2.55 }
+};
+
+function buildFallbackResponse(symbol, range = '1M') {
+    const fb = MARKET_FALLBACK[symbol] || { name: symbol, currentPrice: 100, pointChange: 0, percentChange: 0 };
+    const base = fb.currentPrice;
+    
+    let numPoints = 30;
+    let stepType = 'day';
+    let stepMinutes = 5;
+    
+    switch (range) {
+        case '1D':
+            numPoints = 78;
+            stepType = 'minute';
+            stepMinutes = 5;
+            break;
+        case '5D':
+            numPoints = 130;
+            stepType = 'minute';
+            stepMinutes = 15;
+            break;
+        case '1M':
+            numPoints = 30;
+            stepType = 'day';
+            break;
+        case '6M':
+            numPoints = 130;
+            stepType = 'day';
+            break;
+        case 'YTD':
+            numPoints = 110;
+            stepType = 'day';
+            break;
+        case '1Y':
+            numPoints = 252;
+            stepType = 'day';
+            break;
+        case '5Y':
+            numPoints = 260;
+            stepType = 'week';
+            break;
+        case 'MAX':
+            numPoints = 240;
+            stepType = 'month';
+            break;
+    }
+
+    const today = new Date();
+    const historical = [];
+    const dailyReturn = (fb.percentChange / 100) / 30;
+    const drift = dailyReturn || 0.0002;
+    const volatility = 0.008;
+    
+    let p = base;
+    let currentMomentum = 0;
+    
+    for (let i = 0; i < numPoints; i++) {
+        const d = new Date(today);
+        if (stepType === 'minute') {
+            d.setMinutes(today.getMinutes() - i * stepMinutes);
+        } else if (stepType === 'day') {
+            d.setDate(today.getDate() - i);
+        } else if (stepType === 'week') {
+            d.setDate(today.getDate() - i * 7);
+        } else if (stepType === 'month') {
+            d.setMonth(today.getMonth() - i);
+        }
+
+        let dateStr;
+        if (range === '1D' || range === '5D') {
+            dateStr = d.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false });
+        } else {
+            dateStr = d.toISOString().slice(0, 10);
+        }
+
+        historical.unshift({ date: dateStr, price: Math.round(p * 100) / 100 });
+
+        const noise = (Math.random() - 0.5) * volatility;
+        currentMomentum = 0.6 * currentMomentum + 0.4 * noise;
+        const change = drift + currentMomentum;
+        p = Math.max(0.01, p / (1 + change));
+    }
+
+    const prediction = generateAIPrediction(historical.map(h => h.price), base);
+
+    return {
+        symbol,
+        name: fb.name,
+        currentPrice: base,
+        pointChange: fb.pointChange,
+        percentChange: fb.percentChange,
+        open: base * 0.998,
+        high: base * 1.012,
+        low: base * 0.991,
+        previousClose: base - fb.pointChange,
+        fiftyTwoWeekHigh: base * 1.18,
+        fiftyTwoWeekLow: base * 0.78,
+        timestamp: new Date().toISOString(),
+        historical,
+        prediction,
+        isFallback: true
+    };
+}
+
+router.get('/market-data/:symbol', async (req, res) => {
+    const symbol = String(req.params.symbol || '').trim();
+    if (!symbol) {
+        return res.status(400).json({ error: 'Symbol is required' });
+    }
+    const range = String(req.query.range || '1M').toUpperCase();
+
+    // Try live data first
+    if (yahooFinance) {
+        try {
+            const endDate = new Date();
+            let startDate = new Date();
+            let interval = '1d';
+            let limitPoints = 30;
+            let useChart = false;
+
+            switch (range) {
+                case '1D':
+                    startDate.setDate(startDate.getDate() - 1);
+                    interval = '5m';
+                    limitPoints = 78;
+                    useChart = true;
+                    break;
+                case '5D':
+                    startDate.setDate(startDate.getDate() - 5);
+                    interval = '15m';
+                    limitPoints = 130;
+                    useChart = true;
+                    break;
+                case '1M':
+                    startDate.setDate(startDate.getDate() - 40);
+                    interval = '1d';
+                    limitPoints = 30;
+                    break;
+                case '6M':
+                    startDate.setMonth(startDate.getMonth() - 6);
+                    interval = '1d';
+                    limitPoints = 130;
+                    break;
+                case 'YTD':
+                    startDate = new Date(endDate.getFullYear(), 0, 1);
+                    interval = '1d';
+                    limitPoints = Math.max(30, Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24) * 5 / 7));
+                    break;
+                case '1Y':
+                    startDate.setFullYear(startDate.getFullYear() - 1);
+                    interval = '1d';
+                    limitPoints = 252;
+                    break;
+                case '5Y':
+                    startDate.setFullYear(startDate.getFullYear() - 5);
+                    interval = '1wk';
+                    limitPoints = 260;
+                    break;
+                case 'MAX':
+                    startDate.setFullYear(startDate.getFullYear() - 20);
+                    interval = '1mo';
+                    limitPoints = 240;
+                    break;
+                default:
+                    startDate.setDate(startDate.getDate() - 40);
+                    interval = '1d';
+                    limitPoints = 30;
+                    break;
+            }
+
+            let histRaw = [];
+            let quote = {};
+
+            if (useChart) {
+                try {
+                    const chartResult = await yahooFinance.chart(symbol, {
+                        period1: startDate,
+                        period2: endDate,
+                        interval: interval
+                    }, { validateResult: false });
+                    histRaw = chartResult.quotes || [];
+                } catch (e) {
+                    console.error('[Market Forecast] Yahoo Finance chart endpoint failed, trying historical', e.message);
+                    useChart = false;
+                }
+            }
+
+            if (!useChart) {
+                // Fallback range parameters for historical endpoint (which doesn't support intraday)
+                if (interval === '5m' || interval === '15m') {
+                    interval = '1d';
+                }
+                const histResult = await yahooFinance.historical(symbol, {
+                    period1: startDate,
+                    period2: endDate,
+                    interval: interval
+                }, { validateResult: false });
+                histRaw = histResult || [];
+            }
+
+            try {
+                quote = await yahooFinance.quote(symbol, {}, { validateResult: false });
+            } catch (e) {
+                console.error('[Market Forecast] Quote fetch failed:', e.message);
+                const lastClose = histRaw.length ? (histRaw[histRaw.length - 1].close || histRaw[histRaw.length - 1].adjClose) : 0;
+                quote = {
+                    symbol,
+                    shortName: symbol,
+                    regularMarketPrice: lastClose
+                };
+            }
+
+            const historical = (histRaw || [])
+                .map(d => {
+                    let dStr;
+                    try {
+                        const dateObj = d.date instanceof Date ? d.date : new Date(d.date || d.timestamp * 1000);
+                        if (range === '1D' || range === '5D') {
+                            dStr = dateObj.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false });
+                        } else {
+                            dStr = dateObj.toISOString().slice(0, 10);
+                        }
+                    } catch (e) {
+                        dStr = String(d.date || '');
+                    }
+                    return {
+                        date: dStr,
+                        price: Math.round((d.close || d.adjClose || d.open || 0) * 100) / 100
+                    };
+                })
+                .filter(d => d.price > 0 && d.date)
+                .slice(-limitPoints);
+
+            if (!historical.length) throw new Error('Empty historical data');
+
+            const currentPrice = quote.regularMarketPrice || historical[historical.length - 1].price;
+            const prediction = generateAIPrediction(historical.map(h => h.price), currentPrice);
+
+            return res.json({
+                symbol: quote.symbol || symbol,
+                name: quote.shortName || quote.longName || symbol,
+                currentPrice,
+                pointChange: quote.regularMarketChange || 0,
+                percentChange: quote.regularMarketChangePercent || 0,
+                open: quote.regularMarketOpen || null,
+                high: quote.regularMarketDayHigh || null,
+                low: quote.regularMarketDayLow || null,
+                previousClose: quote.regularMarketPreviousClose || null,
+                fiftyTwoWeekHigh: quote.fiftyTwoWeekHigh || null,
+                fiftyTwoWeekLow: quote.fiftyTwoWeekLow || null,
+                timestamp: (function () {
+                    const rmt = quote.regularMarketTime;
+                    if (!rmt) return new Date().toISOString();
+                    if (rmt instanceof Date) return rmt.toISOString();
+                    if (typeof rmt === 'number') {
+                        return new Date(rmt < 100000000000 ? rmt * 1000 : rmt).toISOString();
+                    }
+                    try { return new Date(rmt).toISOString(); } catch (e) { return new Date().toISOString(); }
+                })(),
+                historical,
+                prediction,
+                isFallback: false
+            });
+        } catch (err) {
+            console.error('[Market Forecast] Yahoo Finance error for', symbol, '—', err.message);
+            // Fall through to static fallback below
+        }
+    }
+
+    // Static fallback (rate-limited or offline)
+    return res.json(buildFallbackResponse(symbol, range));
+});
+
 module.exports = router;
+

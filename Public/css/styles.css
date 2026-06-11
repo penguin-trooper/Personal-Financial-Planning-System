@@ -876,3 +876,241 @@ body {
     background: #d0d0d0;
 }
 
+/* ================================================
+   MARKET FORECAST CARD
+   Append-only — do not edit rules above this block
+   ================================================ */
+
+.forecast-card {
+    background-color: rgba(217, 217, 217, 0.85);
+    border: none;
+    border-radius: 18px;
+}
+
+.forecast-card-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #281D59;
+    opacity: 0.75;
+    letter-spacing: 0.02em;
+}
+
+.forecast-dropdown {
+    appearance: none;
+    -webkit-appearance: none;
+    background-color: #1a2744;
+    color: #EDF6BD;
+    border: 1px solid rgba(237, 246, 189, 0.35);
+    border-radius: 8px;
+    padding: 6px 32px 6px 12px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.88rem;
+    font-weight: 600;
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23EDF6BD' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.forecast-dropdown:focus {
+    outline: none;
+    border-color: rgba(237, 246, 189, 0.7);
+    box-shadow: 0 0 0 3px rgba(237, 246, 189, 0.12);
+}
+
+.forecast-dropdown option {
+    background-color: #1a2744;
+    color: #EDF6BD;
+}
+
+.forecast-chart-wrap {
+    position: relative;
+    width: 100%;
+    min-height: 200px;
+}
+
+.forecast-loading {
+    display: none;
+    text-align: center;
+    color: #281D59;
+    opacity: 0.55;
+    font-size: 0.9rem;
+    padding: 1rem 0;
+    font-style: italic;
+}
+
+.forecast-summary {
+    font-size: 0.92rem;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    min-height: 1.4em;
+    transition: color 0.35s ease;
+}
+
+/* ================================================
+   GOOGLE FINANCE DARK WIDGET
+   Append-only — do not edit rules above
+   ================================================ */
+
+.gf-widget {
+    background-color: #202124 !important;
+    border-radius: 18px;
+    overflow: hidden;
+    border: none !important;
+}
+
+/* Header ---------------------------------------- */
+.gf-widget-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 20px 20px 12px;
+    border-bottom: 1px solid #3c4043;
+}
+
+.gf-header-left { flex: 1; min-width: 0; }
+.gf-header-right { flex-shrink: 0; }
+
+.gf-asset-name {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #9aa0a6;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 4px;
+}
+
+.gf-price {
+    font-size: 2rem;
+    font-weight: 400;
+    color: #e8eaed;
+    font-family: 'Google Sans', 'Nunito', sans-serif;
+    letter-spacing: -0.01em;
+    line-height: 1;
+}
+
+/* Change badge ---------------------------------- */
+.gf-change-badge {
+    font-size: 0.95rem;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 4px;
+    white-space: nowrap;
+}
+.gf-badge-up      { color: #81c995; background: rgba(129,201,149,0.12); }
+.gf-badge-down    { color: #f28b82; background: rgba(242,139,130,0.12); }
+.gf-badge-neutral { color: #9aa0a6; background: rgba(154,160,166,0.12); }
+
+.gf-timestamp {
+    font-size: 0.74rem;
+    color: #5f6368;
+    margin-top: 5px;
+}
+
+/* Timeframe tabs -------------------------------- */
+.gf-tabs {
+    display: flex;
+    gap: 2px;
+    padding: 6px 16px;
+    border-bottom: 1px solid #3c4043;
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+.gf-tabs::-webkit-scrollbar { display: none; }
+
+.gf-tab {
+    background: none;
+    border: none;
+    color: #9aa0a6;
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.15s, color 0.15s;
+}
+.gf-tab:hover     { background: rgba(255,255,255,0.06); color: #e8eaed; }
+.gf-tab-active    { color: #8ab4f8 !important; border-bottom: 2px solid #8ab4f8; border-radius: 0; }
+
+/* Chart area ------------------------------------ */
+.gf-chart-wrap {
+    padding: 4px 8px 0;
+    min-height: 180px;
+}
+
+.gf-forecast-label {
+    font-size: 0.82rem;
+    font-weight: 600;
+    padding: 6px 20px 4px;
+    min-height: 1.4em;
+    display: block;
+    transition: color 0.3s;
+}
+
+/* Loading override for dark bg */
+.gf-widget .forecast-loading {
+    color: #9aa0a6;
+    background: #202124;
+    padding: 2rem 0;
+}
+
+/* Stats grid ------------------------------------ */
+.gf-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    padding: 0 20px 20px;
+    border-top: 1px solid #3c4043;
+    margin-top: 8px;
+}
+
+.gf-stat {
+    display: flex;
+    flex-direction: column;
+    padding: 10px 6px;
+    border-bottom: 1px solid #2e3134;
+}
+.gf-stat:nth-child(n+4) { border-bottom: none; }
+
+.gf-stat-label {
+    font-size: 0.72rem;
+    color: #9aa0a6;
+    margin-bottom: 2px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+.gf-stat-value {
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: #e8eaed;
+}
+
+/* Dropdown override for dark widget bg */
+.gf-widget .forecast-dropdown {
+    background-color: #303134;
+    border-color: rgba(255,255,255,0.12);
+    color: #e8eaed;
+    font-size: 0.82rem;
+}
+.gf-widget .forecast-dropdown:focus {
+    border-color: rgba(138,180,248,0.6);
+    box-shadow: 0 0 0 3px rgba(138,180,248,0.15);
+}
+.gf-widget .forecast-dropdown option,
+.gf-widget .forecast-dropdown optgroup {
+    background-color: #303134;
+    color: #e8eaed;
+}
+
+/* Responsive */
+@media (max-width: 576px) {
+    .gf-price     { font-size: 1.55rem; }
+    .gf-stats-grid{ grid-template-columns: repeat(2, 1fr); }
+    .gf-stat:nth-child(n+5) { border-bottom: none; }
+    .gf-stat:nth-child(-n+4){ border-bottom: 1px solid #2e3134; }
+}
