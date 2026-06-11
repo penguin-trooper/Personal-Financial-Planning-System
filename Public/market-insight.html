@@ -1,52 +1,29 @@
 <!doctype html>
 <html lang="en">
-
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Alegreya+Sans:wght@700;800&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/styles.css">
     <title>Moneta - Market Insights</title>
 </head>
-
 <body>
-    <!-- NavBar-->
     <nav class="navbar navbar-expand-lg moneta-navbar sticky-top" id="mainNavbar">
         <div class="container-fluid px-4">
-
-            <!-- Brand / Logo -->
-            <a class="navbar-brand" href="home-page.html">
-                Moneta
-            </a>
-
-            <!-- Mobile Toggler -->
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
-                aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+            <a class="navbar-brand" href="home-page.html">Moneta</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-
-            <!-- Collapsible Nav Links -->
             <div class="collapse navbar-collapse justify-content-center" id="navbarContent">
                 <ul class="navbar-nav gap-1">
-                    <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="home-page.html">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="Financial_planner.html">Financial Planner</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="roi-calculator.html">ROI Calculator</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" href="market-insight.html">Market Insights</a>
-                    </li>
+                    <li class="nav-item"><a class="nav-link" aria-current="page" href="home-page.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="financial_planner.html">Financial Planner</a></li>
+                    <li class="nav-item"><a class="nav-link" href="roi-calculator.html">ROI Calculator</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="market-insight.html">Market Insights</a></li>
                 </ul>
             </div>
-
-            <!-- User profile dropdown -->
             <div class="d-flex align-items-center gap-2">
                 <span class="nav-username d-none d-lg-inline">User Name</span>
                 <div class="dropdown">
@@ -55,217 +32,675 @@
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end moneta-dropdown-menu" aria-labelledby="profileDropdown">
                         <li><a class="dropdown-item" href="profile/profile.html"><i class="bi bi-gear"></i> Settings</a></li>
-                        <li>
-                            <hr class="dropdown-divider" style="border-color:rgba(255,255,255,0.15);">
-                        </li>
-                        <li><a class="dropdown-item" href="Public/login.html"><i class="bi bi-box-arrow-right"></i> Log Out</a></li>
+                        <li><hr class="dropdown-divider" style="border-color:rgba(255,255,255,0.15);"></li>
+                        <li><a class="dropdown-item" href="/logout"><i class="bi bi-box-arrow-right"></i> Log Out</a></li>
                     </ul>
                 </div>
             </div>
-
         </div>
     </nav>
 
-
-    <!-- Hero -->
     <div class="market-hero">
         <div class="container text-center">
             <h1>Market Insight</h1>
             <p class="lead">Stay informed with the latest market trends, stock movements, and financial news.</p>
         </div>
     </div>
-    <!-- Ticker Bar -->
+
     <div class="ticker-bar">
         <div class="ticker-content" id="tickerContent">
-            <span class="ticker-item">AAPL <span class="ticker-up">▲ 1.24%</span></span>
-            <span class="ticker-item">MSFT <span class="ticker-up">▲ 0.87%</span></span>
-            <span class="ticker-item">GOOGL <span class="ticker-down">▼ 0.43%</span></span>
-            <span class="ticker-item">AMZN <span class="ticker-up">▲ 2.11%</span></span>
-            <span class="ticker-item">TSLA <span class="ticker-down">▼ 1.56%</span></span>
-            <span class="ticker-item">NVDA <span class="ticker-up">▲ 3.02%</span></span>
-            <span class="ticker-item">META <span class="ticker-up">▲ 0.65%</span></span>
-            <span class="ticker-item">BTC/USD <span class="ticker-up">▲ 4.20%</span></span>
-            <span class="ticker-item">ETH/USD <span class="ticker-down">▼ 0.98%</span></span>
-            <span class="ticker-item">S&P 500 <span class="ticker-up">▲ 0.55%</span></span>
-            <!-- Duplicate for seamless loop -->
-            <span class="ticker-item">AAPL <span class="ticker-up">▲ 1.24%</span></span>
-            <span class="ticker-item">MSFT <span class="ticker-up">▲ 0.87%</span></span>
-            <span class="ticker-item">GOOGL <span class="ticker-down">▼ 0.43%</span></span>
-            <span class="ticker-item">AMZN <span class="ticker-up">▲ 2.11%</span></span>
-            <span class="ticker-item">TSLA <span class="ticker-down">▼ 1.56%</span></span>
-            <span class="ticker-item">NVDA <span class="ticker-up">▲ 3.02%</span></span>
-            <span class="ticker-item">META <span class="ticker-up">▲ 0.65%</span></span>
-            <span class="ticker-item">BTC/USD <span class="ticker-up">▲ 4.20%</span></span>
-            <span class="ticker-item">ETH/USD <span class="ticker-down">▼ 0.98%</span></span>
-            <span class="ticker-item">S&P 500 <span class="ticker-up">▲ 0.55%</span></span>
+            <span class="ticker-item">Loading live market data...</span>
         </div>
     </div>
+    <p id="lastUpdated" style="color:#EDF6BD; font-size:0.8rem; text-align:right; padding-right:1rem;"></p>
 
-    <!-- Main Content -->
     <div class="market-body">
         <div class="container">
+            <h4 class="section-title">Market Overview &amp; AI Forecast</h4>
+            <div id="overviewCards" class="row g-4 mb-5">
+                <div class="col-12">
+                    <div class="insight-card card forecast-card gf-widget">
+                        <div class="card-body p-0">
 
-            <!-- Market Overview Cards -->
-            <h4 class="section-title">Market Overview</h4>
-            <div class="row g-4 mb-5">
-                <div class="col-md-3 col-6">
-                    <div class="insight-card card p-3 text-center">
-                        <div class="card-body p-1">
-                            <p class="card-text mb-1">S&P 500</p>
-                            <h4 class="card-title mb-1">5,248.49</h4>
-                            <span class="badge-trend-up">▲ 0.55%</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3 col-6">
-                    <div class="insight-card card p-3 text-center">
-                        <div class="card-body p-1">
-                            <p class="card-text mb-1">NASDAQ</p>
-                            <h4 class="card-title mb-1">16,421.33</h4>
-                            <span class="badge-trend-up">▲ 0.92%</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3 col-6">
-                    <div class="insight-card card p-3 text-center">
-                        <div class="card-body p-1">
-                            <p class="card-text mb-1">DOW JONES</p>
-                            <h4 class="card-title mb-1">38,904.04</h4>
-                            <span class="badge-trend-down">▼ 0.21%</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3 col-6">
-                    <div class="insight-card card p-3 text-center">
-                        <div class="card-body p-1">
-                            <p class="card-text mb-1">Bitcoin</p>
-                            <h4 class="card-title mb-1">$62,410</h4>
-                            <span class="badge-trend-up">▲ 4.20%</span>
+                            <!-- GF Widget Header -->
+                            <div class="gf-widget-header">
+                                <div class="gf-header-left">
+                                    <div id="gf-asset-name" class="gf-asset-name">S&amp;P 500</div>
+                                    <div class="d-flex align-items-baseline flex-wrap gap-2">
+                                        <span id="gf-price" class="gf-price">--</span>
+                                        <span id="gf-change-badge" class="gf-change-badge gf-badge-neutral">-- --</span>
+                                    </div>
+                                    <div id="gf-timestamp" class="gf-timestamp">Fetching live data&hellip;</div>
+                                </div>
+                                <div class="gf-header-right">
+                                    <select id="forecastAssetSelect" class="forecast-dropdown" aria-label="Select market">
+                                        <optgroup label="US Indices">
+                                            <option value="^GSPC">S&amp;P 500</option>
+                                            <option value="^IXIC">NASDAQ</option>
+                                            <option value="^DJI">Dow Jones</option>
+                                            <option value="^RUT">Russell 2000</option>
+                                        </optgroup>
+                                        <optgroup label="Global Indices">
+                                            <option value="^FTSE">FTSE 100</option>
+                                            <option value="^N225">Nikkei 225</option>
+                                            <option value="^GDAXI">DAX</option>
+                                        </optgroup>
+                                        <optgroup label="Commodities">
+                                            <option value="GC=F">Gold</option>
+                                            <option value="CL=F">Crude Oil</option>
+                                        </optgroup>
+                                        <optgroup label="Crypto">
+                                            <option value="BTC-USD">Bitcoin</option>
+                                            <option value="ETH-USD">Ethereum</option>
+                                        </optgroup>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Timeframe Tabs -->
+                            <div class="gf-tabs" role="tablist" aria-label="Chart timeframe">
+                                <button class="gf-tab" data-range="1D">1D</button>
+                                <button class="gf-tab" data-range="5D">5D</button>
+                                <button class="gf-tab gf-tab-active" data-range="1M">1M</button>
+                                <button class="gf-tab" data-range="6M">6M</button>
+                                <button class="gf-tab" data-range="YTD">YTD</button>
+                                <button class="gf-tab" data-range="1Y">1Y</button>
+                                <button class="gf-tab" data-range="5Y">5Y</button>
+                                <button class="gf-tab" data-range="MAX">Max</button>
+                            </div>
+
+                            <!-- Loading -->
+                            <div id="forecastLoading" class="forecast-loading">Fetching live data&hellip;</div>
+
+                            <!-- Chart -->
+                            <div class="forecast-chart-wrap gf-chart-wrap">
+                                <canvas id="forecastChart" aria-label="Market forecast chart" role="img"></canvas>
+                            </div>
+
+                            <!-- Forecast Summary -->
+                            <div id="forecastSummary" class="forecast-summary gf-forecast-label" aria-live="polite"></div>
+
+                            <!-- Stats Grid -->
+                            <div class="gf-stats-grid">
+                                <div class="gf-stat"><span class="gf-stat-label">Open</span><span id="gf-open" class="gf-stat-value">--</span></div>
+                                <div class="gf-stat"><span class="gf-stat-label">High</span><span id="gf-high" class="gf-stat-value">--</span></div>
+                                <div class="gf-stat"><span class="gf-stat-label">Low</span><span id="gf-low" class="gf-stat-value">--</span></div>
+                                <div class="gf-stat"><span class="gf-stat-label">Prev Close</span><span id="gf-prev-close" class="gf-stat-value">--</span></div>
+                                <div class="gf-stat"><span class="gf-stat-label">52-wk High</span><span id="gf-52h" class="gf-stat-value">--</span></div>
+                                <div class="gf-stat"><span class="gf-stat-label">52-wk Low</span><span id="gf-52l" class="gf-stat-value">--</span></div>
+                            </div>
+
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Top Stocks + News side by side -->
             <div class="row g-4">
-                <!-- Top Stocks -->
                 <div class="col-md-6">
-                    <h4 class="section-title">Top Stocks</h4>
-
-                    <div id="stockList">
-                        <div class="insight-card card p-3 mb-3" data-trend="up">
-                            <div class="card-body p-1 d-flex justify-content-between align-items-center">
-                                <div>
-                                    <h6 class="card-title mb-0">NVDA</h6>
-                                    <small class="card-text">NVIDIA Corporation</small>
-                                </div>
-                                <div class="text-end">
-                                    <div class="card-title mb-0">$875.40</div>
-                                    <span class="badge-trend-up">▲ 3.02%</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="insight-card card p-3 mb-3" data-trend="up">
-                            <div class="card-body p-1 d-flex justify-content-between align-items-center">
-                                <div>
-                                    <h6 class="card-title mb-0">AAPL</h6>
-                                    <small class="card-text">Apple Inc.</small>
-                                </div>
-                                <div class="text-end">
-                                    <div class="card-title mb-0">$189.30</div>
-                                    <span class="badge-trend-up">▲ 1.24%</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="insight-card card p-3 mb-3" data-trend="down">
-                            <div class="card-body p-1 d-flex justify-content-between align-items-center">
-                                <div>
-                                    <h6 class="card-title mb-0">TSLA</h6>
-                                    <small class="card-text">Tesla Inc.</small>
-                                </div>
-                                <div class="text-end">
-                                    <div class="card-title mb-0">$172.82</div>
-                                    <span class="badge-trend-down">▼ 1.56%</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="insight-card card p-3 mb-3" data-trend="down">
-                            <div class="card-body p-1 d-flex justify-content-between align-items-center">
-                                <div>
-                                    <h6 class="card-title mb-0">GOOGL</h6>
-                                    <small class="card-text">Alphabet Inc.</small>
-                                </div>
-                                <div class="text-end">
-                                    <div class="card-title mb-0">$171.95</div>
-                                    <span class="badge-trend-down">▼ 0.43%</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="insight-card card p-3 mb-3" data-trend="up">
-                            <div class="card-body p-1 d-flex justify-content-between align-items-center">
-                                <div>
-                                    <h6 class="card-title mb-0">AMZN</h6>
-                                    <small class="card-text">Amazon.com Inc.</small>
-                                </div>
-                                <div class="text-end">
-                                    <div class="card-title mb-0">$184.70</div>
-                                    <span class="badge-trend-up">▲ 2.11%</span>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="d-flex justify-content-between align-items-center gap-3">
+                        <h4 class="section-title mb-0">Top Stocks</h4>
+                        <button class="btn btn-sm btn-outline-light" type="button" data-bs-toggle="modal" data-bs-target="#stockPickerModal">Choose Stocks</button>
                     </div>
+                    <div class="mt-3" id="stockList"><div class="insight-card card p-3 mb-3">Loading live market data...</div></div>
                 </div>
-
-<!-- Market News -->
- <div class="col-md-6">
-    <h4 class="section-title">Market News</h4>
-
-    <div class="news-card">
-        <div class="news-title">Fed Signals Possible Rate Cut Later This Year</div>
-        <div class="card-text news-text">
-            Federal Reserve officials hint at potential interest rate reductions if inflation continues to ease toward the 2% target.
-        </div>
-        <div class="news-meta mt-2">📅 May 5, 2026 | 🏷 Monetary Policy</div>
-    </div>
-
-    <div class="news-card">
-        <div class="news-title">NVIDIA Surges After Record Data Center Revenue</div>
-        <div class="card-text news-text">
-            NVIDIA reports record-breaking quarterly earnings driven by surging demand for AI chips and data center infrastructure.
-        </div>
-        <div class="news-meta mt-2">📅 May 4, 2026 | 🏷 Technology</div>
-    </div>
-
-    <div class="news-card">
-        <div class="news-title">Bitcoin Breaks $62,000 as Institutional Demand Rises</div>
-        <div class="card-text news-text">
-            Cryptocurrency markets rally as major institutional investors increase Bitcoin holdings amid growing mainstream adoption.
-        </div>
-        <div class="news-meta mt-2">📅 May 3, 2026 | 🏷 Crypto</div>
-    </div>
-
-    <div class="news-card">
-        <div class="news-title">Oil Prices Dip Amid Rising Global Supply</div>
-        <div class="card-text news-text">
-            Crude oil futures fell as OPEC+ members signal plans to gradually increase production output over the coming months.
-        </div>
-        <div class="news-meta mt-2">📅 May 2, 2026 | 🏷 Commodities</div>
-    </div>
-</div>
+                <div class="col-md-6">
+                    <h4 class="section-title">Market News</h4>
+                    <div id="newsList"><div class="news-card">Loading live market data...</div></div>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- Footer -->
     <section>
         <div class="moneta-section p-5 text-center footer-bar">
             <p class="moneta-section-text">Made by Group 3 OCC2</p>
         </div>
     </section>
 
-     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
-        crossorigin="anonymous"></script>
-</body>
+    <div class="modal fade" id="stockPickerModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Choose Stocks</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="d-flex gap-2 mb-3">
+                        <input type="text" id="stockSearch" class="form-control" placeholder="Search stocks">
+                        <button type="button" class="btn btn-outline-secondary" id="selectAllStocks">Select All</button>
+                        <button type="button" class="btn btn-outline-secondary" id="clearStocks">Clear Selection</button>
+                    </div>
+                    <div class="small mb-2">Selected: <span id="selectedStockCount">0</span></div>
+                    <div id="stockPickerList" class="list-group" style="max-height:320px; overflow:auto;"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" id="clearStocks">Clear Selection</button>
+                    <button type="button" class="btn btn-outline-secondary" id="cancelStocks" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="confirmStocks">Confirm</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+    <script>
+        const escapeHtml = (value) => String(value).replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[char]));
+        const pct = (value) => `${Number(value).toFixed(2)}%`;
+        const money = (value) => Number(value).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        const STOCK_ORDER = ['NVDA', 'AAPL', 'TSLA', 'GOOGL', 'AMZN', 'MSFT', 'META', 'AMD', 'NFLX', 'INTC', 'PLTR', 'CRM', 'ORCL', 'JPM', 'V', 'MA', 'KO', 'PEP', 'DIS', 'UBER', 'BAC', 'WMT', 'COST', 'ADBE', 'CSCO', 'PYPL', 'SHOP'];
+        let liveStocks = [];
+        let pickerStocks = [];
+        let selectedStocks = JSON.parse(localStorage.getItem('selectedStocks') || '[]').map((s) => String(s).toUpperCase());
+        let draftStocks = selectedStocks.slice();
+
+        function normalizeStock(value) {
+            return String(value || '').toUpperCase();
+        }
+
+        function getDisplayedStocks(data) {
+            const sorted = (data || []).slice().sort((a, b) => {
+                const changeDiff = Number(b.change) - Number(a.change);
+                if (changeDiff !== 0) return changeDiff;
+                const capDiff = Number(b.marketCap || 0) - Number(a.marketCap || 0);
+                if (capDiff !== 0) return capDiff;
+                return String(a.symbol).localeCompare(String(b.symbol));
+            });
+            if (!selectedStocks.length) return sorted.slice(0, 5);
+            const selectedSet = new Set(selectedStocks);
+            return sorted.filter((item) => selectedSet.has(normalizeStock(item.symbol)));
+        }
+
+        function persistSelections() {
+            localStorage.setItem('selectedStocks', JSON.stringify(selectedStocks));
+        }
+
+        function renderPicker() {
+            const el = document.getElementById('stockPickerList');
+            const query = normalizeStock(document.getElementById('stockSearch').value);
+            const filtered = pickerStocks.filter((stock) => !query || normalizeStock(stock.symbol).includes(query) || normalizeStock(stock.name).includes(query));
+            el.innerHTML = filtered.map((stock) => {
+                const symbol = normalizeStock(stock.symbol);
+                const checked = draftStocks.includes(symbol) ? 'checked' : '';
+                return `
+                    <label class="list-group-item d-flex align-items-center justify-content-between">
+                        <span>
+                            <input class="form-check-input me-2 stock-checkbox" type="checkbox" value="${symbol}" ${checked}>
+                            ${escapeHtml(stock.symbol)} <small class="text-muted">${escapeHtml(stock.name)}</small>
+                        </span>
+                    </label>`;
+            }).join('') || '<div class="text-center py-3">Data unavailable</div>';
+            document.getElementById('selectedStockCount').textContent = String(draftStocks.length);
+        }
+
+        function openPicker() {
+            draftStocks = selectedStocks.slice();
+            renderPicker();
+        }
+
+        function applyPickerChanges() {
+            selectedStocks = draftStocks.slice();
+            persistSelections();
+            renderStocks(liveStocks);
+            renderPicker();
+        }
+
+        function renderOverview(data) {
+            const el = document.getElementById('overviewCards');
+            // GUARD: forecast card is present — skip legacy 4-card rendering
+            if (el && el.querySelector('.forecast-card')) return;
+            if (!data || !data.length) {
+                el.innerHTML = '<div class="col-12 text-center text-white py-4">Data unavailable</div>';
+                return;
+            }
+            el.innerHTML = data.map((item) => {
+                const up = Number(item.change) >= 0;
+                const url = item.url || 'https://finance.yahoo.com';
+                return `
+                    <div class="col-md-3 col-6">
+                        <a href="${url}" target="_blank" rel="noopener" style="text-decoration:none;">
+                            <div class="insight-card card p-3 text-center">
+                                <div class="card-body p-1">
+                                    <p class="card-text mb-1">${escapeHtml(item.name)}</p>
+                                    <h4 class="card-title mb-1">${escapeHtml(item.price)}</h4>
+                                    <span class="${up ? 'badge-trend-up' : 'badge-trend-down'}">${up ? '▲' : '▼'} ${pct(item.change)}</span>
+                                </div>
+                            </div>
+                        </a>
+                    </div>`;
+            }).join('');
+        }
+
+        function renderStocks(data) {
+            liveStocks = data || [];
+            const el = document.getElementById('stockList');
+            if (!data || !data.length) {
+                el.innerHTML = '<div class="insight-card card p-3 mb-3">Data unavailable</div>';
+                return;
+            }
+            const display = getDisplayedStocks(data);
+            el.innerHTML = display.map((stock) => {
+                const up = Number(stock.change) >= 0;
+                const url = stock.url || 'https://finance.yahoo.com';
+                return `
+                    <a href="${url}" target="_blank" rel="noopener" style="text-decoration:none;">
+                        <div class="insight-card card p-3 mb-3">
+                            <div class="card-body p-1 d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6 class="card-title mb-0">${escapeHtml(stock.symbol)}</h6>
+                                    <small class="card-text">${escapeHtml(stock.name)}</small>
+                                </div>
+                                <div class="text-end">
+                                    <div class="card-title mb-0">${money(stock.price)}</div>
+                                    <span class="${up ? 'badge-trend-up' : 'badge-trend-down'}">${up ? '▲' : '▼'} ${pct(stock.change)}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>`;
+            }).join('');
+            pickerStocks = data.slice().sort((a, b) => {
+                const ai = STOCK_ORDER.indexOf(normalizeStock(a.symbol));
+                const bi = STOCK_ORDER.indexOf(normalizeStock(b.symbol));
+                return (ai === -1 ? 999 : ai) - (bi === -1 ? 999 : bi);
+            });
+            renderPicker();
+        }
+
+        function renderTicker(data) {
+            const el = document.getElementById('tickerContent');
+            if (!data || !data.length) {
+                el.innerHTML = '<span class="ticker-item">Data unavailable</span>';
+                return;
+            }
+            const single = data.map((stock) => {
+                const up = Number(stock.change) >= 0;
+                return `<span class="ticker-item">${escapeHtml(stock.symbol)} <span class="${up ? 'ticker-up' : 'ticker-down'}">${up ? '▲' : '▼'} ${pct(stock.change)}</span></span>`;
+            }).join('');
+            el.innerHTML = single + single;
+        }
+
+        function renderNews(data) {
+            const el = document.getElementById('newsList');
+            if (!data || !data.length) {
+                el.innerHTML = '<div class="news-card">Data unavailable</div>';
+                return;
+            }
+            el.innerHTML = data.map((article) => {
+                const description = article.description || '';
+                const shortDescription = description.length > 120 ? `${description.slice(0, 120)}...` : description;
+                const published = article.publishedAt ? new Date(article.publishedAt).toLocaleDateString() : '';
+                if (!article.url) {
+                    return '';
+                }
+                const url = article.url;
+                return `
+                    <a href="${url}" target="_blank" rel="noopener" style="text-decoration:none;">
+                        <div class="news-card">
+                            <div class="news-title">${escapeHtml(article.title)}</div>
+                            <div class="card-text news-text">${escapeHtml(shortDescription)}</div>
+                            <div class="news-meta mt-2">${escapeHtml(article.source)} | ${escapeHtml(published)} | ${escapeHtml(article.category)}</div>
+                        </div>
+                    </a>`;
+            }).filter(Boolean).join('');
+        }
+
+        document.addEventListener('click', (event) => {
+            if (event.target.matches('.stock-checkbox')) {
+                const symbol = normalizeStock(event.target.value);
+                if (event.target.checked) {
+                    draftStocks = Array.from(new Set([...draftStocks, symbol]));
+                } else {
+                    draftStocks = draftStocks.filter((item) => item !== symbol);
+                }
+                renderPicker();
+            }
+        });
+
+        document.addEventListener('input', (event) => {
+            if (event.target && event.target.id === 'stockSearch') {
+                renderPicker();
+            }
+        });
+
+        document.addEventListener('click', (event) => {
+            if (event.target && event.target.id === 'selectAllStocks') {
+                draftStocks = pickerStocks.map((stock) => normalizeStock(stock.symbol));
+                renderPicker();
+            }
+            if (event.target && event.target.id === 'clearStocks') {
+                draftStocks = [];
+                selectedStocks = [];
+                localStorage.removeItem('selectedStocks');
+                renderStocks(liveStocks);
+                renderPicker();
+                const modal = bootstrap.Modal.getInstance(document.getElementById('stockPickerModal'));
+                if (modal) modal.hide();
+            }
+            if (event.target && event.target.id === 'confirmStocks') {
+                applyPickerChanges();
+                const modal = bootstrap.Modal.getInstance(document.getElementById('stockPickerModal'));
+                if (modal) modal.hide();
+            }
+        });
+
+        document.getElementById('stockPickerModal').addEventListener('show.bs.modal', openPicker);
+
+        Promise.all([
+            fetch('/api/market/overview').then(r => r.json()),
+            fetch('/api/market/stocks').then(r => r.json()),
+            fetch('/api/market/news').then(r => r.json())
+        ])
+        .then(([overview, stocks, news]) => {
+            renderOverview(overview);
+            renderStocks(stocks);
+            renderTicker(stocks);
+            renderNews(news);
+            document.getElementById('lastUpdated').textContent = 'Last updated: ' + new Date().toLocaleTimeString();
+        })
+        .catch(() => {
+            document.getElementById('lastUpdated').textContent = 'Could not load live data.';
+        });
+    </script>
+
+    <script>
+    /* ================================================================
+       MARKET FORECAST WIDGET — IIFE (zero global scope leak)
+       Google Finance-style dark widget with live Yahoo Finance data
+       ================================================================ */
+    (function () {
+        'use strict';
+
+        // ── Color palette ────────────────────────────────────────────
+        const GF = {
+            positive:     '#81c995',
+            negative:     '#f28b82',
+            posFill:      'rgba(129,201,149,0.15)',
+            negFill:      'rgba(242,139,130,0.15)',
+            grid:         '#3c4043',
+            tick:         '#9aa0a6',
+            tooltipBg:    '#303134',
+            tooltipTitle: '#e8eaed',
+            tooltipBody:  '#9aa0a6'
+        };
+
+        let forecastChart        = null;
+        let forecastCurrentAsset = '^GSPC';
+
+        // ── Utility: format price with commas ─────────────────────
+        function fmtPrice(val, decimals) {
+            if (val === null || val === undefined) return '--';
+            var d = decimals !== undefined ? decimals : (val < 100 ? 2 : 2);
+            return Number(val).toLocaleString('en-US', {
+                minimumFractionDigits: d,
+                maximumFractionDigits: d
+            });
+        }
+
+        // ── Update header: price, badge, timestamp ─────────────────
+        function gfUpdateHeader(data) {
+            var nameEl   = document.getElementById('gf-asset-name');
+            var priceEl  = document.getElementById('gf-price');
+            var badgeEl  = document.getElementById('gf-change-badge');
+            var tsEl     = document.getElementById('gf-timestamp');
+
+            if (nameEl)  nameEl.textContent  = data.name || data.symbol || '';
+            if (priceEl) priceEl.textContent = fmtPrice(data.currentPrice);
+
+            var pct   = Number(data.percentChange  || 0);
+            var pts   = Number(data.pointChange    || 0);
+            var isUp  = pct >= 0;
+            var sign  = isUp ? '+' : '';
+            if (badgeEl) {
+                badgeEl.textContent = sign + fmtPrice(pts) + ' (' + sign + pct.toFixed(2) + '%)';
+                badgeEl.className   = 'gf-change-badge ' + (isUp ? 'gf-badge-up' : 'gf-badge-down');
+            }
+
+            if (tsEl && data.timestamp) {
+                var ts = new Date(data.timestamp);
+                tsEl.textContent = 'As of ' + ts.toLocaleString('en-US', {
+                    month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit', timeZoneName: 'short'
+                }) + (data.isFallback ? '  (fallback data)' : '');
+            }
+        }
+
+        // ── Update stats grid ─────────────────────────────────────
+        function gfUpdateStats(data) {
+            var fields = {
+                'gf-open':      data.open,
+                'gf-high':      data.high,
+                'gf-low':       data.low,
+                'gf-prev-close':data.previousClose,
+                'gf-52h':       data.fiftyTwoWeekHigh,
+                'gf-52l':       data.fiftyTwoWeekLow
+            };
+            Object.keys(fields).forEach(function (id) {
+                var el = document.getElementById(id);
+                if (el) el.textContent = fmtPrice(fields[id]);
+            });
+        }
+
+        var forecastCurrentRange = '1M';
+
+        // ── Fetch from backend ────────────────────────────────────
+        async function forecastLoad(symbol, range) {
+            range = range || forecastCurrentRange;
+            var loadEl    = document.getElementById('forecastLoading');
+            var summaryEl = document.getElementById('forecastSummary');
+            if (loadEl) loadEl.style.display = 'block';
+            try {
+                var res = await fetch('/api/market/market-data/' + encodeURIComponent(symbol) + '?range=' + encodeURIComponent(range));
+                if (!res.ok) throw new Error('HTTP ' + res.status);
+                var data = await res.json();
+                gfUpdateHeader(data);
+                gfUpdateStats(data);
+                forecastRender(data);
+            } catch (err) {
+                if (summaryEl) {
+                    summaryEl.textContent  = 'Live data unavailable. Please try again shortly.';
+                    summaryEl.style.color  = GF.negative;
+                }
+                console.error('[Forecast] Failed:', err.message);
+            } finally {
+                if (loadEl) loadEl.style.display = 'none';
+            }
+        }
+
+        // ── Build gradient fill ───────────────────────────────────
+        function buildGradient(ctx, chartArea, color) {
+            var gradient = ctx.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
+            gradient.addColorStop(0,   color.replace(')', ', 0.35)').replace('rgb', 'rgba'));
+            gradient.addColorStop(1,   color.replace(')', ', 0)').replace('rgb', 'rgba'));
+            return gradient;
+        }
+
+        // ── Render chart ──────────────────────────────────────────
+        function forecastRender(data) {
+            var histPrices = data.historical.map(function (d) { return d.price; });
+            var predPrices = data.prediction.map(function (d) { return d.price; });
+
+            var histLabels = data.historical.map(function (d) { return d.date; });
+            var predLabels = data.prediction.slice(1).map(function (d) { return d.date; });
+            var allLabels  = histLabels.concat(predLabels);
+
+            // Historical: solid for hist indices, null for pred indices
+            var histDataset = histPrices.concat(
+                data.prediction.slice(1).map(function () { return null; })
+            );
+
+            // Prediction: null for hist-1 indices, bridge + pred values
+            var predNulls   = histPrices.slice(0, -1).map(function () { return null; });
+            var bridged     = [histPrices[histPrices.length - 1]].concat(predPrices.slice(1));
+            var predDataset = predNulls.concat(bridged);
+
+            // Trend direction — drives unified color scheme
+            var lastHist  = histPrices[histPrices.length - 1];
+            var lastPred  = predPrices[predPrices.length - 1];
+            var isUp      = lastPred >= lastHist;
+            var trendColor = isUp ? GF.positive : GF.negative;
+            var fillColor  = isUp ? GF.posFill  : GF.negFill;
+
+            // Percentage change for summary badge
+            var pct   = (((lastPred - lastHist) / lastHist) * 100).toFixed(2);
+            var arrow = isUp ? '\u25b2' : '\u25bc';
+            var sign  = isUp ? '+' : '';
+            var summaryEl = document.getElementById('forecastSummary');
+            if (summaryEl) {
+                summaryEl.textContent = 'AI Forecast (7 Days): ' + arrow + ' ' + sign + pct + '% ' + (isUp ? 'Expected Growth' : 'Expected Decline');
+                summaryEl.style.color = trendColor;
+            }
+
+            var canvas = document.getElementById('forecastChart');
+            if (!canvas) return;
+
+            // Gradient fill via plugin — built after chart has dimensions
+            var gradientFill = null;
+            var gradientPlugin = {
+                id: 'forecastGradient',
+                beforeDatasetsDraw: function (chart) {
+                    var ctx  = chart.ctx;
+                    var area = chart.chartArea;
+                    if (!area) return;
+                    if (!gradientFill) {
+                        var base = isUp ? [129,201,149] : [242,139,130];
+                        var g = ctx.createLinearGradient(0, area.top, 0, area.bottom);
+                        g.addColorStop(0,   'rgba(' + base + ',0.35)');
+                        g.addColorStop(1,   'rgba(' + base + ',0)');
+                        gradientFill = g;
+                    }
+                    // Apply to both datasets
+                    chart.data.datasets.forEach(function (ds) {
+                        ds.backgroundColor = gradientFill;
+                    });
+                }
+            };
+
+            var chartCfg = {
+                type: 'line',
+                data: { labels: allLabels, datasets: [
+                    {
+                        label:                     'Historical',
+                        data:                      histDataset,
+                        borderColor:               trendColor,
+                        backgroundColor:           fillColor,
+                        borderWidth:               2,
+                        tension:                   0.35,
+                        fill:                      true,
+                        spanGaps:                  false,
+                        pointRadius:               0,
+                        pointHoverRadius:          5,
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor:     trendColor,
+                        pointHoverBorderWidth:     2
+                    },
+                    {
+                        label:                     'Predicted',
+                        data:                      predDataset,
+                        borderColor:               trendColor,
+                        backgroundColor:           fillColor,
+                        borderWidth:               2,
+                        borderDash:                [5, 4],
+                        tension:                   0.35,
+                        fill:                      true,
+                        spanGaps:                  false,
+                        pointRadius:               0,
+                        pointHoverRadius:          5,
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor:     trendColor,
+                        pointHoverBorderWidth:     2
+                    }
+                ]},
+                options: {
+                    responsive:          true,
+                    maintainAspectRatio: true,
+                    aspectRatio:         3.2,
+                    animation:           { duration: 500, easing: 'easeInOutQuart' },
+                    interaction:         { mode: 'index', intersect: false },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: GF.tooltipBg,
+                            titleColor:      GF.tooltipTitle,
+                            bodyColor:       GF.tooltipBody,
+                            borderColor:     'rgba(255,255,255,0.1)',
+                            borderWidth:     1,
+                            padding:         10,
+                            callbacks: {
+                                title: function (items) { return items[0] ? items[0].label : ''; },
+                                label: function (item) {
+                                    if (item.parsed.y === null) return null;
+                                    var price = item.parsed.y.toLocaleString('en-US', {
+                                        minimumFractionDigits: 2,
+                                        maximumFractionDigits: 2
+                                    });
+                                    return ' ' + item.dataset.label + ': $' + price;
+                                },
+                                filter: function (item) { return item.parsed.y !== null; }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid:   { display: false },
+                            border: { display: false },
+                            ticks:  {
+                                color:         GF.tick,
+                                font:          { family: 'Nunito', size: 11 },
+                                maxTicksLimit: 8,
+                                maxRotation:   0
+                            }
+                        },
+                        y: {
+                            position: 'right',
+                            grid:   { color: GF.grid, display: true, drawBorder: false },
+                            border: { display: false },
+                            ticks:  {
+                                color: GF.tick,
+                                font:  { family: 'Nunito', size: 11 },
+                                callback: function (val) {
+                                    return val.toLocaleString('en-US', { maximumFractionDigits: 0 });
+                                }
+                            }
+                        }
+                    }
+                },
+                plugins: [gradientPlugin]
+            };
+
+            if (forecastChart) {
+                forecastChart.destroy();
+                forecastChart = null;
+            }
+            forecastChart = new Chart(canvas, chartCfg);
+        }
+
+        // ── Timeframe tabs ─────────────────────────────────────────
+        document.querySelectorAll('.gf-tab').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                document.querySelectorAll('.gf-tab').forEach(function (b) { b.classList.remove('gf-tab-active'); });
+                btn.classList.add('gf-tab-active');
+                forecastCurrentRange = btn.dataset.range;
+                forecastLoad(forecastCurrentAsset, forecastCurrentRange);
+            });
+        });
+
+        // ── Dropdown change ────────────────────────────────────────
+        var forecastSelect = document.getElementById('forecastAssetSelect');
+        if (forecastSelect) {
+            forecastSelect.addEventListener('change', function () {
+                forecastCurrentAsset = this.value;
+                // Reset tab to 1M on asset change
+                document.querySelectorAll('.gf-tab').forEach(function (b) { b.classList.remove('gf-tab-active'); });
+                var m = document.querySelector('.gf-tab[data-range="1M"]');
+                if (m) m.classList.add('gf-tab-active');
+                forecastCurrentRange = '1M';
+                forecastLoad(forecastCurrentAsset, forecastCurrentRange);
+            });
+        }
+
+        // Load default on page ready
+        forecastLoad(forecastCurrentAsset, forecastCurrentRange);
+
+    }()); // end IIFE
+    </script>
+</body>
 </html>
