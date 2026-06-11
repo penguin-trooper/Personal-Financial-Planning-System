@@ -2,7 +2,38 @@ document.addEventListener("DOMContentLoaded", function () {
     const riskSelect = document.getElementById("riskLevel");
     const riskBadge = document.querySelector(".risk-badge");
     const strategyList = document.querySelector(".strategy-list");
+    const strategyDuration = document.getElementById("strategy-duration");
 
+    const PRESETS = [
+        { name: 'Education Funds', target: 20000, duration: '4 years' },
+        { name: 'Emergency Fund', target: 15000, duration: '2 years' },
+        { name: 'Home Purchase', target: 80000, duration: '10 years' },
+        { name: 'Retirement Fund', target: 500000, duration: '30 years' },
+        { name: 'Travel Fund', target: 8000, duration: '1 year' },
+    ];
+
+    let goals = [...PRESETS];
+
+    try {
+        const custom = JSON.parse(localStorage.getItem('moneta_custom_goals') || '[]');
+        custom.forEach(g => goals.push(g));
+    } catch (e) { }
+
+    let goalIndex = 0;
+
+    try {
+        const s = JSON.parse(localStorage.getItem('moneta_state') || 'null');
+        if (s && typeof s.goalIndex === 'number') {
+            goalIndex = Math.min(s.goalIndex, goals.length - 1);
+        }
+    } catch (e) { }
+
+    const selectedGoal = goals[goalIndex];
+
+    if (strategyDuration && selectedGoal) {
+        strategyDuration.textContent = 'Duration: ' + selectedGoal.duration;
+    }
+    
     const strategies = {
         low: {
             badge: "Low Risk",

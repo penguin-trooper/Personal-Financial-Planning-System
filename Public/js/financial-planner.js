@@ -1,4 +1,59 @@
-window.addEventListener('load', () => {
+function renderStrategySummary() {
+    const selectedRisk = localStorage.getItem("moneta_risk_level") || "moderate";
+
+    const strategies = {
+        low: {
+            badge: "Low Risk",
+            items: [
+                { name: "Fixed Deposit", pct: "60%" },
+                { name: "Bonds", pct: "40%" }
+            ]
+        },
+        moderate: {
+            badge: "Moderate Risk",
+            items: [
+                { name: "Bonds", pct: "50%" },
+                { name: "Balanced Funds", pct: "50%" }
+            ]
+        },
+        high: {
+            badge: "High Risk",
+            items: [
+                { name: "Stocks", pct: "70%" },
+                { name: "ETFs", pct: "30%" }
+            ]
+        }
+    };
+
+    const strategy = strategies[selectedRisk] || strategies.moderate;
+
+    const riskBadge = document.querySelector(".strategies-body .risk-badge");
+    const tagList = document.querySelector(".tag-list");
+    const allocTable = document.querySelector(".alloc-table");
+
+    if (riskBadge) {
+        riskBadge.textContent = strategy.badge;
+    }
+
+    if (tagList) {
+        tagList.innerHTML = strategy.items
+            .map(item => `<span class="strat-tag">${item.name}</span>`)
+            .join("");
+    }
+
+    if (allocTable) {
+        allocTable.innerHTML = strategy.items
+            .map(item => `
+                <div class="alloc-row">
+                    <span class="alloc-tag">${item.name}</span>
+                    <span class="alloc-pct">${item.pct}</span>
+                </div>
+            `)
+            .join("");
+    }
+}
+
+function renderFinancialPlanner() {
     // Preset goals (must match Investment_goals.html)
     const PRESETS = [
         { name: 'Education Funds', target: 20000, duration: '4 years' },
@@ -48,8 +103,16 @@ window.addEventListener('load', () => {
     document.getElementById('fp-goal-info').innerHTML =
         'Duration: ' + g.duration + '<br>' + fmt(+monthly.toFixed(2)) + '/month';
 
+    const strategyDuration = document.getElementById('fp-strategy-duration');
+    if (strategyDuration) {
+        strategyDuration.textContent = 'Duration: ' + g.duration;
+    }
+    renderStrategySummary();
     // Animate progress bar
     const bar = document.getElementById('progressBar');
     bar.style.width = '0%';
     setTimeout(() => { bar.style.width = pct + '%'; }, 100);
-});
+}
+
+window.addEventListener('load', renderFinancialPlanner);
+window.addEventListener('pageshow', renderFinancialPlanner);
