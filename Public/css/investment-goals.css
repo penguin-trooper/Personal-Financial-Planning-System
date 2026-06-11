@@ -18,10 +18,12 @@
     --card-dark: #2e4a2e;
     --bar-track: #c8dbb5;
     --text-muted: #c8dba0;
+    --font-title: 'Alegreya Sans', sans-serif !important;
+    --font-body: 'Roboto', sans-serif;
 }
 
 body {
-    font-family: 'Nunito', sans-serif;
+    font-family: 'Roboto', sans-serif;
     background: linear-gradient(135deg, #3a4a3a 0%, #8fa89a 40%, #b0c4b8 70%, #a0b8c0 100%);
     min-height: 100vh;
     display: flex;
@@ -36,7 +38,7 @@ body {
 }
 
 .moneta-navbar .navbar-brand {
-    font-family: 'Cinzel', serif;
+    font-family: var(--font-title);
     font-weight: bold;
     font-size: 1.5rem;
     letter-spacing: 0.05em;
@@ -146,7 +148,7 @@ main::before {
 }
 
 h1 {
-    font-family: 'Cinzel', serif;
+    font-family: var(--font-title);
     font-size: 34px;
     font-weight: 700;
     color: #fff;
@@ -252,7 +254,7 @@ h1 {
     color: var(--text-muted);
     font-size: 12px;
     font-weight: 700;
-    font-family: 'Nunito', sans-serif;
+    font-family: var(--font-body);
     padding: 6px 14px;
     transition: background 0.2s, color 0.2s;
     display: inline-flex;
@@ -281,8 +283,8 @@ h1 {
 }
 
 .progress-card h2 {
-    font-family: 'Cinzel', serif;
-    font-size: 20px;
+    font-family: var(--font-title);
+    font-size: 40px;
     font-weight: 700;
     color: var(--dark-blue);
     margin-bottom: 6px;
@@ -293,11 +295,11 @@ h1 {
     background: var(--accent-green);
     color: var(--dark-blue);
     font-weight: 700;
-    font-size: 12px;
-    padding: 4px 16px;
+    font-size: 14px;
+    padding: 4px;
     border-radius: 20px;
-    margin-bottom: 16px;
-    font-family: 'Cinzel', serif;
+    margin-bottom: 4px;
+    font-family: var(--font-body);
     letter-spacing: 0.5px;
 }
 
@@ -370,7 +372,7 @@ h1 {
     font-weight: 700;
     cursor: pointer;
     transition: background 0.2s, transform 0.1s;
-    font-family: 'Nunito', sans-serif;
+    font-family: var(--font-body);
 }
 
 .fund-btn:hover {
@@ -393,7 +395,7 @@ h1 {
     font-weight: 700;
     cursor: pointer;
     transition: background 0.2s;
-    font-family: 'Nunito', sans-serif;
+    font-family: var(--font-body);
 }
 
 .reset-btn:hover {
@@ -419,7 +421,7 @@ h1 {
     font-weight: 700;
     cursor: pointer;
     transition: background 0.2s;
-    font-family: 'Nunito', sans-serif;
+    font-family: var(--font-body);
 }
 
 .back-btn:hover {
@@ -441,9 +443,7 @@ h1 {
     padding: 18px !important;
 }
 
-/* ══════════════════════════════════════
-   MODAL SHARED BASE
-══════════════════════════════════════ */
+/* MODAL SHARED BASE */
 .modal-overlay {
     display: none;
     position: fixed;
@@ -508,7 +508,7 @@ h1 {
 }
 
 .modal-title {
-    font-family: 'Cinzel', serif;
+    font-family: var(--font-title);
     font-size: 20px;
     font-weight: 700;
     color: var(--dark-blue);
@@ -548,7 +548,7 @@ h1 {
     border-radius: 10px;
     font-size: 20px;
     font-weight: 800;
-    font-family: 'Nunito', sans-serif;
+    font-family: var(--font-body);
     color: var(--dark-blue);
     outline: none;
     transition: border-color 0.2s;
@@ -573,7 +573,7 @@ h1 {
     font-size: 15px;
     font-weight: 700;
     cursor: pointer;
-    font-family: 'Nunito', sans-serif;
+    font-family: var(--font-body);
     transition: background 0.2s;
 }
 
@@ -591,7 +591,7 @@ h1 {
     font-size: 15px;
     font-weight: 700;
     cursor: pointer;
-    font-family: 'Nunito', sans-serif;
+    font-family: var(--font-body);
     transition: background 0.2s;
 }
 
@@ -732,7 +732,7 @@ h1 {
     color: #3da89a;
     font-weight: 700;
     font-size: 14px;
-    font-family: 'Nunito', sans-serif;
+    font-family: var(--font-body);
     transition: border-color 0.2s, background 0.2s;
     display: flex;
     align-items: center;
@@ -772,7 +772,7 @@ h1 {
     border-radius: 10px;
     font-size: 15px;
     font-weight: 700;
-    font-family: 'Nunito', sans-serif;
+    font-family: var(--font-body);
     color: #1a2a5e;
     outline: none;
     transition: border-color 0.2s;
@@ -805,7 +805,7 @@ h1 {
     background: #fff;
     font-size: 13px;
     font-weight: 700;
-    font-family: 'Nunito', sans-serif;
+    font-family: var(--font-body);
     color: #888;
     cursor: pointer;
     transition: background 0.15s, color 0.15s;
@@ -842,7 +842,7 @@ h1 {
     border-radius: 10px;
     font-size: 14px;
     font-weight: 600;
-    font-family: 'Nunito', sans-serif;
+    font-family: var(--font-body);
     color: var(--dark-blue);
     outline: none;
     resize: vertical;

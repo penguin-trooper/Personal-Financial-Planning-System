@@ -1,3 +1,15 @@
+:root {
+    --army-green: #37392E;
+    --yellow: #EDF6BD;
+    --dark-green: #273C2C;
+    --dark-blue: #281D59;
+    --light-blue: #4E8D9C;
+    --light-green: #85C69B;
+    --gray-white: #D9D9D9;
+    --font-title: 'Alegreya Sans', sans-serif !important;
+    --font-body: 'Roboto', sans-serif;
+}
+
 .home-background {
     background-repeat: no-repeat;
     background-attachment: fixed;
@@ -29,7 +41,7 @@
 }
 
 .hero-section h1 {
-    font-family: 'Cinzel', serif !important;
+    font-family: var(--font-title);
     font-size: clamp(2rem, 5vw, 3.4rem) !important;
     font-weight: 700 !important;
     color: #edf6bd !important;
@@ -70,7 +82,7 @@
 }
 
 .moneta-card .card-title {
-    font-family: 'Cinzel', serif !important;
+    font-family: var(--font-title);
     font-size: 17px !important;
     font-weight: 700 !important;
     color: #edf6bd !important;
