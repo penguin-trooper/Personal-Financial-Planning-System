@@ -1,8 +1,20 @@
 /* ===== GLOBAL ===== */
+:root {
+    --army-green: #37392E;
+    --yellow: #EDF6BD;
+    --dark-green: #273C2C;
+    --dark-blue: #281D59;
+    --light-blue: #4E8D9C;
+    --light-green: #85C69B;
+    --gray-white: #D9D9D9;
+    --font-title: 'Alegreya Sans', sans-serif !important;
+    --font-body: 'Roboto', sans-serif;
+}
+
 body {
     margin: 0;
-    font-family: Arial, sans-serif;
-    background: #363a2f; 
+    font-family: 'Roboto', sans-serif;
+    background: var(--army-green); 
     display: flex;
     justify-content: center;
     align-items: center;
@@ -11,7 +23,7 @@ body {
 
 /* ===== CONTAINER ===== */
 .container {
-    background: #dbdbdb; 
+    background: var(--gray-white); 
     width: 850px;
     height: 500px;
     display: flex;
@@ -32,6 +44,7 @@ body {
 
 .left h1 {
     font-size: 48px;
+    font-family: var(--font-title);
     margin: 0;
     font-weight: 900;
     letter-spacing: -1px;

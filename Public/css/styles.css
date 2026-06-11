@@ -1,17 +1,17 @@
 :root {
-    ---army-green: #37392E;
+    --army-green: #37392E;
     --yellow: #EDF6BD;
     --dark-green: #273C2C;
     --dark-blue: #281D59;
     --light-blue: #4E8D9C;
     --light-green: #85C69B;
     --gray-white: #D9D9D9;
-    --font-title: 'Cinzel', serif;
-    --font-body: 'Nunito', sans-serif;
+    --font-title: 'Alegreya Sans', sans-serif !important;
+    --font-body: 'Roboto', sans-serif;
 }
 
 body {
-    font-family: 'Nunito', sans-serif;
+    font-family: 'Roboto', sans-serif;
 }
 
 .home-background {
@@ -46,7 +46,7 @@ body {
 }
 
 .hero-section h1 {
-    font-family: 'Cinzel', serif !important;
+    font-family: var(--font-title);
     font-size: clamp(2rem, 5vw, 3.4rem) !important;
     font-weight: 700 !important;
     color: #edf6bd !important;
@@ -101,7 +101,7 @@ body {
 }
 
 .moneta-card .card-title {
-    font-family: 'Cinzel', serif !important;
+    font-family: var(--font-title);
     font-size: 17px !important;
     font-weight: 700 !important;
     color: #edf6bd !important;
@@ -161,7 +161,7 @@ body {
 
 .nav-link:hover {
     background-color: var(--yellow);
-    color: var(---army-green) !important;
+    color: var(--army-green) !important;
     border-radius: 20px;
 }
 
@@ -387,6 +387,7 @@ body {
         .roi-hero h1 {
             color: #EDF6BD;
             font-weight: 700;
+            font-family: var(--font-title);
         }
 
         .roi-hero p {
@@ -397,6 +398,7 @@ body {
         .calc-section-header {
             color: #EDF6BD;
             font-weight: 700;
+            font-family: var(--font-title);
             margin-bottom: 1.5rem;
         }
 
@@ -520,6 +522,7 @@ body {
         .section-title {
             color: #EDF6BD;
             font-weight: 700;
+            font-family: var(--font-body);
             margin-bottom: 1.5rem;
             border-left: 4px solid #4E8D9C;
             padding-left: 0.75rem;
@@ -623,6 +626,7 @@ body {
 .market-hero h1 {
     color: #EDF6BD;
     font-weight: 700;
+    font-family: var(--font-title);
 }
 
 .market-hero p {
@@ -770,6 +774,7 @@ body {
 /* Section title */
 .section-title {
     font-weight: bold;
+    font-family: var(--font-title);
     margin-bottom: 15px;
 }
 
@@ -792,7 +797,7 @@ body {
 }
 
 .cards-section .section-heading {
-    font-family: 'Cinzel', serif;
+    font-family: var(--font-body);
     font-size: 22px;
     font-weight: 700;
     color: #edf6bd;
@@ -814,7 +819,7 @@ body {
 }
 
 .moneta-navbar .navbar-brand {
-    font-family: 'Cinzel', serif;
+    font-family: var(--font-title);
     font-weight: bold;
     font-size: 1.5rem;
     letter-spacing: 0.05em;
