@@ -7,40 +7,107 @@ const db = require('./db');
 const bcrypt = require('bcrypt');
 const session = require('express-session');
 const path = require('path');
+const nodemailer = require('nodemailer');
+
+console.log(process.env.DB_HOST, process.env.DB_USER, process.env.DB_NAME);
+
+const profileRouter = require('./Routes/userprofile');
+const authRouter = require('./Routes/auth');
+const marketRoutes = require('./Routes/market');
 
 const app = express();
 
+// GLOBAL PASSWORD STRENGTH VALIDATOR
 const isStrongPassword = (password) => {
-    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*(),.?":{}|<>]).+$/;
+    // Requires min 8 characters, 1 lowercase, 1 uppercase, and 1 special symbol character
+    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*(),.?":{}|<>]).{8,}$/;
     return regex.test(password);
 };
 
 
-//middleware
+// 1. GLOBAL BODY PARSERS & SESSIONS
+app.use(express.json()); 
+app.use(express.urlencoded({ extended: true }));
 
 app.use(session({
-    secret: process.env.SESSION_SECRET,
+    secret: process.env.SESSION_SECRET || 'fallback-secret-key',
     resave: false,
     saveUninitialized: false,
     cookie: { 
-        maxAge: 600000,  // auto logout for 10 minutes
+        maxAge: 600000,
         httpOnly: true,
         secure: false 
     } 
 }));
 
+
+// 2. PASSPORT AUTHENTICATION SETUP
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
-app.use(express.static(path.join(__dirname, 'Public')));
-const marketRoutes = require('./Routes/market');
+passport.serializeUser((user, done) => done(null, user));
+passport.deserializeUser((obj, done) => done(null, obj));
 
+passport.use(new GoogleStrategy({
+    clientID: process.env.GOOGLE_CLIENT_ID,        
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET, 
+    callbackURL: "/auth/google/callback"
+},
+async (accessToken, refreshToken, profile, done) => {
+    const email = profile.emails && profile.emails[0] ? profile.emails[0].value : null;
+    const googleId = profile.id;
+    const fallbackUsername = email ? email.split('@')[0] : `user_${googleId.substring(0, 6)}`;
+
+    if (!email) {
+        return done(new Error("No email found from Google account"), null);
+    }
+
+    try {
+        const [existingUsers] = await db.query(
+            'SELECT * FROM users WHERE email = ? OR google_id = ?', 
+            [email, googleId]
+        );
+
+        if (existingUsers.length > 0) {
+            const user = existingUsers[0];
+            if (!user.google_id) {
+                await db.query('UPDATE users SET google_id = ? WHERE id = ?', [googleId, user.id]);
+                user.google_id = googleId;
+            }
+            return done(null, user);
+        }
+
+        const [result] = await db.query(
+            'INSERT INTO users (username, email, google_id) VALUES (?, ?, ?)',
+            [fallbackUsername, email, googleId]
+        );
+
+        const [newUser] = await db.query('SELECT * FROM users WHERE id = ?', [result.insertId]);
+        return done(null, newUser[0]);
+
+    } catch (err) {
+        console.error(err);
+        return done(err, null);
+    }
+}));
+
+
+// 3. NODEMAILER EMAIL SETUP
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS
+    }
+});
+
+// 4. MOUNT BACKEND ROUTE CONTROLLERS
+app.use('/api/profile', profileRouter);
+app.use('/api/auth', authRouter);
 app.use('/api/market', marketRoutes);
-app.use('/images', express.static(path.join(__dirname, 'images')));
-app.get('/styles.css', (req, res) => res.sendFile(path.join(__dirname, 'styles.css')));
 
+// 5. STATIC ASSET MAPS (CONFLICT RESOLVED)
+app.use(express.static(path.join(__dirname, 'Public')));
 const requireLogin = (req, res, next) => {
     if (!req.session.user) {
         if (req.path.startsWith('/api/')) {
@@ -51,69 +118,11 @@ const requireLogin = (req, res, next) => {
     next();
 };
 
-const marketFallback = {
-    stocks: [
-        { symbol: 'NVDA', name: 'NVIDIA Corporation', price: '$875.40', change: '3.02%', trend: 'up' },
-        { symbol: 'AAPL', name: 'Apple Inc.', price: '$189.30', change: '1.24%', trend: 'up' },
-        { symbol: 'TSLA', name: 'Tesla Inc.', price: '$172.82', change: '1.56%', trend: 'down' },
-        { symbol: 'GOOGL', name: 'Alphabet Inc.', price: '$171.95', change: '0.43%', trend: 'down' },
-        { symbol: 'AMZN', name: 'Amazon.com Inc.', price: '$184.70', change: '2.11%', trend: 'up' }
-    ],
-    news: [
-        { title: 'Fed Signals Possible Rate Cut Later This Year', description: 'Federal Reserve officials hint at potential interest rate reductions if inflation continues to ease toward the 2% target.', url: 'https://www.reuters.com/world/us/fed-signals-possible-rate-cut-later-this-year/', source: 'Reuters', publishedAt: '2026-06-10', category: 'Monetary Policy' },
-        { title: 'NVIDIA Surges After Record Data Center Revenue', description: 'NVIDIA reports record-breaking quarterly earnings driven by surging demand for AI chips and data center infrastructure.', url: 'https://www.cnbc.com/2026/06/10/nvidia-surges-after-record-data-center-revenue.html', source: 'CNBC', publishedAt: '2026-06-10', category: 'Technology' },
-        { title: 'Bitcoin Breaks $62,000 as Institutional Demand Rises', description: 'Cryptocurrency markets rally as major institutional investors increase Bitcoin holdings amid growing mainstream adoption.', url: 'https://www.reuters.com/technology/bitcoin-breaks-62000-as-institutional-demand-rises/', source: 'Reuters', publishedAt: '2026-06-10', category: 'Crypto' },
-        { title: 'Oil Prices Dip Amid Rising Global Supply', description: 'Crude oil futures fell as OPEC+ members signal plans to gradually increase production output over the coming months.', url: 'https://www.cnbc.com/2026/06/10/oil-prices-dip-amid-rising-global-supply.html', source: 'CNBC', publishedAt: '2026-06-10', category: 'Commodities' },
-        { title: 'Wall Street Firms Track Margin Pressure', description: 'Financial firms are watching earnings as rates stay elevated and spending slows.', url: 'https://www.marketwatch.com/investing', source: 'MarketWatch', publishedAt: '2026-06-10', category: 'Finance' },
-        { title: 'Tech Stocks Extend Gains', description: 'Large-cap technology names lead the market higher on strong demand for AI infrastructure.', url: 'https://finance.yahoo.com/news/technology-stocks-extend-gains/', source: 'Yahoo Finance', publishedAt: '2026-06-10', category: 'Technology' }
-    ]
-};
-
-async function getMarketData(dataKey) {
-    try {
-        const [rows] = await db.query(
-            'SELECT data_json FROM market_cache WHERE data_key = ? ORDER BY fetched_at DESC LIMIT 1',
-            [dataKey]
-        );
-        if (rows.length) return JSON.parse(rows[0].data_json);
-    } catch (err) {
-        console.error(`Market cache fetch failed for ${dataKey}:`, err);
-    }
-    return marketFallback[dataKey];
-}
-
-passport.serializeUser((user, done) => done(null, user));
-passport.deserializeUser((obj, done) => done(null, obj));
-
-passport.use(new GoogleStrategy({
-    clientID: process.env.GOOGLE_CLIENT_ID,        
-    clientSecret: process.env.GOOGLE_CLIENT_SECRET, 
-    callbackURL: "/auth/google/callback"
-},
-
-(accessToken, refreshToken, profile, done) => {
-    return done(null, profile);
-}));
-
-const nodemailer = require('nodemailer');
-
-const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS
-    }
-});
-
+// 6. CORE AUTHENTICATION ENDPOINTS
 app.post('/signup-step1', async (req, res) => {
     const { name, email } = req.body;
-
     try {
-        const [existingUser] = await db.query(
-            'SELECT * FROM users WHERE email = ?', 
-            [email]
-        );
-
+        const [existingUser] = await db.query('SELECT * FROM users WHERE email = ?', [email]);
         if (existingUser.length > 0) {
             return res.redirect('/signup.html?error=email_exists');
         }
@@ -128,23 +137,16 @@ app.post('/signup-step1', async (req, res) => {
             html: `<h2>Welcome to Moneta!</h2><p>Your verification code is: <b>${otp}</b></p>`
         };
 
-        transporter.sendMail(mailOptions, (error) => {
-            if (error) {
-                console.error("Email Error:", error);
-                return res.redirect('/signup.html?error=email_failed');
-            }
-            res.redirect('/signup-otp.html');
-        });
-
+        await transporter.sendMail(mailOptions);
+        res.redirect('/signup-otp.html');
     } catch (err) {
-        console.error(err);
-        res.redirect('/signup.html?error=server');
+        console.error("Signup Step 1 Email/DB Error:", err);
+        res.redirect('/signup.html?error=email_failed');
     }
 });
 
 app.post('/verify-signup-otp', (req, res) => {
     if (!req.session.signup) return res.redirect('/signup.html');
-
     if (parseInt(req.body.otp) === req.session.signup.otp) {
         req.session.signup.otpVerified = true; 
         res.redirect('/signup-password.html');
@@ -158,17 +160,13 @@ app.post('/signup-password', async (req, res) => {
         if (!req.session.signup || !req.session.signup.otpVerified) {
             return res.redirect('/signup.html');
         }
-
         const { password, confirm } = req.body;
-
         if (!isStrongPassword(password)) {
             return res.redirect('/signup-password.html?error=weak');
         }
-
         if (password !== confirm) {
             return res.redirect('/signup-password.html?error=match');
         }
-        
         req.session.signup.password = await bcrypt.hash(password, 10);
         res.redirect('/signup-username.html');
     } catch (err) {
@@ -182,15 +180,10 @@ app.post('/signup-final', async (req, res) => {
         if (!req.session.signup || !req.session.signup.password) {
             return res.redirect('/signup.html');
         }
-
         const { username } = req.body;
         const data = req.session.signup;
         
-        const [existingUser] = await db.query(
-            'SELECT * FROM users WHERE username = ?', 
-            [username]
-        );
-
+        const [existingUser] = await db.query('SELECT * FROM users WHERE username = ?', [username]);
         if (existingUser.length > 0) {
             return res.redirect('/signup-username.html?error=username_exists');
         }
@@ -202,7 +195,6 @@ app.post('/signup-final', async (req, res) => {
 
         req.session.signup = null; 
         res.redirect('/login.html?success=registered');
-
     } catch (err) {
         console.error(err);
         res.redirect('/signup-username.html?error=server');
@@ -212,7 +204,6 @@ app.post('/signup-final', async (req, res) => {
 app.post('/login', async (req, res) => {
     try {
         const { email, password } = req.body;
-
         const [results] = await db.query('SELECT * FROM users WHERE email = ?', [email]);
 
         if (results.length === 0) {
@@ -220,12 +211,11 @@ app.post('/login', async (req, res) => {
         }
 
         const user = results[0];
-
         const match = await bcrypt.compare(password, user.password);
 
         if (match) {
             req.session.user = { id: user.id, username: user.username }; 
-            return res.redirect('/dashboard.html');
+            return res.redirect('/home-page.html');
         } else {
             return res.redirect('/login.html?error=password');
         }
@@ -235,75 +225,42 @@ app.post('/login', async (req, res) => {
     }
 });
 
-
-app.get('/auth/google',
-    passport.authenticate('google', { scope: ['profile', 'email'] })
-);
+app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
 
 app.get('/auth/google/callback',
     passport.authenticate('google', { failureRedirect: '/login.html' }),
     (req, res) => {
-        req.session.user = {
-            id: req.user.id,
-            username: req.user.displayName
-        };
-        res.redirect('/dashboard.html');
+        req.session.user = { id: req.user.id, username: req.user.username };
+        res.redirect('/home-page.html');
     }
 );
 
-app.post('/reset-password', async (req, res) => {
+app.post('/forgot-step1', async (req, res) => {
+    const { email } = req.body;
     try {
-        const { email, newPassword } = req.body;
-        const hashedPassword = await bcrypt.hash(newPassword, 10);
+        const [user] = await db.query('SELECT * FROM users WHERE email = ?', [email]);
+        if (user.length === 0) return res.redirect('/forgot.html?status=notfound');
 
-        db.query(
-            'UPDATE users SET password = ? WHERE email = ?',
-            [hashedPassword, email],
-            (err, result) => {
-                if (err) {
-                    console.error(err);
-                    return res.redirect('/forgot.html?status=error'); 
-                }
+        const otp = Math.floor(100000 + Math.random() * 900000);
+        req.session.forgot = { email, otp };
 
-                if (result.affectedRows === 0) {
-                    return res.redirect('/forgot.html?status=notfound'); 
-                }
+        const mailOptions = {
+            from: '"Moneta Support" <support@moneta.com>',
+            to: email,
+            subject: 'Reset Your Moneta Password',
+            html: `<p>Your password reset code is: <b>${otp}</b></p>`
+        };
 
-                res.redirect('/forgot.html?status=success'); 
-            }
-        );
-    } catch (err) {
+        await transporter.sendMail(mailOptions);
+        res.redirect('/forgot-otp.html');
+    } catch (error) {
+        console.error("Forgot Password Step 1 Error:", error);
         res.redirect('/forgot.html?status=error');
     }
 });
 
-app.post('/forgot-step1', async (req, res) => {
-    const { email } = req.body;
-    
-    const [user] = await db.query('SELECT * FROM users WHERE email = ?', [email]);
-    if (user.length === 0) return res.redirect('/forgot.html?status=notfound');
-
-    const otp = Math.floor(100000 + Math.random() * 900000);
-    req.session.forgot = { email, otp };
-
-    const mailOptions = {
-        from: '"Moneta Support" <support@moneta.com>',
-        to: email,
-        subject: 'Reset Your Moneta Password',
-        html: `<p>Your password reset code is: <b>${otp}</b></p>`
-    };
-
-    transporter.sendMail(mailOptions, (error) => {
-        if (error) return res.redirect('/forgot.html?status=error');
-        res.redirect('/forgot-otp.html');
-    });
-});
-
 app.post('/verify-forgot-otp', (req, res) => {
-    if (!req.session.forgot) {
-        return res.redirect('/forgot.html');
-    }
-
+    if (!req.session.forgot) return res.redirect('/forgot.html');
     if (parseInt(req.body.otp) === req.session.forgot.otp) {
         req.session.forgot.verified = true; 
         return res.redirect('/forgot-password.html');
@@ -312,33 +269,24 @@ app.post('/verify-forgot-otp', (req, res) => {
     }
 });
 
-
 app.post('/reset-password-final', async (req, res) => {
     try {
         const { password, confirm } = req.body;
-        
         if (!req.session.forgot || !req.session.forgot.email) {
             return res.redirect('/forgot.html?status=error');
         }
-
         if (!isStrongPassword(password)) {
             return res.redirect('/forgot-password.html?error=weak');
         }
-
         if (password !== confirm) {
             return res.redirect('/forgot-password.html?error=match');
         }
 
         const hashed = await bcrypt.hash(password, 10);
-
-        await db.query(
-            'UPDATE users SET password = ? WHERE email = ?',
-            [hashed, req.session.forgot.email]
-        );
+        await db.query('UPDATE users SET password = ? WHERE email = ?', [hashed, req.session.forgot.email]);
 
         req.session.forgot = null;
         res.redirect('/success.html');
-        
     } catch (err) {
         console.error(err);
         res.redirect('/forgot-password.html?error=server');
@@ -348,28 +296,20 @@ app.post('/reset-password-final', async (req, res) => {
 app.post('/resend-otp', async (req, res) => {
     try {
         let email, name, sessionKey;
-
-        // Check if the user is in the Signup flow
         if (req.session.signup) {
             email = req.session.signup.email;
             name = req.session.signup.name || "User";
             sessionKey = 'signup';
-        } 
-        // Check if the user is in the Forgot Password flow
-        else if (req.session.forgot) {
+        } else if (req.session.forgot) {
             email = req.session.forgot.email;
             name = "User";
             sessionKey = 'forgot';
         } 
         
-        // If neither exists, the session is empty
-        if (!email) {
-            console.error("Resend failed: No active session data found");
-            return res.status(400).send("Session expired. Please start over.");
-        }
+        if (!email) return res.status(400).send("Session expired. Please start over.");
 
         const newOTP = Math.floor(100000 + Math.random() * 900000);
-        req.session[sessionKey].otp = newOTP; // Update the correct session object
+        req.session[sessionKey].otp = newOTP;
 
         const mailOptions = {
             from: '"Moneta Team" <no-reply@moneta.com>',
@@ -379,30 +319,12 @@ app.post('/resend-otp', async (req, res) => {
         };
 
         await transporter.sendMail(mailOptions);
-        console.log(`New OTP ${newOTP} sent to ${email}`);
         res.status(200).send("OTP resent successfully");
-
     } catch (error) {
         console.error("Error in /resend-otp:", error);
         res.status(500).send("Failed to resend email");
     }
 });
-
-app.get('/dashboard.html', (req, res) => {
-    if (!req.session.user) {
-        return res.redirect('/login.html');
-    }
-    res.redirect('/home-page.html'); 
-});
-
-app.get('/roi-calculator.html', requireLogin, (req, res) => {
-    res.sendFile(path.join(__dirname, 'roi-calculator.html'));
-});
-
-app.get('/market-insight.html', requireLogin, (req, res) => {
-    res.sendFile(path.join(__dirname, 'market-insight.html'));
-});
-
 app.post('/api/roi/save', requireLogin, async (req, res) => {
     try {
         const allowedTypes = ['roi', 'compound', 'simple'];
@@ -469,32 +391,21 @@ app.delete('/api/roi/history/:id', requireLogin, async (req, res) => {
     }
 });
 
-app.get('/api/market/stocks', requireLogin, async (req, res) => {
-    const data = await getMarketData('stocks');
-    if (!data) return res.status(503).json({ error: 'Market stock data unavailable' });
-    res.json(data);
-});
-
-app.get('/api/market/news', requireLogin, async (req, res) => {
-    const data = await getMarketData('news');
-    if (!data) return res.status(503).json({ error: 'Market news unavailable' });
-    res.json(data);
-});
-
-app.listen(3000, () => {
-    console.log("Server running on port 3000");
-    require('child_process').exec('start http://localhost:3000/login.html');
+app.get('/dashboard.html', (req, res) => {
+    if (!req.session.user) return res.redirect('/login.html');
+    res.redirect('/home-page.html');
 });
 
 app.get('/logout', (req, res) => {
     req.session.destroy((err) => {
-        if (err) {
-            console.error(err);
-            return res.send("Error logging out");
-        }
-
+        if (err) return res.send("Error logging out");
         res.clearCookie('connect.sid');
-
         res.redirect('/login.html');
     });
+});
+
+// 7. LISTEN ON PORT
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, '0.0.0.0', () => {
+    console.log(`Server running securely on port ${PORT}`);
 });
