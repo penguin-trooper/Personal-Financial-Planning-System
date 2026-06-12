@@ -9,15 +9,28 @@ const session = require('express-session');
 const path = require('path');
 const nodemailer = require('nodemailer');
 
+console.log(process.env.DB_HOST, process.env.DB_USER, process.env.DB_NAME);
+
+const profileRouter = require('./Routes/userprofile');
+const authRouter = require('./Routes/auth');
+const marketRoutes = require('./Routes/market');
+
 const app = express();
 
+// GLOBAL PASSWORD STRENGTH VALIDATOR
 const isStrongPassword = (password) => {
-    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*(),.?":{}|<>]).+$/;
+    // Requires min 8 characters, 1 lowercase, 1 uppercase, and 1 special symbol character
+    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*(),.?":{}|<>]).{8,}$/;
     return regex.test(password);
 };
 
+
+// 1. GLOBAL BODY PARSERS & SESSIONS
+app.use(express.json()); 
+app.use(express.urlencoded({ extended: true }));
+
 app.use(session({
-    secret: process.env.SESSION_SECRET,
+    secret: process.env.SESSION_SECRET || 'fallback-secret-key',
     resave: false,
     saveUninitialized: false,
     cookie: { 
@@ -27,11 +40,10 @@ app.use(session({
     } 
 }));
 
+
+// 2. PASSPORT AUTHENTICATION SETUP
 app.use(passport.initialize());
 app.use(passport.session());
-
-app.use(express.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, 'Public')));
 
 passport.serializeUser((user, done) => done(null, user));
 passport.deserializeUser((obj, done) => done(null, obj));
@@ -79,6 +91,8 @@ async (accessToken, refreshToken, profile, done) => {
     }
 }));
 
+
+// 3. NODEMAILER EMAIL SETUP
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
@@ -87,15 +101,28 @@ const transporter = nodemailer.createTransport({
     }
 });
 
+// 4. MOUNT BACKEND ROUTE CONTROLLERS
+app.use('/api/profile', profileRouter);
+app.use('/api/auth', authRouter);
+app.use('/api/market', marketRoutes);
+
+// 5. STATIC ASSET MAPS (CONFLICT RESOLVED)
+app.use(express.static(path.join(__dirname, 'Public')));
+const requireLogin = (req, res, next) => {
+    if (!req.session.user) {
+        if (req.path.startsWith('/api/')) {
+            return res.status(401).json({ error: 'Login required' });
+        }
+        return res.redirect('/login.html?error=session');
+    }
+    next();
+};
+
+// 6. CORE AUTHENTICATION ENDPOINTS
 app.post('/signup-step1', async (req, res) => {
     const { name, email } = req.body;
-
     try {
-        const [existingUser] = await db.query(
-            'SELECT * FROM users WHERE email = ?', 
-            [email]
-        );
-
+        const [existingUser] = await db.query('SELECT * FROM users WHERE email = ?', [email]);
         if (existingUser.length > 0) {
             return res.redirect('/signup.html?error=email_exists');
         }
@@ -110,23 +137,16 @@ app.post('/signup-step1', async (req, res) => {
             html: `<h2>Welcome to Moneta!</h2><p>Your verification code is: <b>${otp}</b></p>`
         };
 
-        transporter.sendMail(mailOptions, (error) => {
-            if (error) {
-                console.error("Email Error:", error);
-                return res.redirect('/signup.html?error=email_failed');
-            }
-            res.redirect('/signup-otp.html');
-        });
-
+        await transporter.sendMail(mailOptions);
+        res.redirect('/signup-otp.html');
     } catch (err) {
-        console.error(err);
-        res.redirect('/signup.html?error=server');
+        console.error("Signup Step 1 Email/DB Error:", err);
+        res.redirect('/signup.html?error=email_failed');
     }
 });
 
 app.post('/verify-signup-otp', (req, res) => {
     if (!req.session.signup) return res.redirect('/signup.html');
-
     if (parseInt(req.body.otp) === req.session.signup.otp) {
         req.session.signup.otpVerified = true; 
         res.redirect('/signup-password.html');
@@ -140,17 +160,13 @@ app.post('/signup-password', async (req, res) => {
         if (!req.session.signup || !req.session.signup.otpVerified) {
             return res.redirect('/signup.html');
         }
-
         const { password, confirm } = req.body;
-
         if (!isStrongPassword(password)) {
             return res.redirect('/signup-password.html?error=weak');
         }
-
         if (password !== confirm) {
             return res.redirect('/signup-password.html?error=match');
         }
-        
         req.session.signup.password = await bcrypt.hash(password, 10);
         res.redirect('/signup-username.html');
     } catch (err) {
@@ -164,15 +180,10 @@ app.post('/signup-final', async (req, res) => {
         if (!req.session.signup || !req.session.signup.password) {
             return res.redirect('/signup.html');
         }
-
         const { username } = req.body;
         const data = req.session.signup;
         
-        const [existingUser] = await db.query(
-            'SELECT * FROM users WHERE username = ?', 
-            [username]
-        );
-
+        const [existingUser] = await db.query('SELECT * FROM users WHERE username = ?', [username]);
         if (existingUser.length > 0) {
             return res.redirect('/signup-username.html?error=username_exists');
         }
@@ -184,7 +195,6 @@ app.post('/signup-final', async (req, res) => {
 
         req.session.signup = null; 
         res.redirect('/login.html?success=registered');
-
     } catch (err) {
         console.error(err);
         res.redirect('/signup-username.html?error=server');
@@ -194,7 +204,6 @@ app.post('/signup-final', async (req, res) => {
 app.post('/login', async (req, res) => {
     try {
         const { email, password } = req.body;
-
         const [results] = await db.query('SELECT * FROM users WHERE email = ?', [email]);
 
         if (results.length === 0) {
@@ -202,7 +211,6 @@ app.post('/login', async (req, res) => {
         }
 
         const user = results[0];
-
         const match = await bcrypt.compare(password, user.password);
 
         if (match) {
@@ -217,17 +225,12 @@ app.post('/login', async (req, res) => {
     }
 });
 
-app.get('/auth/google',
-    passport.authenticate('google', { scope: ['profile', 'email'] })
-);
+app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
 
 app.get('/auth/google/callback',
     passport.authenticate('google', { failureRedirect: '/login.html' }),
     (req, res) => {
-        req.session.user = {
-            id: req.user.id,
-            username: req.user.username
-        };
+        req.session.user = { id: req.user.id, username: req.user.username };
         res.redirect('/home-page.html');
     }
 );
@@ -255,31 +258,30 @@ app.post('/reset-password', async (req, res) => {
 
 app.post('/forgot-step1', async (req, res) => {
     const { email } = req.body;
-    
-    const [user] = await db.query('SELECT * FROM users WHERE email = ?', [email]);
-    if (user.length === 0) return res.redirect('/forgot.html?status=notfound');
+    try {
+        const [user] = await db.query('SELECT * FROM users WHERE email = ?', [email]);
+        if (user.length === 0) return res.redirect('/forgot.html?status=notfound');
 
-    const otp = Math.floor(100000 + Math.random() * 900000);
-    req.session.forgot = { email, otp };
+        const otp = Math.floor(100000 + Math.random() * 900000);
+        req.session.forgot = { email, otp };
 
-    const mailOptions = {
-        from: '"Moneta Support" <support@moneta.com>',
-        to: email,
-        subject: 'Reset Your Moneta Password',
-        html: `<p>Your password reset code is: <b>${otp}</b></p>`
-    };
+        const mailOptions = {
+            from: '"Moneta Support" <support@moneta.com>',
+            to: email,
+            subject: 'Reset Your Moneta Password',
+            html: `<p>Your password reset code is: <b>${otp}</b></p>`
+        };
 
-    transporter.sendMail(mailOptions, (error) => {
-        if (error) return res.redirect('/forgot.html?status=error');
+        await transporter.sendMail(mailOptions);
         res.redirect('/forgot-otp.html');
-    });
+    } catch (error) {
+        console.error("Forgot Password Step 1 Error:", error);
+        res.redirect('/forgot.html?status=error');
+    }
 });
 
 app.post('/verify-forgot-otp', (req, res) => {
-    if (!req.session.forgot) {
-        return res.redirect('/forgot.html');
-    }
-
+    if (!req.session.forgot) return res.redirect('/forgot.html');
     if (parseInt(req.body.otp) === req.session.forgot.otp) {
         req.session.forgot.verified = true; 
         return res.redirect('/forgot-password.html');
@@ -291,29 +293,21 @@ app.post('/verify-forgot-otp', (req, res) => {
 app.post('/reset-password-final', async (req, res) => {
     try {
         const { password, confirm } = req.body;
-        
         if (!req.session.forgot || !req.session.forgot.email) {
             return res.redirect('/forgot.html?status=error');
         }
-
         if (!isStrongPassword(password)) {
             return res.redirect('/forgot-password.html?error=weak');
         }
-
         if (password !== confirm) {
             return res.redirect('/forgot-password.html?error=match');
         }
 
         const hashed = await bcrypt.hash(password, 10);
-
-        await db.query(
-            'UPDATE users SET password = ? WHERE email = ?',
-            [hashed, req.session.forgot.email]
-        );
+        await db.query('UPDATE users SET password = ? WHERE email = ?', [hashed, req.session.forgot.email]);
 
         req.session.forgot = null;
         res.redirect('/success.html');
-        
     } catch (err) {
         console.error(err);
         res.redirect('/forgot-password.html?error=server');
@@ -323,22 +317,17 @@ app.post('/reset-password-final', async (req, res) => {
 app.post('/resend-otp', async (req, res) => {
     try {
         let email, name, sessionKey;
-
         if (req.session.signup) {
             email = req.session.signup.email;
             name = req.session.signup.name || "User";
             sessionKey = 'signup';
-        } 
-        else if (req.session.forgot) {
+        } else if (req.session.forgot) {
             email = req.session.forgot.email;
             name = "User";
             sessionKey = 'forgot';
         } 
         
-        if (!email) {
-            console.error("Resend failed: No active session data found");
-            return res.status(400).send("Session expired. Please start over.");
-        }
+        if (!email) return res.status(400).send("Session expired. Please start over.");
 
         const newOTP = Math.floor(100000 + Math.random() * 900000);
         req.session[sessionKey].otp = newOTP;
@@ -351,35 +340,89 @@ app.post('/resend-otp', async (req, res) => {
         };
 
         await transporter.sendMail(mailOptions);
-        console.log(`New OTP ${newOTP} sent to ${email}`);
         res.status(200).send("OTP resent successfully");
-
     } catch (error) {
         console.error("Error in /resend-otp:", error);
         res.status(500).send("Failed to resend email");
     }
 });
+app.post('/api/roi/save', requireLogin, async (req, res) => {
+    try {
+        const allowedTypes = ['roi', 'compound', 'simple'];
+        const calcType = req.body.calc_type || 'compound';
+        const initial = Number(req.body.initial_amount);
+        const monthly = Number(req.body.monthly_contribution || 0);
+        const rate = Number(req.body.interest_rate);
+        const years = Number(req.body.time_period);
+        const finalValue = Number(req.body.result_final_value);
+        const roiPct = Number(req.body.result_roi_pct);
+
+        if (!allowedTypes.includes(calcType)) return res.status(400).json({ error: 'Invalid calculation type' });
+        if (!Number.isFinite(initial) || initial < 0) return res.status(400).json({ error: 'Invalid initial amount' });
+        if (!Number.isFinite(monthly) || monthly < 0) return res.status(400).json({ error: 'Invalid monthly contribution' });
+        if (initial <= 0 && monthly <= 0) return res.status(400).json({ error: 'Enter an investment amount' });
+        if (!Number.isFinite(rate) || rate < 0 || rate > 100) return res.status(400).json({ error: 'Invalid interest rate' });
+        if (!Number.isFinite(years) || years <= 0) return res.status(400).json({ error: 'Invalid time period' });
+        if (!Number.isFinite(finalValue) || finalValue < 0) return res.status(400).json({ error: 'Invalid final value' });
+        if (!Number.isFinite(roiPct)) return res.status(400).json({ error: 'Invalid ROI result' });
+
+        const [result] = await db.query(
+            `INSERT INTO roi_history
+            (user_id, calc_type, initial_amount, monthly_contribution, interest_rate, time_period, final_value, result_roi_pct)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+            [req.session.user.id, calcType, initial, monthly, rate, years, finalValue, roiPct]
+        );
+
+        res.status(201).json({ id: result.insertId });
+    } catch (err) {
+        console.error('ROI save failed:', err);
+        res.status(500).json({ error: 'Unable to save ROI calculation' });
+    }
+});
+
+app.get('/api/roi/history', requireLogin, async (req, res) => {
+    try {
+        const [rows] = await db.query(
+            `SELECT id, calc_type, initial_amount, monthly_contribution, interest_rate,
+                    time_period, final_value, result_roi_pct, created_at
+             FROM roi_history
+             WHERE user_id = ?
+             ORDER BY created_at DESC
+             LIMIT 20`,
+            [req.session.user.id]
+        );
+        res.json(rows);
+    } catch (err) {
+        console.error('ROI history fetch failed:', err);
+        res.status(500).json({ error: 'Unable to load ROI history' });
+    }
+});
+
+app.delete('/api/roi/history/:id', requireLogin, async (req, res) => {
+    try {
+        const [result] = await db.query(
+            'DELETE FROM roi_history WHERE id = ? AND user_id = ?',
+            [req.params.id, req.session.user.id]
+        );
+        if (result.affectedRows === 0) return res.status(404).json({ error: 'History item not found' });
+        res.json({ success: true });
+    } catch (err) {
+        console.error('ROI history delete failed:', err);
+        res.status(500).json({ error: 'Unable to delete ROI history item' });
+    }
+});
 
 app.get('/dashboard.html', (req, res) => {
-    if (!req.session.user) {
-        return res.redirect('/login.html');
-    }
+    if (!req.session.user) return res.redirect('/login.html');
     res.redirect('/home-page.html');
 });
 
 app.get('/logout', (req, res) => {
     req.session.destroy((err) => {
-        if (err) {
-            console.error(err);
-            return res.send("Error logging out");
-        }
+        if (err) return res.send("Error logging out");
         res.clearCookie('connect.sid');
         res.redirect('/login.html');
     });
-});
-
-app.listen(3000, () => {
-    console.log("Server running on port 3000");
 });
 
 app.get('/api/current-user', (req, res) => {
@@ -391,4 +434,10 @@ app.get('/api/current-user', (req, res) => {
     } else {
         res.json({ loggedIn: false });
     }
+});
+
+// LISTEN ON PORT
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, '0.0.0.0', () => {
+    console.log(`Server running securely on port ${PORT}`);
 });
