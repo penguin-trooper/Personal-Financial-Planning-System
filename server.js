@@ -14,6 +14,7 @@ console.log(process.env.DB_HOST, process.env.DB_USER, process.env.DB_NAME);
 const profileRouter = require('./Routes/userprofile');
 const authRouter = require('./Routes/auth');
 const marketRoutes = require('./Routes/market');
+const goalsRouter = require('./Routes/goals');
 
 const app = express();
 
@@ -105,6 +106,7 @@ const transporter = nodemailer.createTransport({
 app.use('/api/profile', profileRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/market', marketRoutes);
+app.use('/api/goals', goalsRouter);
 
 // 5. STATIC ASSET MAPS (CONFLICT RESOLVED)
 app.use(express.static(path.join(__dirname, 'Public')));
