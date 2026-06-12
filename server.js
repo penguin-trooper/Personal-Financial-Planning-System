@@ -396,11 +396,24 @@ app.get('/dashboard.html', (req, res) => {
     res.redirect('/home-page.html');
 });
 
-app.get('/logout', (req, res) => {
-    req.session.destroy((err) => {
-        if (err) return res.send("Error logging out");
-        res.clearCookie('connect.sid');
-        res.redirect('/login.html');
+app.get('/logout', (req, res, next) => {
+    req.logout((err) => {
+        if (err) {
+            console.error("Passport logout error:", err);
+            return next(err);
+        }
+        if (req.session) {
+            req.session.destroy((err) => {
+                if (err) {
+                    console.error("Session destroy error:", err);
+                    return res.send("Error logging out");
+                }
+                res.clearCookie('connect.sid');
+                res.redirect('/login.html');
+            });
+        } else {
+            res.redirect('/login.html');
+        }
     });
 });
 
@@ -408,4 +421,5 @@ app.get('/logout', (req, res) => {
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, '0.0.0.0', () => {
     console.log(`Server running securely on port ${PORT}`);
+    require('child_process').exec(`start http://localhost:${PORT}/login.html`);
 });
