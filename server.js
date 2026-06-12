@@ -13,6 +13,7 @@ console.log(process.env.DB_HOST, process.env.DB_USER, process.env.DB_NAME);
 
 const profileRouter = require('./Routes/userprofile');
 const authRouter = require('./Routes/auth');
+const marketRoutes = require('./Routes/market');
 
 const app = express();
 
@@ -103,9 +104,19 @@ const transporter = nodemailer.createTransport({
 // 4. MOUNT BACKEND ROUTE CONTROLLERS
 app.use('/api/profile', profileRouter);
 app.use('/api/auth', authRouter);
+app.use('/api/market', marketRoutes);
 
 // 5. STATIC ASSET MAPS (CONFLICT RESOLVED)
 app.use(express.static(path.join(__dirname, 'Public')));
+const requireLogin = (req, res, next) => {
+    if (!req.session.user) {
+        if (req.path.startsWith('/api/')) {
+            return res.status(401).json({ error: 'Login required' });
+        }
+        return res.redirect('/login.html?error=session');
+    }
+    next();
+};
 
 // 6. CORE AUTHENTICATION ENDPOINTS
 app.post('/signup-step1', async (req, res) => {
@@ -312,6 +323,71 @@ app.post('/resend-otp', async (req, res) => {
     } catch (error) {
         console.error("Error in /resend-otp:", error);
         res.status(500).send("Failed to resend email");
+    }
+});
+app.post('/api/roi/save', requireLogin, async (req, res) => {
+    try {
+        const allowedTypes = ['roi', 'compound', 'simple'];
+        const calcType = req.body.calc_type || 'compound';
+        const initial = Number(req.body.initial_amount);
+        const monthly = Number(req.body.monthly_contribution || 0);
+        const rate = Number(req.body.interest_rate);
+        const years = Number(req.body.time_period);
+        const finalValue = Number(req.body.result_final_value);
+        const roiPct = Number(req.body.result_roi_pct);
+
+        if (!allowedTypes.includes(calcType)) return res.status(400).json({ error: 'Invalid calculation type' });
+        if (!Number.isFinite(initial) || initial < 0) return res.status(400).json({ error: 'Invalid initial amount' });
+        if (!Number.isFinite(monthly) || monthly < 0) return res.status(400).json({ error: 'Invalid monthly contribution' });
+        if (initial <= 0 && monthly <= 0) return res.status(400).json({ error: 'Enter an investment amount' });
+        if (!Number.isFinite(rate) || rate < 0 || rate > 100) return res.status(400).json({ error: 'Invalid interest rate' });
+        if (!Number.isFinite(years) || years <= 0) return res.status(400).json({ error: 'Invalid time period' });
+        if (!Number.isFinite(finalValue) || finalValue < 0) return res.status(400).json({ error: 'Invalid final value' });
+        if (!Number.isFinite(roiPct)) return res.status(400).json({ error: 'Invalid ROI result' });
+
+        const [result] = await db.query(
+            `INSERT INTO roi_history
+            (user_id, calc_type, initial_amount, monthly_contribution, interest_rate, time_period, final_value, result_roi_pct)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+            [req.session.user.id, calcType, initial, monthly, rate, years, finalValue, roiPct]
+        );
+
+        res.status(201).json({ id: result.insertId });
+    } catch (err) {
+        console.error('ROI save failed:', err);
+        res.status(500).json({ error: 'Unable to save ROI calculation' });
+    }
+});
+
+app.get('/api/roi/history', requireLogin, async (req, res) => {
+    try {
+        const [rows] = await db.query(
+            `SELECT id, calc_type, initial_amount, monthly_contribution, interest_rate,
+                    time_period, final_value, result_roi_pct, created_at
+             FROM roi_history
+             WHERE user_id = ?
+             ORDER BY created_at DESC
+             LIMIT 20`,
+            [req.session.user.id]
+        );
+        res.json(rows);
+    } catch (err) {
+        console.error('ROI history fetch failed:', err);
+        res.status(500).json({ error: 'Unable to load ROI history' });
+    }
+});
+
+app.delete('/api/roi/history/:id', requireLogin, async (req, res) => {
+    try {
+        const [result] = await db.query(
+            'DELETE FROM roi_history WHERE id = ? AND user_id = ?',
+            [req.params.id, req.session.user.id]
+        );
+        if (result.affectedRows === 0) return res.status(404).json({ error: 'History item not found' });
+        res.json({ success: true });
+    } catch (err) {
+        console.error('ROI history delete failed:', err);
+        res.status(500).json({ error: 'Unable to delete ROI history item' });
     }
 });
 
