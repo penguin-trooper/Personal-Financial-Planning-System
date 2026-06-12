@@ -128,7 +128,7 @@ input::placeholder {
     top: 50%;
     transform: translateY(-50%);
     cursor: pointer;
-    color: #548c94;
+    color: var(--light-blue);
     z-index: 10;
     font-size: 18px;
 }
@@ -158,7 +158,7 @@ input::placeholder {
 }
 
 .btn-teal {
-    background: #548c94; 
+    background: var(--light-blue); 
     color: white;
     box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
@@ -192,7 +192,7 @@ input::placeholder {
 
 /* Dark Olive "Cancel" Button */
 .btn-cancel {
-    background: #2d3a2d;
+    background: var(--dark-green);
     color: white;
     padding: 12px 24px;
     border-radius: 10px;
