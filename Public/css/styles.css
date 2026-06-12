@@ -23,6 +23,7 @@ body {
     min-height: 100vh;
 }
 
+/* Hero section */
 
 .hero-section {
     padding: 90px 24px 60px;
@@ -126,7 +127,7 @@ body {
     display: block;
 }
 
-
+/* Navbar */
 .navbar-brand {
     font-family: var(--font-title);
     font-weight: bold;

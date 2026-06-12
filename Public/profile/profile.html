@@ -4,33 +4,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,100..1000&family=Alegreya+Sans+SC:wght@300;400;500;700&display=swap"
+        rel="stylesheet">
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Alegreya+Sans:wght@700;800&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="../css/styles.css">
-    <link rel="stylesheet" href="../css/profile.css">
+
+
     <title>Moneta - Profile Settings</title>
+    <link rel="stylesheet" href="../css/profile.css">
 </head>
 
 <body>
     <nav class="navbar navbar-expand-lg moneta-navbar sticky-top" id="mainNavbar">
         <div class="container-fluid px-4">
-            <a class="navbar-brand" href="../home-page.html">Moneta</a>
+
+            <!-- Brand / Logo -->
+            <a class="navbar-brand" href="../home-page.html">
+                Moneta
+            </a>
+
+            <!-- Mobile Toggler -->
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
                 aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
+            <!-- Collapsible Nav Links -->
             <div class="collapse navbar-collapse justify-content-center" id="navbarContent">
                 <ul class="navbar-nav gap-1">
-                    <li class="nav-item"><a class="nav-link" href="../home-page.html">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="../Financial_planner.html">Financial Planner</a></li>
-                    <li class="nav-item"><a class="nav-link" href="../roi-calculator.html">ROI Calculator</a></li>
-                    <li class="nav-item"><a class="nav-link" href="../market-insight.html">Market Insights</a></li>
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="../home-page.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../Financial_planner.html">Financial Planner</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../roi-calculator.html">ROI Calculator</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../market-insight.html">Market Insights</a>
+                    </li>
                 </ul>
             </div>
 
+            <!-- User profile dropdown -->
             <div class="d-flex align-items-center gap-2">
                 <span class="nav-username d-none d-lg-inline">User Name</span>
                 <div class="dropdown">
@@ -39,139 +63,60 @@
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end moneta-dropdown-menu" aria-labelledby="profileDropdown">
                         <li><a class="dropdown-item" href="profile.html"><i class="bi bi-gear"></i> Settings</a></li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="/logout"><i class="bi bi-box-arrow-right"></i> Log Out</a></li>
+                        <li>
+                            <hr class="dropdown-divider" style="border-color:rgba(255,255,255,0.15);">
+                        </li>
+                        <li><a class="dropdown-item" href="/logout"><i class="bi bi-box-arrow-right"></i>
+                                Log Out</a></li>
                     </ul>
                 </div>
             </div>
+
         </div>
     </nav>
-    
-    <div class="container d-flex justify-content-center align-items-center min-vh-100 py-5">
-        
-        <div class="card bootstrap-profile-card p-4 p-sm-5 text-center border-0 w-100" id="user-setting">
-            <h2 class="profile-card-title mb-1">User Settings</h2>
-            <p class="text-secondary small mb-4">Manage your secure identity parameter credentials.</p>
-            
-            <div class="user-box text-start">
-                <div class="mb-3">
-                    <label class="form-label small fw-bold text-uppercase tracking-wider text-moneta-yellow">Username</label>
-                    <div class="input-group">
-                        <input type="text" class="form-control bg-light text-dark border-light-subtle py-2 ps-3" value="JohnDoe" disabled>
-                        <span class="input-group-text bg-light border-light-subtle text-secondary"><i class="bi bi-person"></i></span>
-                    </div>
-                </div>
-
-                <div class="mb-4">
-                    <label class="form-label small fw-bold text-uppercase tracking-wider text-moneta-yellow">Email Address</label>
-                    <div class="input-group">
-                        <input type="email" class="form-control bg-light text-dark border-light-subtle py-2 ps-3" value="john@example.com" disabled>
-                        <span class="input-group-text bg-light border-light-subtle text-secondary"><i class="bi bi-envelope"></i></span>
-                    </div>
-                </div>
-
-                <div class="d-flex justify-content-end gap-2 pt-3 border-top border-light-subtle">
-                    <button class="btn btn-outline-moneta py-2 px-4 fw-bold edit"><i class="bi bi-pencil-square me-1"></i> Edit</button>
-                    <button class="btn btn-danger py-2 px-4 fw-bold delete"><i class="bi bi-trash3 me-1"></i> Delete</button>
+    <div class="custom-container">
+        <!-- User Setting -->
+        <div class="card" id="user-setting">
+            <h2>User Setting</h2>
+            <div class="user-box">
+                <label>Username</label>
+                <input type="text" value="JohnDoe" disabled>
+                <label>Email</label>
+                <input type="email" value="john@example.com" disabled>
+                <div class="buttons">
+                    <button class="edit">Edit</button>
+                    <button class="delete">Delete</button>
                 </div>
             </div>
         </div>
 
-        <div class="card bootstrap-profile-card p-4 p-sm-5 text-center border-0 w-100" id="edit-user" style="display:none;">
-            <h2 class="profile-card-title mb-1">Edit User</h2>
-            <p class="text-secondary small mb-4">Modify account fields down into your database layer.</p>
+        <!-- Edit User -->
+        <div class="card" id="edit-user" style="display:none;">
+            <h2>Edit User</h2>
+            <div class="user-box">
+                <label>Username</label>
+                <input type="text" id="edit-username" value="JohnDoe">
+                <label>Email</label>
+                <input type="email" id="edit-email" value="john@example.com">
 
-            <div class="user-box text-start">
-                <div class="mb-3">
-                    <label class="form-label small fw-bold text-uppercase tracking-wider text-moneta-yellow">Username</label>
-                    <input type="text" id="edit-username" class="form-control bg-white text-dark border-secondary-subtle py-2 px-3" value="JohnDoe">
+                <!-- Only Change Password button, centered -->
+                <div class="buttons" style="justify-content: center;">
+                    <button class="yellow" id="change-password">Change Password</button>
                 </div>
 
-                <div class="mb-3">
-                    <label class="form-label small fw-bold text-uppercase tracking-wider text-moneta-yellow">Email Address</label>
-                    <input type="email" id="edit-email" class="form-control bg-white text-dark border-secondary-subtle py-2 px-3" value="john@example.com">
-                </div>
-
-                <button class="btn btn-moneta-accent w-100 py-2.5 my-3 fw-bold" id="change-password">
-                    <i class="bi bi-shield-lock-fill me-1"></i> Change Account Password
-                </button>
-
-                <div class="d-flex justify-content-end gap-2 pt-3 border-top border-light-subtle">
-                    <button class="btn btn-outline-moneta py-2 px-4 fw-bold cancel">Cancel</button>
-                    <button class="btn btn-moneta py-2 px-4 fw-bold save">Save</button>
+                <div class="buttons">
+                    <button class="save">Save</button>
+                    <button class="cancel">Cancel</button>
                 </div>
             </div>
         </div>
 
-        <div class="card bootstrap-profile-card p-4 p-sm-5 text-center border-0 w-100" id="password-container" style="display:none;">
-            <h2 class="profile-card-title mb-1">Change Password</h2>
-            <p class="text-secondary small mb-4">Ensure passwords match systemic strong layout validation rule logic.</p>
 
-            <div class="user-box text-start">
-                <div class="mb-2">
-                    <label class="form-label small fw-bold text-uppercase tracking-wider text-moneta-yellow" for="newPassword">New Password</label>
-                    <div class="input-group position-relative">
-                        <input type="password" id="newPassword" class="form-control bg-white text-dark border-secondary-subtle py-2 ps-3 pe-5" placeholder="Enter new strong password">
-                        <button type="button" class="btn position-absolute end-0 top-50 translate-middle-y border-0 text-secondary z-3" onclick="toggleFieldVisibility('newPassword', this)">
-                            <i class="bi bi-eye"></i>
-                        </button>
-                    </div>
-                    <div id="passwordAlert" class="small fw-semibold mt-2 d-flex align-items-center gap-1 min-h-20"></div>
-                </div>
+        <script src="../js/profile.js"></script>
 
-                <div class="mb-4">
-                    <label class="form-label small fw-bold text-uppercase tracking-wider text-moneta-yellow" for="confirmPassword">Confirm Password</label>
-                    <div class="input-group position-relative">
-                        <input type="password" id="confirmPassword" class="form-control bg-white text-dark border-secondary-subtle py-2 ps-3 pe-5" placeholder="Confirm your new password">
-                        <button type="button" class="btn position-absolute end-0 top-50 translate-middle-y border-0 text-secondary z-3" onclick="toggleFieldVisibility('confirmPassword', this)">
-                            <i class="bi bi-eye"></i>
-                        </button>
-                    </div>
-                </div>
-
-                <div class="d-flex justify-content-end gap-2 pt-3 border-top border-light-subtle mt-4">
-                    <button class="btn btn-outline-moneta py-2 px-4 fw-bold" id="cancel-password-btn">Back</button>
-                    <button class="btn btn-moneta py-2 px-4 fw-bold save" id="save-password-btn">Update</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        // Eye-Tracking Toggle Logic 
-        function toggleFieldVisibility(inputId, buttonEl) {
-            const field = document.getElementById(inputId);
-            const icon = buttonEl.querySelector('i');
-            
-            if (field.type === "password") {
-                // If it is password, reveal it and change icon to slash eye
-                field.type = "text";
-                icon.classList.replace('bi-eye', 'bi-eye-slash');
-            } else {
-                // If it is readable text, hide it and revert icon back to normal eye
-                field.type = "password";
-                icon.classList.replace('bi-eye-slash', 'bi-eye');
-            }
-        }
-
-        // Real-Time Strong Password Evaluation Parser
-        document.getElementById('newPassword').addEventListener('input', function() {
-            const value = this.value;
-            const alertBox = document.getElementById('passwordAlert');
-            const strongPasswordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*(),.?":{}|<>]).{8,}$/;
-            
-            if (value.length === 0) {
-                alertBox.innerHTML = "";
-            } else if (!strongPasswordRegex.test(value)) {
-                alertBox.innerHTML = `<i class="bi bi-shield-exclamation text-danger"></i> <span class="text-danger">Min 8 characters with uppercase, lowercase, & symbols.</span>`;
-            } else {
-                alertBox.innerHTML = `<i class="bi bi-shield-check text-success"></i> <span class="text-success">Formatted securely.</span>`;
-            }
-        });
-    </script>
-
-    <script src="../js/profile.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+            crossorigin="anonymous"></script>
 </body>
 
 </html>
