@@ -14,6 +14,7 @@ console.log(process.env.DB_HOST, process.env.DB_USER, process.env.DB_NAME);
 const profileRouter = require('./Routes/userprofile');
 const authRouter = require('./Routes/auth');
 const marketRoutes = require('./Routes/market');
+const goalsRouter = require('./Routes/goals');
 
 const app = express();
 
@@ -105,6 +106,7 @@ const transporter = nodemailer.createTransport({
 app.use('/api/profile', profileRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/market', marketRoutes);
+app.use('/api/goals', goalsRouter);
 
 // 5. STATIC ASSET MAPS (CONFLICT RESOLVED)
 app.use(express.static(path.join(__dirname, 'Public')));
@@ -234,6 +236,27 @@ app.get('/auth/google/callback',
         res.redirect('/home-page.html');
     }
 );
+
+app.post('/reset-password', async (req, res) => {
+    try {
+        const { email, newPassword } = req.body;
+        const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+        const [result] = await db.query(
+            'UPDATE users SET password = ? WHERE email = ?',
+            [hashedPassword, email]
+        );
+
+        if (result.affectedRows === 0) {
+            return res.redirect('/forgot.html?status=notfound'); 
+        }
+
+        res.redirect('/forgot.html?status=success'); 
+    } catch (err) {
+        console.error("Reset Password Error:", err);
+        res.redirect('/forgot.html?status=error');
+    }
+});
 
 app.post('/forgot-step1', async (req, res) => {
     const { email } = req.body;
@@ -417,7 +440,18 @@ app.get('/logout', (req, res, next) => {
     });
 });
 
-// 7. LISTEN ON PORT
+app.get('/api/current-user', (req, res) => {
+    if (req.session && req.session.user) {
+        res.json({ 
+            loggedIn: true, 
+            username: req.session.user.username 
+        });
+    } else {
+        res.json({ loggedIn: false });
+    }
+});
+
+// LISTEN ON PORT
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, '0.0.0.0', () => {
     console.log(`Server running securely on port ${PORT}`);
