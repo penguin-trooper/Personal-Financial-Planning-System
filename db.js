@@ -16,7 +16,15 @@ db.getConnection((err, connection) => {
         console.error('Database connection failed:', err);
     } else {
         console.log('Connected to database via pool');
-        connection.release(); // Always release the connection back to the pool
+        connection.query(
+            "ALTER TABLE users ADD COLUMN google_id VARCHAR(255) UNIQUE",
+            (alterErr) => {
+                if (alterErr && alterErr.errno !== 1060) {
+                    console.error('Failed to auto-add google_id column:', alterErr);
+                }
+                connection.release();
+            }
+        );
     }
 });
 
