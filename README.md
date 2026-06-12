@@ -128,15 +128,48 @@ Click "Done" on the Google popup. You won't be able to see this specific passwor
 Log into MySQL Workbench or the MySQL command line and execute:
 
 ```sql
-CREATE DATABASE IF NOT EXISTS finance_app;
+CREATE DATABASE IF NOT EXISTS finance_app
+CHARACTER SET utf8mb4
+COLLATE utf8mb4_unicode_ci;
+
 USE finance_app;
-SELECT * FROM users;
+
 CREATE TABLE IF NOT EXISTS users (
     id INT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(100) NOT NULL,
     email VARCHAR(100) NOT NULL UNIQUE,
     google_id VARCHAR(255) UNIQUE,
     password VARCHAR(255) NULL
+);
+
+CREATE TABLE IF NOT EXISTS financial_goals (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    name VARCHAR(100) NOT NULL,
+    target_amount DECIMAL(12,2) NOT NULL,
+    duration_value INT NOT NULL,
+    duration_unit ENUM('years', 'months') NOT NULL,
+    icon VARCHAR(10) DEFAULT '🎯',
+    color VARCHAR(20) DEFAULT '#e6f0ff',
+    current_amount DECIMAL(12,2) DEFAULT 0,
+    description TEXT,
+    is_preset BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (user_id) REFERENCES users(id)
+    ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS financial_goal_settings (
+    user_id INT PRIMARY KEY,
+    selected_goal_id INT NULL,
+    risk_level ENUM('low', 'moderate', 'high') DEFAULT 'moderate',
+
+    FOREIGN KEY (user_id) REFERENCES users(id)
+    ON DELETE CASCADE,
+
+    FOREIGN KEY (selected_goal_id) REFERENCES financial_goals(id)
+    ON DELETE SET NULL
 );
 ```
 

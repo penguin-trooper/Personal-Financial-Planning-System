@@ -1,39 +1,30 @@
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", async function () {
     const riskSelect = document.getElementById("riskLevel");
     const riskBadge = document.querySelector(".risk-badge");
     const strategyList = document.querySelector(".strategy-list");
     const strategyDuration = document.getElementById("strategy-duration");
 
-    const PRESETS = [
-        { name: 'Education Funds', target: 20000, duration: '4 years' },
-        { name: 'Emergency Fund', target: 15000, duration: '2 years' },
-        { name: 'Home Purchase', target: 80000, duration: '10 years' },
-        { name: 'Retirement Fund', target: 500000, duration: '30 years' },
-        { name: 'Travel Fund', target: 8000, duration: '1 year' },
-    ];
+    async function api(url, options = {}) {
+        const res = await fetch(url, {
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            ...options
+        });
 
-    let goals = [...PRESETS];
-
-    try {
-        const custom = JSON.parse(localStorage.getItem('moneta_custom_goals') || '[]');
-        custom.forEach(g => goals.push(g));
-    } catch (e) { }
-
-    let goalIndex = 0;
-
-    try {
-        const s = JSON.parse(localStorage.getItem('moneta_state') || 'null');
-        if (s && typeof s.goalIndex === 'number') {
-            goalIndex = Math.min(s.goalIndex, goals.length - 1);
+        if (res.status === 401) {
+            window.location.href = '/login.html?error=session';
+            throw new Error('Not logged in');
         }
-    } catch (e) { }
 
-    const selectedGoal = goals[goalIndex];
+        if (!res.ok) {
+            const errorData = await res.json().catch(() => ({}));
+            throw new Error(errorData.error || 'API request failed');
+        }
 
-    if (strategyDuration && selectedGoal) {
-        strategyDuration.textContent = 'Duration: ' + selectedGoal.duration;
+        return res.json();
     }
-    
+
     const strategies = {
         low: {
             badge: "Low Risk",
@@ -99,19 +90,59 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     };
 
-    function updateStrategy() {
-        const selectedRisk = riskSelect.value;
-        const selectedStrategy = strategies[selectedRisk];
+    function renderStrategy(riskLevel) {
+        const selectedStrategy = strategies[riskLevel] || strategies.moderate;
 
-        riskBadge.textContent = selectedStrategy.badge;
-        strategyList.innerHTML = selectedStrategy.html;
+        if (riskBadge) {
+            riskBadge.textContent = selectedStrategy.badge;
+        }
 
-        localStorage.setItem("moneta_risk_level", selectedRisk);
+        if (strategyList) {
+            strategyList.innerHTML = selectedStrategy.html;
+        }
     }
 
-    const savedRisk = localStorage.getItem("moneta_risk_level") || "moderate";
-    riskSelect.value = savedRisk;
-    updateStrategy();
+    async function saveRiskLevel(riskLevel) {
+        await api('/api/goals/settings/risk-level', {
+            method: 'PATCH',
+            body: JSON.stringify({ riskLevel })
+        });
+    }
 
-    riskSelect.addEventListener("change", updateStrategy);
+    try {
+        const data = await api('/api/goals');
+
+        const goals = data.goals || [];
+        const selectedGoalId = data.selectedGoalId;
+        const savedRisk = data.riskLevel || 'moderate';
+
+        const selectedGoal =
+            goals.find(g => g.id === selectedGoalId) || goals[0];
+
+        if (strategyDuration && selectedGoal) {
+            strategyDuration.textContent = 'Duration: ' + selectedGoal.duration;
+        }
+
+        if (riskSelect) {
+            riskSelect.value = savedRisk;
+        }
+
+        renderStrategy(savedRisk);
+
+        if (riskSelect) {
+            riskSelect.addEventListener("change", async function () {
+                const selectedRisk = riskSelect.value;
+
+                renderStrategy(selectedRisk);
+
+                try {
+                    await saveRiskLevel(selectedRisk);
+                } catch (err) {
+                    console.error('Failed to save risk level:', err);
+                }
+            });
+        }
+    } catch (err) {
+        console.error('Failed to load investment strategy:', err);
+    }
 });
