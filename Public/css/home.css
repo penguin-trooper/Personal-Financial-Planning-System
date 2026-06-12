@@ -73,7 +73,7 @@
     text-decoration: none !important;
     overflow: hidden !important;
     height: 100% !important;
-    transition: transform 0.25s ease-in-out, box-shadow 0.25s ease !important;
+    transition: transform 0.25s ease, box-shadow 0.25s ease !important;
 }
 
 .moneta-card:hover {
