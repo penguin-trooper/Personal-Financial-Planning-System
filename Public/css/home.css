@@ -1,15 +1,3 @@
-:root {
-    --army-green: #37392E;
-    --yellow: #EDF6BD;
-    --dark-green: #273C2C;
-    --dark-blue: #281D59;
-    --light-blue: #4E8D9C;
-    --light-green: #85C69B;
-    --gray-white: #D9D9D9;
-    --font-title: 'Alegreya Sans', sans-serif !important;
-    --font-body: 'Roboto', sans-serif;
-}
-
 .home-background {
     background-repeat: no-repeat;
     background-attachment: fixed;
@@ -41,7 +29,7 @@
 }
 
 .hero-section h1 {
-    font-family: var(--font-title);
+    font-family: 'Cinzel', serif !important;
     font-size: clamp(2rem, 5vw, 3.4rem) !important;
     font-weight: 700 !important;
     color: #edf6bd !important;
@@ -73,7 +61,7 @@
     text-decoration: none !important;
     overflow: hidden !important;
     height: 100% !important;
-    transition: transform 0.25s ease-in-out, box-shadow 0.25s ease !important;
+    transition: transform 0.25s ease, box-shadow 0.25s ease !important;
 }
 
 .moneta-card:hover {
@@ -82,7 +70,7 @@
 }
 
 .moneta-card .card-title {
-    font-family: var(--font-title);
+    font-family: 'Cinzel', serif !important;
     font-size: 17px !important;
     font-weight: 700 !important;
     color: #edf6bd !important;
