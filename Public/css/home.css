@@ -229,22 +229,40 @@
 }
 
 .visual-card-large {
-    inset: 30px 0 72px 36px;
-    padding: 30px;
+    inset: 24px 0 88px 28px;
+    padding: 32px 32px 120px;
 }
 
 .visual-card-small {
-    right: 28px;
-    bottom: 28px;
-    width: min(260px, 54%);
-    padding: 22px;
+    right: 22px;
+    bottom: 12px;
+    width: min(330px, 62%);
+    padding: 22px 24px 18px;
 }
 
-.visual-card-header,
-.visual-stats {
+.visual-card-header {
     display: flex;
     justify-content: space-between;
     gap: 18px;
+}
+
+.visual-stats {
+    display: flex;
+    justify-content: space-between;
+    gap: 24px;
+    margin-top: auto;
+}
+
+.visual-stats > div {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    min-width: 0;
+    flex: 1;
+}
+
+.visual-stats > div:last-child {
+    justify-content: flex-end;
 }
 
 .visual-card span,
@@ -262,8 +280,8 @@
 
 .trendline {
     position: relative;
-    height: 220px;
-    margin: 40px 0 28px;
+    height: 180px;
+    margin: 24px 0 20px;
     overflow: hidden;
     border-radius: 18px;
     background:
@@ -500,7 +518,8 @@
     }
 
     .visual-card-large {
-        inset: 0 0 64px 0;
+        inset: 0 0 78px 0;
+        padding-bottom: 108px;
     }
 
     .feature-inner-reverse .feature-media {
@@ -540,9 +559,9 @@
     }
 
     .visual-card-small {
-        right: 12px;
-        bottom: 12px;
-        width: 68%;
+        right: 14px;
+        bottom: 14px;
+        width: 72%;
     }
 
     .trendline {
