@@ -5,9 +5,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Moneta - ROI Calculator</title>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Nunito:wght@400;600;700&display=swap"
-        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Alegreya+Sans:wght@700;800&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="css/styles.css">
@@ -67,214 +65,216 @@
         </div>
     </nav>
 
-    <!-- Hero -->
-    <div class="roi-hero">
-        <div class="container text-center">
-            <h1>Financial Calculators</h1>
-            <p class="lead">Estimate your potential returns based on your investment amount, expected rate of return, and investment duration.</p>
+    <main class="roi-page">
+        <!-- Hero -->
+        <div class="roi-hero">
+            <div class="container text-center">
+                <h1>Financial Calculators</h1>
+                <p class="lead">Estimate your potential returns based on your investment amount, expected rate of return, and investment duration.</p>
+            </div>
         </div>
-    </div>
 
-    <!-- ===== ROI CALCULATOR SECTION ===== -->
-    <div class="roi-body">
-        <div class="container">
-            <h2 class="calc-section-header">📊 ROI Calculator</h2>
+        <!-- ===== ROI CALCULATOR SECTION ===== -->
+        <div class="roi-body">
+            <div class="container">
+                <h2 class="calc-section-header">ROI Calculator</h2>
 
-            <div class="row g-4 mb-0">
-                <!-- ROI Form -->
-                <div class="col-lg-6">
-                    <h4 class="section-title">Calculate Your ROI</h4>
-                    <div class="roi-form-card">
-                        <h4 class="mb-4">Investment Details</h4>
+                <div class="row g-4 mb-0">
+                    <!-- ROI Form -->
+                    <div class="col-lg-6">
+                        <h4 class="section-title-roi">Calculate Your ROI</h4>
+                        <div class="roi-form-card">
+                            <h4 class="mb-4">Investment Details</h4>
 
-                        <div class="mb-3">
-                            <label for="roiInitial">Initial Investment (RM)</label>
-                            <input type="number" class="form-control" id="roiInitial" placeholder="e.g. 10000" min="0">
-                        </div>
+                            <div class="mb-3">
+                                <label for="roiInitial">Initial Investment (RM)</label>
+                                <input type="number" class="form-control" id="roiInitial" placeholder="e.g. 10000" min="0">
+                            </div>
 
-                        <div class="mb-4">
-                            <label for="roiFinal">Final Value / Return (RM)</label>
-                            <input type="number" class="form-control" id="roiFinal" placeholder="e.g. 13500" min="0">
-                        </div>
+                            <div class="mb-4">
+                                <label for="roiFinal">Final Value / Return (RM)</label>
+                                <input type="number" class="form-control" id="roiFinal" placeholder="e.g. 13500" min="0">
+                            </div>
 
-                        <div class="d-flex gap-2">
-                            <button class="btn-calculate" onclick="calculateROI()">Calculate</button>
-                            <button class="btn-reset" onclick="resetROIForm()">Reset</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- ROI Results -->
-                <div class="col-lg-6">
-                    <h4 class="section-title">Your Results</h4>
-
-                    <!-- Result card (hidden until calculated) -->
-                    <div class="result-card" id="roiResultCard" style="display:none;">
-                        <h4 class="mb-3">📊 ROI Summary</h4>
-                        <div class="result-item d-flex justify-content-between">
-                            <span class="result-label">Initial Investment</span>
-                            <span class="result-value" id="roiResInitial">-</span>
-                        </div>
-                        <div class="result-item d-flex justify-content-between">
-                            <span class="result-label">Final Value</span>
-                            <span class="result-value" id="roiResFinal">-</span>
-                        </div>
-                        <div class="result-item d-flex justify-content-between align-items-center">
-                            <span class="result-label">Profit / Loss</span>
-                            <span id="roiResProfit">-</span>
-                        </div>
-                        <div class="result-item d-flex justify-content-between align-items-center">
-                            <span class="result-label">ROI</span>
-                            <span class="result-total" id="roiResROI">-</span>
+                            <div class="d-flex gap-2">
+                                <button class="btn-calculate" onclick="calculateROI()">Calculate</button>
+                                <button class="btn-reset" onclick="resetROIForm()">Reset</button>
+                            </div>
                         </div>
                     </div>
 
-                    <!-- Placeholder -->
-                    <div id="roiResultPlaceholder" class="tip-card text-center py-4">
-                        <div style="font-size:2.5rem;">📈</div>
-                        <p class="tip-title mt-2">Enter your details and click Calculate</p>
-                        <p class="tip-text">Your ROI summary will appear here.</p>
-                    </div>
+                    <!-- ROI Results -->
+                    <div class="col-lg-6">
+                        <h4 class="section-title-roi">Your Results</h4>
 
-                    <!-- Tips -->
-                    <div class="mt-4">
-                        <h4 class="section-title">Investment Tips</h4>
-                        <div class="tip-card">
-                            <div class="tip-title">💡 Start Early</div>
-                            <div class="tip-text">The earlier you invest, the more time compound interest has to grow your wealth. Even small amounts make a big difference over time.</div>
+                        <!-- Result card (hidden until calculated) -->
+                        <div class="result-card" id="roiResultCard" style="display:none;">
+                            <h4 class="mb-3">ROI Summary</h4>
+                            <div class="result-item d-flex justify-content-between">
+                                <span class="result-label">Initial Investment</span>
+                                <span class="result-value" id="roiResInitial">-</span>
+                            </div>
+                            <div class="result-item d-flex justify-content-between">
+                                <span class="result-label">Final Value</span>
+                                <span class="result-value" id="roiResFinal">-</span>
+                            </div>
+                            <div class="result-item d-flex justify-content-between align-items-center">
+                                <span class="result-label">Profit / Loss</span>
+                                <span id="roiResProfit">-</span>
+                            </div>
+                            <div class="result-item d-flex justify-content-between align-items-center">
+                                <span class="result-label">ROI</span>
+                                <span class="result-total" id="roiResROI">-</span>
+                            </div>
                         </div>
-                        <div class="tip-card">
-                            <div class="tip-title">📅 Invest Consistently</div>
-                            <div class="tip-text">Regular monthly contributions — even small ones — can dramatically increase your final returns through dollar-cost averaging.</div>
+
+                        <!-- Placeholder -->
+                        <div id="roiResultPlaceholder" class="tip-card text-center py-4">
+                            <div class="placeholder-icon">📈</div>
+                            <p class="tip-title mt-2">Enter your details and click Calculate</p>
+                            <p class="tip-text">Your ROI summary will appear here.</p>
                         </div>
-                        <div class="tip-card">
-                            <div class="tip-title">🔄 Reinvest Your Returns</div>
-                            <div class="tip-text">Compounding works best when you reinvest your earnings. Choose monthly or quarterly compounding for maximum growth.</div>
+
+                        <!-- Tips -->
+                        <div class="mt-4">
+                            <h4 class="section-title-roi">Investment Tips</h4>
+                            <div class="tip-card">
+                                <div class="tip-title">💡 Start Early</div>
+                                <div class="tip-text">The earlier you invest, the more time compound interest has to grow your wealth. Even small amounts make a big difference over time.</div>
+                            </div>
+                            <div class="tip-card">
+                                <div class="tip-title">📅 Invest Consistently</div>
+                                <div class="tip-text">Regular monthly contributions — even small ones — can dramatically increase your final returns through dollar-cost averaging.</div>
+                            </div>
+                            <div class="tip-card">
+                                <div class="tip-title">🔄 Reinvest Your Returns</div>
+                                <div class="tip-text">Compounding works best when you reinvest your earnings. Choose monthly or quarterly compounding for maximum growth.</div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    
+        <!-- ===== INTEREST CALCULATOR SECTION ===== -->
+        <div class="interest-section">
+            <div class="container">
+                <h2 class="calc-section-header">Interest Calculator</h2>
 
-    <!-- ===== INTEREST CALCULATOR SECTION ===== -->
-    <div class="interest-section">
-        <div class="container">
-            <h2 class="calc-section-header">💰 Interest Calculator</h2>
+                <div class="row g-4">
+                    <!-- Interest Form -->
+                    <div class="col-lg-6">
+                        <h4 class="section-title-roi">Calculate Interest</h4>
+                        <div class="interest-card">
+                            <h4 class="mb-4">Interest Calculation Details</h4>
 
-            <div class="row g-4">
-                <!-- Interest Form -->
-                <div class="col-lg-6">
-                    <h4 class="section-title">Calculate Interest</h4>
-                    <div class="interest-card">
-                        <h4 class="mb-4">Interest Calculation Details</h4>
+                            <div class="mb-3">
+                                <label for="interestType">Interest Type</label>
+                                <select class="form-control" id="interestType" onchange="toggleInterestFields()">
+                                    <option value="compound">Compound Interest</option>
+                                    <option value="simple">Simple Interest</option>
+                                </select>
+                            </div>
 
-                        <div class="mb-3">
-                            <label for="interestType">Interest Type</label>
-                            <select class="form-control" id="interestType" onchange="toggleInterestFields()">
-                                <option value="compound">Compound Interest</option>
-                                <option value="simple">Simple Interest</option>
-                            </select>
-                        </div>
+                            <div class="mb-3">
+                                <label for="principal">Principal Amount (RM)</label>
+                                <input type="number" class="form-control" id="principal" placeholder="e.g. 10000" min="0">
+                            </div>
 
-                        <div class="mb-3">
-                            <label for="principal">Principal Amount (RM)</label>
-                            <input type="number" class="form-control" id="principal" placeholder="e.g. 10000" min="0">
-                        </div>
+                            <div class="mb-3">
+                                <label for="monthlyContribution">Monthly Contribution (RM) <span style="font-weight:400; font-size:0.85rem;">(optional)</span></label>
+                                <input type="number" class="form-control" id="monthlyContribution" placeholder="e.g. 500" min="0" value="0">
+                            </div>
 
-                        <div class="mb-3">
-                            <label for="monthlyContribution">Monthly Contribution (RM) <span style="font-weight:400; font-size:0.85rem;">(optional)</span></label>
-                            <input type="number" class="form-control" id="monthlyContribution" placeholder="e.g. 500" min="0" value="0">
-                        </div>
+                            <div class="mb-3">
+                                <label for="interestRate">Annual Interest Rate (%)</label>
+                                <input type="number" class="form-control" id="interestRate" placeholder="e.g. 5" min="0" step="0.01">
+                            </div>
 
-                        <div class="mb-3">
-                            <label for="interestRate">Annual Interest Rate (%)</label>
-                            <input type="number" class="form-control" id="interestRate" placeholder="e.g. 5" min="0" step="0.01">
-                        </div>
+                            <div class="mb-3">
+                                <label for="timePeriod">Time Period (Years)</label>
+                                <input type="number" class="form-control" id="timePeriod" placeholder="e.g. 5" min="0" step="0.5">
+                            </div>
 
-                        <div class="mb-3">
-                            <label for="timePeriod">Time Period (Years)</label>
-                            <input type="number" class="form-control" id="timePeriod" placeholder="e.g. 5" min="0" step="0.5">
-                        </div>
+                            <!-- Only for Compound Interest -->
+                            <div class="mb-4" id="compoundingFreqField">
+                                <label for="compoundingFreq">Compounding Frequency</label>
+                                <select class="form-control" id="compoundingFreq">
+                                    <option value="1">Annually</option>
+                                    <option value="2">Semi-Annually</option>
+                                    <option value="4">Quarterly</option>
+                                    <option value="12">Monthly</option>
+                                    <option value="365">Daily</option>
+                                </select>
+                            </div>
 
-                        <!-- Only for Compound Interest -->
-                        <div class="mb-4" id="compoundingFreqField">
-                            <label for="compoundingFreq">Compounding Frequency</label>
-                            <select class="form-control" id="compoundingFreq">
-                                <option value="1">Annually</option>
-                                <option value="2">Semi-Annually</option>
-                                <option value="4">Quarterly</option>
-                                <option value="12">Monthly</option>
-                                <option value="365">Daily</option>
-                            </select>
-                        </div>
-
-                        <div class="d-flex gap-2">
-                            <button class="btn-calculate" onclick="calculateInterest()">Calculate</button>
-                            <button class="btn-reset" onclick="resetInterestForm()">Reset</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Interest Results (now rich display) -->
-                <div class="col-lg-6">
-                    <h4 class="section-title">Interest Results</h4>
-
-                    <div class="result-card" id="interestResultCard" style="display:none;">
-                        <h4 class="mb-3" id="interestResultTitle">📈 Compound Interest Results</h4>
-                        <div class="result-item d-flex justify-content-between">
-                            <span class="result-label">Principal Amount</span>
-                            <span class="result-value" id="intResPrincipal">-</span>
-                        </div>
-                        <div class="result-item d-flex justify-content-between">
-                            <span class="result-label">Total Contributions</span>
-                            <span class="result-value" id="intResContributions">-</span>
-                        </div>
-                        <div class="result-item d-flex justify-content-between">
-                            <span class="result-label">Total Interest Earned</span>
-                            <span class="result-value" id="intResEarned">-</span>
-                        </div>
-                        <div class="result-item d-flex justify-content-between align-items-center">
-                            <span class="result-label">Final Value</span>
-                            <span class="result-total" id="intResTotal">-</span>
-                        </div>
-                        <div class="result-item d-flex justify-content-between align-items-center">
-                            <span class="result-label">Total Profit / Loss</span>
-                            <span id="intResProfit">-</span>
-                        </div>
-                        <div class="result-item d-flex justify-content-between align-items-center">
-                            <span class="result-label">ROI</span>
-                            <span class="result-total" id="intResROI">-</span>
-                        </div>
-                        <div class="result-item d-flex justify-content-between">
-                            <span class="result-label">Annual Interest Rate</span>
-                            <span class="result-value" id="intResRate">-</span>
+                            <div class="d-flex gap-2">
+                                <button class="btn-calculate" onclick="calculateInterest()">Calculate</button>
+                                <button class="btn-reset" onclick="resetInterestForm()">Reset</button>
+                            </div>
                         </div>
                     </div>
 
-                    <!-- Placeholder -->
-                    <div id="interestResultPlaceholder" class="tip-card text-center py-4">
-                        <div style="font-size:2.5rem;">💡</div>
-                        <p class="tip-title mt-2">Enter your details and click Calculate</p>
-                        <p class="tip-text">Your interest calculation will appear here.</p>
-                    </div>
+                    <!-- Interest Results (now rich display) -->
+                    <div class="col-lg-6">
+                        <h4 class="section-title-roi">Interest Results</h4>
 
-                    <!-- Educational Info -->
-                    <div class="mt-4">
-                        <h4 class="section-title">Understanding Interest</h4>
-                        <div class="tip-card">
-                            <div class="tip-title">🔄 Compound Interest</div>
-                            <div class="tip-text">Interest is calculated on both the principal and previously earned interest. The more frequently it compounds, the more you earn.</div>
+                        <div class="result-card" id="interestResultCard" style="display:none;">
+                            <h4 class="mb-3" id="interestResultTitle">📈 Compound Interest Results</h4>
+                            <div class="result-item d-flex justify-content-between">
+                                <span class="result-label">Principal Amount</span>
+                                <span class="result-value" id="intResPrincipal">-</span>
+                            </div>
+                            <div class="result-item d-flex justify-content-between">
+                                <span class="result-label">Total Contributions</span>
+                                <span class="result-value" id="intResContributions">-</span>
+                            </div>
+                            <div class="result-item d-flex justify-content-between">
+                                <span class="result-label">Total Interest Earned</span>
+                                <span class="result-value" id="intResEarned">-</span>
+                            </div>
+                            <div class="result-item d-flex justify-content-between align-items-center">
+                                <span class="result-label">Final Value</span>
+                                <span class="result-total" id="intResTotal">-</span>
+                            </div>
+                            <div class="result-item d-flex justify-content-between align-items-center">
+                                <span class="result-label">Total Profit / Loss</span>
+                                <span id="intResProfit">-</span>
+                            </div>
+                            <div class="result-item d-flex justify-content-between align-items-center">
+                                <span class="result-label">ROI</span>
+                                <span class="result-total" id="intResROI">-</span>
+                            </div>
+                            <div class="result-item d-flex justify-content-between">
+                                <span class="result-label">Annual Interest Rate</span>
+                                <span class="result-value" id="intResRate">-</span>
+                            </div>
                         </div>
-                        <div class="tip-card">
-                            <div class="tip-title">📊 Simple Interest</div>
-                            <div class="tip-text">Interest is calculated only on the principal amount. It grows linearly over time and is easier to predict.</div>
+
+                        <!-- Placeholder -->
+                        <div id="interestResultPlaceholder" class="tip-card text-center py-4">
+                            <div class="placeholder-icon">💡</div>
+                            <p class="tip-title mt-2">Enter your details and click Calculate</p>
+                            <p class="tip-text">Your interest calculation will appear here.</p>
+                        </div>
+
+                        <!-- Educational Info -->
+                        <div class="mt-4">
+                            <h4 class="section-title-roi">Understanding Interest</h4>
+                            <div class="tip-card">
+                                <div class="tip-title">🔄 Compound Interest</div>
+                                <div class="tip-text">Interest is calculated on both the principal and previously earned interest. The more frequently it compounds, the more you earn.</div>
+                            </div>
+                            <div class="tip-card">
+                                <div class="tip-title">📊 Simple Interest</div>
+                                <div class="tip-text">Interest is calculated only on the principal amount. It grows linearly over time and is easier to predict.</div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    </main>
 
     <!-- Made by our group-->
     <section>

@@ -3,7 +3,7 @@
 <head>
     <title>Login - Moneta</title>
     <link rel="stylesheet" href="css/auth.css">
-    <!-- 1. Add Font Awesome for the eye icon -->
+    <link href="https://fonts.googleapis.com/css2?family=Alegreya+Sans:wght@700;800&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
@@ -75,8 +75,6 @@ if (error === 'user') {
     msgBox.innerText = "Wrong password.";
 } else if (error === 'server') {
     msgBox.innerText = "Something went wrong. Try again.";
-} else if (error === 'session') {
-    msgBox.innerText = "Your session expired. Please log in again.";
 }
 </script>
 
